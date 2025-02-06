@@ -1,13 +1,18 @@
-// Add services to the container.
+using Models;
+using Pisicna_Back.Controllers;
+using Pisicna_Back.Repositories;
+using Pisicna_Back.Service;
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("servicios_atemita");
 
 // Add repositorys to the container.
-
+builder.Services.AddScoped<IUsuariosRepository, UsuariosRepository>(provider =>
+new UsuariosRepository(connectionString));
 
 // Add services to the container.
-
+builder.Services.AddScoped<IUsuariosService, UsuariosService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
