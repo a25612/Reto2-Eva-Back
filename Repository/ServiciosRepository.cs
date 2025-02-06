@@ -28,7 +28,6 @@ namespace Pisicna_Back.Repositories
                         while (await reader.ReadAsync())
                         {
                             var servicio = new Servicio(
-                                Convert.ToInt32(reader["Id"]),
                                 reader["Nombre"].ToString(),
                                 Convert.ToDecimal(reader["Precio"])
                             );
@@ -59,7 +58,6 @@ namespace Pisicna_Back.Repositories
                         if (await reader.ReadAsync())
                         {
                             servicio = new Servicio(
-                                Convert.ToInt32(reader["Id"]),
                                 reader["Nombre"].ToString(),
                                 Convert.ToDecimal(reader["Precio"])
                             );

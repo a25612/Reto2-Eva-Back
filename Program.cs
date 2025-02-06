@@ -17,6 +17,9 @@ new ServiciosRepository(connectionString));
 builder.Services.AddScoped<IEmpleadoRepository, EmpleadoRepository>(provider =>
 new EmpleadoRepository(connectionString));
 
+builder.Services.AddScoped<ITutorRepository, TutorRepository>(provider =>
+new TutorRepository(connectionString));
+
 
 // Add services to the container.
 builder.Services.AddScoped<IUsuariosService, UsuariosService>();
@@ -24,6 +27,8 @@ builder.Services.AddScoped<IUsuariosService, UsuariosService>();
 builder.Services.AddScoped<IServiciosService, ServiciosService>();
 
 builder.Services.AddScoped<IEmpleadoService, EmpleadoService>();
+
+builder.Services.AddScoped<ITutorService, TutorService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

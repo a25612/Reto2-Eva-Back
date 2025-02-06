@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Reto2-Eva-Back\\Reto2-Eva-Back.csproj": {}
+    "d:\\Reto2-Eva-Back\\Reto2-Eva-Back.csproj": {}
   },
   "projects": {
-    "D:\\Reto2-Eva-Back\\Reto2-Eva-Back.csproj": {
+    "d:\\Reto2-Eva-Back\\Reto2-Eva-Back.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Reto2-Eva-Back\\Reto2-Eva-Back.csproj",
+        "projectUniqueName": "d:\\Reto2-Eva-Back\\Reto2-Eva-Back.csproj",
         "projectName": "Reto2-Eva-Back",
-        "projectPath": "D:\\Reto2-Eva-Back\\Reto2-Eva-Back.csproj",
+        "projectPath": "d:\\Reto2-Eva-Back\\Reto2-Eva-Back.csproj",
         "packagesPath": "C:\\Users\\Plo\\.nuget\\packages\\",
-        "outputPath": "D:\\Reto2-Eva-Back\\obj\\",
+        "outputPath": "d:\\Reto2-Eva-Back\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Plo\\AppData\\Roaming\\NuGet\\NuGet.Config"

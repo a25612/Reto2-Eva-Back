@@ -28,7 +28,6 @@ namespace Pisicna_Back.Repositories
                         while (await reader.ReadAsync())
                         {
                             var tutor = new Tutor(
-                                Convert.ToInt32(reader["Id"]),
                                 reader["Nombre"].ToString(),
                                 reader["DNI"].ToString(),
                                 reader["Email"].ToString(),
@@ -63,7 +62,6 @@ namespace Pisicna_Back.Repositories
                         if (await reader.ReadAsync())
                         {
                             tutor = new Tutor(
-                                Convert.ToInt32(reader["Id"]),
                                 reader["Nombre"].ToString(),
                                 reader["DNI"].ToString(),
                                 reader["Email"].ToString(),
