@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Reto2-Eva-Back\\Reto2-Eva-Back.csproj": {}
+    "C:\\Users\\ruben.arnadillo\\Desktop\\Reto2-Eva-Back\\Reto2-Eva-Back.csproj": {}
   },
   "projects": {
-    "D:\\Reto2-Eva-Back\\Reto2-Eva-Back.csproj": {
+    "C:\\Users\\ruben.arnadillo\\Desktop\\Reto2-Eva-Back\\Reto2-Eva-Back.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Reto2-Eva-Back\\Reto2-Eva-Back.csproj",
+        "projectUniqueName": "C:\\Users\\ruben.arnadillo\\Desktop\\Reto2-Eva-Back\\Reto2-Eva-Back.csproj",
         "projectName": "Reto2-Eva-Back",
-        "projectPath": "D:\\Reto2-Eva-Back\\Reto2-Eva-Back.csproj",
-        "packagesPath": "C:\\Users\\Plo\\.nuget\\packages\\",
-        "outputPath": "D:\\Reto2-Eva-Back\\obj\\",
+        "projectPath": "C:\\Users\\ruben.arnadillo\\Desktop\\Reto2-Eva-Back\\Reto2-Eva-Back.csproj",
+        "packagesPath": "C:\\Users\\ruben.arnadillo\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ruben.arnadillo\\Desktop\\Reto2-Eva-Back\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Plo\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\ruben.arnadillo\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -75,7 +75,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.308/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
