@@ -17,6 +17,7 @@ new ServiciosRepository(connectionString));
 
 // Add services to the container.
 builder.Services.AddScoped<IUsuariosService, UsuariosService>();
+
 builder.Services.AddScoped<IServiciosService, ServiciosService>();
 
 builder.Services.AddControllers();
