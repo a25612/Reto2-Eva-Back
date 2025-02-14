@@ -9,5 +9,6 @@ namespace Pisicna_Back.Service
         Task AddAsync(Tutor tutor);
         Task UpdateAsync(Tutor tutor);
         Task DeleteAsync(int id);
+        Task<Tutor> ValidateTutorCredentialsAsync(string username, string password);
     }
 }

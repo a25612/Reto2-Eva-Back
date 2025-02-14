@@ -10,8 +10,9 @@ namespace Models
         public string Password { get; set; }
         public bool Activo { get; set; }
         public string Rol { get; } = "TUTOR";
-        public Tutor(string nombre, string dni, string email, string username, string password, bool activo = true)
+        public Tutor(int id, string nombre, string dni, string email, string username, string password, bool activo = true)
         {
+            Id = id;
             Nombre = nombre;
             DNI = dni;
             Email = email;

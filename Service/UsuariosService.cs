@@ -47,19 +47,6 @@ namespace Pisicna_Back.Service
            await _usuariosRepository.DeleteAsync(id);
            //return NoContent();
         }
-        
-        // public async Task InicializarDatosAsync()
-        // {
-        //     await _usuariosRepository.InicializarDatosAsync();
-        // }
-        /*
-        public async Task AddPlatoPrincipalAsync(PlatoPrincipal platoPrincipal)
-        {
-            if (platoPrincipal == null)
-                throw new ArgumentNullException(nameof(platoPrincipal));
-
-            await _platoPrincipalRepository.AddAsync(platoPrincipal);
-        }*/
     }
 }
 

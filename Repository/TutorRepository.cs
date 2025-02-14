@@ -28,6 +28,7 @@ namespace Pisicna_Back.Repositories
                         while (await reader.ReadAsync())
                         {
                             var tutor = new Tutor(
+                                Convert.ToInt32(reader["Id"]),
                                 reader["Nombre"].ToString(),
                                 reader["DNI"].ToString(),
                                 reader["Email"].ToString(),
@@ -62,6 +63,7 @@ namespace Pisicna_Back.Repositories
                         if (await reader.ReadAsync())
                         {
                             tutor = new Tutor(
+                                Convert.ToInt32(reader["Id"]),
                                 reader["Nombre"].ToString(),
                                 reader["DNI"].ToString(),
                                 reader["Email"].ToString(),
@@ -133,6 +135,40 @@ namespace Pisicna_Back.Repositories
                     await command.ExecuteNonQueryAsync();
                 }
             }
+        }
+
+        public async Task<Tutor?> GetByUsernameAndPasswordAsync(string username, string password)
+        {
+            Tutor? tutor = null;
+
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                string query = "SELECT Id, Nombre, DNI, Email, Username, Password, Activo FROM Tutores WHERE Username = @Username AND Password = @Password";
+                using (var command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Username", username);
+                    command.Parameters.AddWithValue("@Password", password);
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            tutor = new Tutor(
+                                Convert.ToInt32(reader["Id"]),
+                                reader["Nombre"].ToString(),
+                                reader["DNI"].ToString(),
+                                reader["Email"].ToString(),
+                                reader["Username"].ToString(),
+                                reader["Password"].ToString(),
+                                reader["Activo"].ToString() == "S"
+                            );
+                        }
+                    }
+                }
+            }
+            return tutor;
         }
     }
 }

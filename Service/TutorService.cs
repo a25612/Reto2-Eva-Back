@@ -47,18 +47,10 @@ namespace Pisicna_Back.Service
            //return NoContent();
         }
         
-        // public async Task InicializarDatosAsync()
-        // {
-        //     await _usuariosRepository.InicializarDatosAsync();
-        // }
-        /*
-        public async Task AddPlatoPrincipalAsync(PlatoPrincipal platoPrincipal)
+        public async Task<Tutor> ValidateTutorCredentialsAsync(string username, string password)
         {
-            if (platoPrincipal == null)
-                throw new ArgumentNullException(nameof(platoPrincipal));
-
-            await _platoPrincipalRepository.AddAsync(platoPrincipal);
-        }*/
+            return await _tutorRepository.GetByUsernameAndPasswordAsync(username, password);
+        }
     }
 }
 

@@ -9,5 +9,6 @@ namespace Pisicna_Back.Repositories
         Task AddAsync(Tutor tutor);
         Task UpdateAsync(Tutor tutor);
         Task DeleteAsync(int id);
+        Task<Tutor> GetByUsernameAndPasswordAsync(string username, string password);
     }
 }
