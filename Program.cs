@@ -7,16 +7,17 @@ using Pisicna_Back.Service;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("servicios_atemita");
 
-// Habilitar CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins("http://localhost:5173") // Permitir solo el frontend
               .AllowAnyMethod()
-              .AllowAnyHeader();
+              .AllowAnyHeader()
+              .AllowCredentials(); // Necesario si usas autenticación con cookies o tokens
     });
 });
+
 
 // Add repositorys to the container.
 builder.Services.AddScoped<IUsuariosRepository, UsuariosRepository>(provider =>
@@ -55,7 +56,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("AllowAll");
+app.UseCors("AllowFrontend");
 
 app.UseHttpsRedirection();
 

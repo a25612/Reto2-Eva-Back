@@ -38,19 +38,32 @@ namespace Pisicna_Back.Service
 
         public async Task DeleteAsync(int id)
         {
-           var tutor = await _tutorRepository.GetByIdAsync(id);
-           if (tutor == null)
-           {
-               //return NotFound();
-           }
-           await _tutorRepository.DeleteAsync(id);
-           //return NoContent();
+            var tutor = await _tutorRepository.GetByIdAsync(id);
+            if (tutor == null)
+            {
+                //return NotFound();
+            }
+            await _tutorRepository.DeleteAsync(id);
+            //return NoContent();
         }
-        
-        public async Task<Tutor> ValidateTutorCredentialsAsync(string username, string password)
+
+        public async Task<Tutor?> LoginAsync(string username, string password)
         {
-            return await _tutorRepository.GetByUsernameAndPasswordAsync(username, password);
+            var tutor = await _tutorRepository.GetByUsernameAndPasswordAsync(username, password);
+
+            if (tutor == null)
+            {
+                return null; // Usuario no encontrado o credenciales incorrectas
+            }
+
+            if (!tutor.Activo)
+            {
+                throw new Exception("El usuario está inactivo. Contacte al administrador.");
+            }
+
+            return tutor;
         }
+
     }
 }
 

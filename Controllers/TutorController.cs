@@ -82,34 +82,32 @@ namespace Pisicna_Back.Controllers
             return NoContent();
         }
 
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        {
+            var tutor = await _serviceTutor.LoginAsync(request.Username, request.Password);
+
+            if (tutor == null)
+            {
+                return Unauthorized(new { message = "Credenciales incorrectas" });
+            }
+
+            return Ok(new
+            {
+                tutor.Id,
+                tutor.Nombre,
+                tutor.Email,
+                tutor.Username,
+                tutor.Rol
+            });
+        }
+
         public class LoginRequest
         {
             public string Username { get; set; }
             public string Password { get; set; }
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request)
-        {
-            if (request == null || string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password))
-            {
-                return BadRequest(new { message = "Usuario y contraseña son obligatorios" });
-            }
-
-            var tutor = await _serviceTutor.ValidateTutorCredentialsAsync(request.Username, request.Password);
-
-            if (tutor == null)
-            {
-                return Unauthorized(new { message = "Usuario o contraseña incorrectos" });
-            }
-
-            if (!tutor.Activo)
-            {
-                return Unauthorized(new { message = "Cuenta inactiva, contacte al administrador" });
-            }
-
-            return Ok(new { message = "Inicio de sesión exitoso", tutorId = tutor.Id, nombre = tutor.Nombre });
-        }
 
     }
 }

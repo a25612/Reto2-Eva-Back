@@ -1,3 +1,4 @@
+-- Active: 1739544464478@@127.0.0.1@3306@servicios_atemtia
 CREATE DATABASE servicios_atemtia;
 USE servicios_atemtia;
 
@@ -6,7 +7,6 @@ USE servicios_atemtia;
 CREATE TABLE Servicios (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     NOMBRE VARCHAR(255) NOT NULL,
-    DESCRIPCIÓN VARCHAR(500) NOT NULL,
     PRECIO DECIMAL(10, 2) NOT NULL
 );
 
@@ -16,7 +16,7 @@ CREATE TABLE Empleados (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     NOMBRE VARCHAR(255) NOT NULL,
     DNI VARCHAR(9) NOT NULL,
-    JornadaTotalHoras INT
+    JornadaTotalHoras INT,
     ROL ENUM('EMPLEADO') NOT NULL DEFAULT 'EMPLEADO'
 );
 
@@ -71,7 +71,7 @@ CREATE TABLE Sesiones (
 
 
 -- Servicios
-INSERT INTO Servicios (SERVICIO, PRECIO) VALUES
+INSERT INTO Servicios (NOMBRE, PRECIO) VALUES
 ('Servicios Atemtia. Evaluacion (Pruebas E Informe)', 140.00),
 ('Servicios Atemtia. Evaluacion', 75.00),
 ('Servicios Atemtia. Informes', 65.00),
