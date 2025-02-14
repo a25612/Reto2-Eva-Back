@@ -89,7 +89,7 @@ namespace Pisicna_Back.Controllers
 
             if (tutor == null)
             {
-                return Unauthorized(new { message = "Credenciales incorrectas" });
+                return Unauthorized(new { message = "Usuario o contraseña incorrectos" });
             }
 
             return Ok(new
