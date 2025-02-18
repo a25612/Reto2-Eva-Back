@@ -1,3 +1,7 @@
+<<<<<<< Updated upstream
+=======
+-- Active: 1739873975879@@127.0.0.1@3306@servicios_atemtia
+>>>>>>> Stashed changes
 CREATE DATABASE servicios_atemtia;
 USE servicios_atemtia;
 
@@ -16,7 +20,13 @@ CREATE TABLE Empleados (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     NOMBRE VARCHAR(255) NOT NULL,
     DNI VARCHAR(9) NOT NULL,
+<<<<<<< Updated upstream
     JornadaTotalHoras INT
+=======
+    JornadaTotalHoras INT,
+    USERNAME VARCHAR(255) NOT NULL,
+    PASSWORD VARCHAR(255) NOT NULL,
+>>>>>>> Stashed changes
     ROL ENUM('EMPLEADO') NOT NULL DEFAULT 'EMPLEADO'
 );
 
@@ -80,10 +90,10 @@ INSERT INTO Servicios (SERVICIO, PRECIO) VALUES
 
 
 -- Empleados
-INSERT INTO Empleados (NOMBRE, DNI, JornadaTotalHoras, ROL) VALUES
-('Ballesteros Rodriguez Ana', '47562374T', 40, 'EMPLEADO'),
-('Villuendas Sierra Rosana', '87736475R', 30, 'EMPLEADO'),
-('Aliaga Andres Esther', '58375846F', 35, 'EMPLEADO');
+INSERT INTO Empleados (NOMBRE, DNI, JornadaTotalHoras, USERNAME, PASSWORD, ROL) VALUES
+('Ballesteros Rodriguez Ana', '47562374T', 40, 'aballesteros', 'password', 'EMPLEADO'),
+('Villuendas Sierra Rosana', '87736475R', 30, 'rvilluendas', 'password', 'EMPLEADO'),
+('Aliaga Andres Esther', '58375846F', 35, 'ealiaga', 'password', 'EMPLEADO');
 
 -- Usuarios
 INSERT INTO Usuarios (NOMBRE, DNI, CodigoFacturacion) VALUES

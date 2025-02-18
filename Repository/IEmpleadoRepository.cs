@@ -9,5 +9,6 @@ namespace Pisicna_Back.Repositories
         Task AddAsync(Empleado empleado);
         Task UpdateAsync(Empleado empleado);
         Task DeleteAsync(int id);
+        Task<Empleado> GetByUsernameAndPasswordAsync(string username, string password);
     }
 }
