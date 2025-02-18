@@ -2102,19 +2102,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ruben\\.nuget\\packages\\": {}
+    "C:\\Users\\ruben.arnadillo\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ruben\\Desktop\\Reto2-Eva-Back\\Reto2-Eva-Back.csproj",
+      "projectUniqueName": "C:\\Users\\ruben.arnadillo\\Desktop\\Reto2-Eva-Back\\Reto2-Eva-Back.csproj",
       "projectName": "Reto2-Eva-Back",
-      "projectPath": "C:\\Users\\ruben\\Desktop\\Reto2-Eva-Back\\Reto2-Eva-Back.csproj",
-      "packagesPath": "C:\\Users\\ruben\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ruben\\Desktop\\Reto2-Eva-Back\\obj\\",
+      "projectPath": "C:\\Users\\ruben.arnadillo\\Desktop\\Reto2-Eva-Back\\Reto2-Eva-Back.csproj",
+      "packagesPath": "C:\\Users\\ruben.arnadillo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ruben.arnadillo\\Desktop\\Reto2-Eva-Back\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\ruben\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\ruben.arnadillo\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -2182,13 +2182,5 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.309/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file C:\\Users\\ruben.arnadillo\\Desktop\\Reto2-Eva-Back\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    }
-  ]
+  }
 }

@@ -28,6 +28,7 @@ namespace Pisicna_Back.Repositories
                         while (await reader.ReadAsync())
                         {
                             var usuario = new Usuario(
+                                Convert.ToInt32(reader["Id"]),
                                 reader["Nombre"].ToString(),
                                 reader["DNI"].ToString(),
                                 reader["CodigoFacturacion"].ToString()
@@ -59,6 +60,7 @@ namespace Pisicna_Back.Repositories
                         if (await reader.ReadAsync())
                         {
                             usuario = new Usuario(
+                                Convert.ToInt32(reader["Id"]),
                                 reader["Nombre"].ToString(),
                                 reader["DNI"].ToString(),
                                 reader["CodigoFacturacion"].ToString()
