@@ -1,7 +1,4 @@
-<<<<<<< Updated upstream
-=======
--- Active: 1739873975879@@127.0.0.1@3306@servicios_atemtia
->>>>>>> Stashed changes
+
 -- Active: 1739544464478@@127.0.0.1@3306@servicios_atemtia
 CREATE DATABASE servicios_atemtia;
 USE servicios_atemtia;
@@ -20,13 +17,9 @@ CREATE TABLE Empleados (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     NOMBRE VARCHAR(255) NOT NULL,
     DNI VARCHAR(9) NOT NULL,
-<<<<<<< Updated upstream
-    JornadaTotalHoras INT
-=======
     JornadaTotalHoras INT,
     USERNAME VARCHAR(255) NOT NULL,
     PASSWORD VARCHAR(255) NOT NULL,
->>>>>>> Stashed changes
     ROL ENUM('EMPLEADO') NOT NULL DEFAULT 'EMPLEADO'
 );
 
