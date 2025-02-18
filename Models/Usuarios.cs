@@ -6,8 +6,9 @@ namespace Models
         public string Nombre { get; set; }
         public string DNI { get; set; }
         public string CodigoFacturacion { get; set; }
-        public Usuario(string nombre, string dni, string codigoFacturacion)
+        public Usuario(int id, string nombre, string dni, string codigoFacturacion)
         {
+            Id = id;
             Nombre = nombre;
             DNI = dni;
             CodigoFacturacion = codigoFacturacion;

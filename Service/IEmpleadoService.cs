@@ -9,5 +9,6 @@ namespace Pisicna_Back.Service
         Task AddAsync(Empleado empleado);
         Task UpdateAsync(Empleado empleado);
         Task DeleteAsync(int id);
+        Task<Empleado> LoginAsync(string username, string password);
     }
 }

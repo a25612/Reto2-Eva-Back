@@ -82,32 +82,5 @@ namespace Pisicna_Back.Controllers
             return NoContent();
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request)
-        {
-            var tutor = await _serviceTutor.LoginAsync(request.Username, request.Password);
-
-            if (tutor == null)
-            {
-                return Unauthorized(new { message = "Usuario o contraseña incorrectos" });
-            }
-
-            return Ok(new
-            {
-                tutor.Id,
-                tutor.Nombre,
-                tutor.Email,
-                tutor.Username,
-                tutor.Rol
-            });
-        }
-
-        public class LoginRequest
-        {
-            public string Username { get; set; }
-            public string Password { get; set; }
-        }
-
-
     }
 }

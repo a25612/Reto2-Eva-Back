@@ -22,7 +22,7 @@ namespace Pisicna_Back.Repositories
             {
                 await connection.OpenAsync();
 
-                string query = "SELECT Id, Nombre, DNI, JornadaTotalHoras, Rol FROM Empleados";  // Añadido el campo 'Rol' aquí
+                string query = "SELECT Id, Nombre, DNI, JornadaTotalHoras, Username, Password, Rol FROM Empleados";  // Añadido el campo 'Rol' aquí
                 using (var command = new MySqlCommand(query, connection))
                 {
                     using (var reader = await command.ExecuteReaderAsync())
@@ -30,9 +30,12 @@ namespace Pisicna_Back.Repositories
                         while (await reader.ReadAsync())
                         {
                             var empleado = new Empleado(
+                                Convert.ToInt32(reader["Id"]),
                                 reader["Nombre"].ToString(),
                                 reader["DNI"].ToString(),
-                                Convert.ToInt32(reader["JornadaTotalHoras"])
+                                Convert.ToInt32(reader["JornadaTotalHoras"]),
+                                reader["Username"].ToString(),
+                                reader["Password"].ToString()
                             );
 
                             empleados.Add(empleado);
@@ -51,7 +54,7 @@ namespace Pisicna_Back.Repositories
             {
                 await connection.OpenAsync();
 
-                string query = "SELECT Id, Nombre, DNI, JornadaTotalHoras, Rol FROM Empleados WHERE Id = @Id";  // Añadido el campo 'Rol' aquí
+                string query = "SELECT Id, Nombre, DNI, JornadaTotalHoras, Username, Password, Rol FROM Empleados WHERE Id = @Id"; 
                 using (var command = new MySqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Id", id);
@@ -61,9 +64,12 @@ namespace Pisicna_Back.Repositories
                         if (await reader.ReadAsync())
                         {
                             empleado = new Empleado(
+                                Convert.ToInt32(reader["Id"]),
                                 reader["Nombre"].ToString(),
                                 reader["DNI"].ToString(),
-                                Convert.ToInt32(reader["JornadaTotalHoras"])
+                                Convert.ToInt32(reader["JornadaTotalHoras"]),
+                                reader["Username"].ToString(),
+                                reader["Password"].ToString()
                             );
                         }
                     }
@@ -78,7 +84,7 @@ namespace Pisicna_Back.Repositories
             {
                 await connection.OpenAsync();
 
-                string query = "INSERT INTO Empleados (Nombre, DNI, JornadaTotalHoras, Rol) VALUES (@Nombre, @DNI, @JornadaTotalHoras, 'EMPLEADO')";
+                string query = "INSERT INTO Empleados (Nombre, DNI, JornadaTotalHoras, Username, Password, Rol) VALUES (@Nombre, @DNI, @JornadaTotalHoras, @Username, @Password, 'EMPLEADO')";
                 using (var command = new MySqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Nombre", empleado.Nombre);
@@ -96,7 +102,7 @@ namespace Pisicna_Back.Repositories
             {
                 await connection.OpenAsync();
 
-                string query = "UPDATE Empleados SET Nombre = @Nombre, DNI = @DNI, JornadaTotalHoras = @JornadaTotalHoras WHERE Id = @Id";
+                string query = "UPDATE Empleados SET Nombre = @Nombre, DNI = @DNI, JornadaTotalHoras = @JornadaTotalHoras , Username = @Username , Password = @Password WHERE Id = @Id";
                 using (var command = new MySqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Id", empleado.Id);
@@ -138,6 +144,38 @@ namespace Pisicna_Back.Repositories
                     await command.ExecuteNonQueryAsync();
                 }
             }
+        }
+        public async Task<Empleado?> GetByUsernameAndPasswordAsync(string username, string password)
+        {
+            Empleado? empleado = null;
+
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                string query = "SELECT Id, Nombre, DNI, JornadaTotalHoras, Username, Password FROM Empleados WHERE Username = @Username AND Password = @Password";
+                using (var command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Username", username);
+                    command.Parameters.AddWithValue("@Password", password);
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            empleado = new Empleado(
+                                Convert.ToInt32(reader["Id"]),
+                                reader["Nombre"].ToString(),
+                                reader["DNI"].ToString(),
+                                Convert.ToInt32(reader["JornadaTotalHoras"]),
+                                reader["Username"].ToString(),
+                                reader["Password"].ToString()
+                            );
+                        }
+                    }
+                }
+            }
+            return empleado;
         }
     }
 }
