@@ -25,6 +25,22 @@ namespace Models
         public Servicio Servicio { get; set; }
 
         [Required]
-        public string FACTURAR { get; set; }
+        public string FACTURAR { get; set; } // 'S' o 'N'
+
+        // Constructor
+        public Sesiones()
+        {
+            FECHA = DateTime.Now;
+            FACTURAR = "N"; // Valor predeterminado
+        }
+
+        public Sesiones(DateTime fecha, int idUsuario, int idEmpleado, int idServicio, string facturar)
+        {
+            FECHA = fecha;
+            ID_USUARIO = idUsuario;
+            ID_EMPLEADO = idEmpleado;
+            ID_SERVICIO = idServicio;
+            FACTURAR = facturar;
+        }
     }
 }
