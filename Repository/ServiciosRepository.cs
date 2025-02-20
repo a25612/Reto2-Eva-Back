@@ -1,5 +1,7 @@
 using MySql.Data.MySqlClient;
 using Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Pisicna_Back.Repositories
 {
@@ -20,7 +22,7 @@ namespace Pisicna_Back.Repositories
             {
                 await connection.OpenAsync();
 
-                string query = "SELECT Id, Nombre, Precio FROM Servicios";
+                string query = "SELECT s.Id, s.Nombre, s.Precio, GROUP_CONCAT(sc.IdCentro) AS Centros FROM Servicios s LEFT JOIN Servicios_Centros sc ON s.Id = sc.IdServicio GROUP BY s.Id";
                 using (var command = new MySqlCommand(query, connection))
                 {
                     using (var reader = await command.ExecuteReaderAsync())
@@ -30,7 +32,8 @@ namespace Pisicna_Back.Repositories
                             var servicio = new Servicio(
                                 Convert.ToInt32(reader["Id"]),
                                 reader["Nombre"].ToString(),
-                                Convert.ToDecimal(reader["Precio"])
+                                Convert.ToDecimal(reader["Precio"]),
+                                reader["Centros"].ToString().Split(',').Select(int.Parse).ToList()
                             );
 
                             servicios.Add(servicio);
@@ -49,7 +52,7 @@ namespace Pisicna_Back.Repositories
             {
                 await connection.OpenAsync();
 
-                string query = "SELECT Id, Nombre, Precio FROM Servicios WHERE Id = @Id";
+                string query = "SELECT s.Id, s.Nombre, s.Precio, GROUP_CONCAT(sc.IdCentro) AS Centros FROM Servicios s LEFT JOIN Servicios_Centros sc ON s.Id = sc.IdServicio WHERE s.Id = @Id GROUP BY s.Id";
                 using (var command = new MySqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Id", id);
@@ -61,7 +64,8 @@ namespace Pisicna_Back.Repositories
                             servicio = new Servicio(
                                 Convert.ToInt32(reader["Id"]),
                                 reader["Nombre"].ToString(),
-                                Convert.ToDecimal(reader["Precio"])
+                                Convert.ToDecimal(reader["Precio"]),
+                                reader["Centros"].ToString().Split(',').Select(int.Parse).ToList()
                             );
                         }
                     }
@@ -76,13 +80,24 @@ namespace Pisicna_Back.Repositories
             {
                 await connection.OpenAsync();
 
-                string query = "INSERT INTO Servicios (Nombre, Precio) VALUES (@Nombre, @Precio)";
+                string query = "INSERT INTO Servicios (Nombre, Precio) VALUES (@Nombre, @Precio); SELECT LAST_INSERT_ID();";
                 using (var command = new MySqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Nombre", servicio.Nombre);
                     command.Parameters.AddWithValue("@Precio", servicio.Precio);
-
-                    await command.ExecuteNonQueryAsync();
+                    
+                    int servicioId = Convert.ToInt32(await command.ExecuteScalarAsync());
+                    
+                    foreach (var idCentro in servicio.IdsCentros)
+                    {
+                        string centroQuery = "INSERT INTO Servicios_Centros (IdServicio, IdCentro) VALUES (@IdServicio, @IdCentro)";
+                        using (var centroCommand = new MySqlCommand(centroQuery, connection))
+                        {
+                            centroCommand.Parameters.AddWithValue("@IdServicio", servicioId);
+                            centroCommand.Parameters.AddWithValue("@IdCentro", idCentro);
+                            await centroCommand.ExecuteNonQueryAsync();
+                        }
+                    }
                 }
             }
         }
@@ -99,8 +114,25 @@ namespace Pisicna_Back.Repositories
                     command.Parameters.AddWithValue("@Id", servicio.Id);
                     command.Parameters.AddWithValue("@Nombre", servicio.Nombre);
                     command.Parameters.AddWithValue("@Precio", servicio.Precio);
-
                     await command.ExecuteNonQueryAsync();
+                }
+
+                string deleteCentrosQuery = "DELETE FROM Servicios_Centros WHERE IdServicio = @IdServicio";
+                using (var deleteCommand = new MySqlCommand(deleteCentrosQuery, connection))
+                {
+                    deleteCommand.Parameters.AddWithValue("@IdServicio", servicio.Id);
+                    await deleteCommand.ExecuteNonQueryAsync();
+                }
+
+                foreach (var idCentro in servicio.IdsCentros)
+                {
+                    string insertCentroQuery = "INSERT INTO Servicios_Centros (IdServicio, IdCentro) VALUES (@IdServicio, @IdCentro)";
+                    using (var insertCommand = new MySqlCommand(insertCentroQuery, connection))
+                    {
+                        insertCommand.Parameters.AddWithValue("@IdServicio", servicio.Id);
+                        insertCommand.Parameters.AddWithValue("@IdCentro", idCentro);
+                        await insertCommand.ExecuteNonQueryAsync();
+                    }
                 }
             }
         }
@@ -111,27 +143,17 @@ namespace Pisicna_Back.Repositories
             {
                 await connection.OpenAsync();
 
+                string deleteCentrosQuery = "DELETE FROM Servicios_Centros WHERE IdServicio = @IdServicio";
+                using (var command = new MySqlCommand(deleteCentrosQuery, connection))
+                {
+                    command.Parameters.AddWithValue("@IdServicio", id);
+                    await command.ExecuteNonQueryAsync();
+                }
+
                 string query = "DELETE FROM Servicios WHERE Id = @Id";
                 using (var command = new MySqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Id", id);
-
-                    await command.ExecuteNonQueryAsync();
-                }
-            }
-        }
-
-        public async Task InicializarDatosAsync()
-        {
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-
-                string query = @"";
-
-                using (var command = new MySqlCommand(query, connection))
-                {
-
                     await command.ExecuteNonQueryAsync();
                 }
             }

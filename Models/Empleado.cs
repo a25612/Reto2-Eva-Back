@@ -9,8 +9,9 @@ namespace Models
         public string Username { get; set; }
         public string Password { get; set; }
         public string Rol { get; } = "EMPLEADO";
+        public int IdCentro { get; set; } 
 
-        public Empleado(int id, string nombre, string dni, int jornadaTotalHoras, string username, string password)
+        public Empleado(int id, string nombre, string dni, int jornadaTotalHoras, string username, string password, int idCentro)
         {
             Id = id;
             Nombre = nombre;
@@ -18,6 +19,7 @@ namespace Models
             JornadaTotalHoras = jornadaTotalHoras;
             Username = username;
             Password = password;
+            IdCentro = idCentro;
         }
     }
 }

@@ -15,8 +15,8 @@ CREATE TABLE Servicios (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     NOMBRE VARCHAR(255) NOT NULL,
     PRECIO DECIMAL(10, 2) NOT NULL,
-    ID_CENTRO INT NOT NULL,
-    CONSTRAINT FK_Servicios_Centros FOREIGN KEY (ID_CENTRO) REFERENCES Centros(ID) ON DELETE CASCADE
+    IdCentro INT NOT NULL,
+    CONSTRAINT FK_Servicios_Centros FOREIGN KEY (IdCentro) REFERENCES Centros(ID) ON DELETE CASCADE
 );
 
 -- Tabla: Empleados
@@ -28,8 +28,8 @@ CREATE TABLE Empleados (
     USERNAME VARCHAR(255) NOT NULL,
     PASSWORD VARCHAR(255) NOT NULL,
     ROL ENUM('EMPLEADO') NOT NULL DEFAULT 'EMPLEADO',
-    ID_CENTRO INT NOT NULL,
-    CONSTRAINT FK_Empleados_Centros FOREIGN KEY (ID_CENTRO) REFERENCES Centros(ID) ON DELETE CASCADE
+    IdCentro INT NOT NULL,
+    CONSTRAINT FK_Empleados_Centros FOREIGN KEY (IdCentro) REFERENCES Centros(ID) ON DELETE CASCADE
 );
 
 -- Tabla: Usuarios
@@ -38,8 +38,8 @@ CREATE TABLE Usuarios (
     NOMBRE VARCHAR(255) NOT NULL,
     DNI VARCHAR(9) NOT NULL,
     CodigoFacturacion VARCHAR(10) NOT NULL,
-    ID_CENTRO INT NOT NULL,
-    CONSTRAINT FK_Usuarios_Centros FOREIGN KEY (ID_CENTRO) REFERENCES Centros(ID) ON DELETE CASCADE
+    IdCentro INT NOT NULL,
+    CONSTRAINT FK_Usuarios_Centros FOREIGN KEY (IdCentro) REFERENCES Centros(ID) ON DELETE CASCADE
 );
 
 -- Tabla: Tutores
@@ -76,27 +76,38 @@ CREATE TABLE Sesiones (
     CONSTRAINT FK_Sesiones_Servicios FOREIGN KEY (ID_SERVICIO) REFERENCES Servicios (ID)
 );
 
+SHOW COLUMNS FROM Empleados;
+
+-- Tabla intermedia: Servicios_Centros (Relación N a N)
+CREATE TABLE Servicios_Centros (
+    ID_SERVICIO INT NOT NULL,
+    IdCentro INT NOT NULL,
+    PRIMARY KEY (ID_SERVICIO, IdCentro),
+    CONSTRAINT FK_ServiciosCentros_Servicio FOREIGN KEY (ID_SERVICIO) REFERENCES Servicios(ID) ON DELETE CASCADE,
+    CONSTRAINT FK_ServiciosCentros_Centro FOREIGN KEY (IdCentro) REFERENCES Centros(ID) ON DELETE CASCADE
+);
+
 -- Insertar Centros
 INSERT INTO Centros (NOMBRE, DIRECCION) VALUES
 ('Espacio Atemtia', 'C/ Castilla, 2, 50009 Zaragoza'),
 ('San Martin de Porres', 'C/ Octavio de Toledo, 2, 50007 Zaragoza');
 
--- Insertar Servicios (ID_CENTRO debe ser válido)
-INSERT INTO Servicios (NOMBRE, PRECIO, ID_CENTRO) VALUES
+-- Insertar Servicios (IdCentro debe ser válido)
+INSERT INTO Servicios (NOMBRE, PRECIO, IdCentro) VALUES
 ('Servicios Atemtia. Evaluacion (Pruebas E Informe)', 140.00, 1),
 ('Servicios Atemtia. Evaluacion', 75.00, 1),
 ('Servicios Atemtia. Informes', 65.00, 1),
 ('Atemtia. Comunicación Y Lenguaje', 25.00, 2),
 ('Atemtia. Fisioterapia', 45.00, 2);
 
--- Insertar Empleados (ID_CENTRO debe ser válido)
-INSERT INTO Empleados (NOMBRE, DNI, JornadaTotalHoras, USERNAME, PASSWORD, ROL, ID_CENTRO) VALUES
+-- Insertar Empleados (IdCentro debe ser válido)
+INSERT INTO Empleados (NOMBRE, DNI, JornadaTotalHoras, USERNAME, PASSWORD, ROL, IdCentro) VALUES
 ('Ballesteros Rodriguez Ana', '47562374T', 40, 'aballesteros', 'password', 'EMPLEADO', 1),
 ('Villuendas Sierra Rosana', '87736475R', 30, 'rvilluendas', 'password', 'EMPLEADO', 1),
 ('Aliaga Andres Esther', '58375846F', 35, 'ealiaga', 'password', 'EMPLEADO', 2);
 
--- Insertar Usuarios (ID_CENTRO debe ser válido)
-INSERT INTO Usuarios (NOMBRE, DNI, CodigoFacturacion, ID_CENTRO) VALUES
+-- Insertar Usuarios (IdCentro debe ser válido)
+INSERT INTO Usuarios (NOMBRE, DNI, CodigoFacturacion, IdCentro) VALUES
 ('Ruth Pellicer Horna (Eneko Gonzalo)', '12345678Z', '101453', 1);
 
 -- Insertar Tutores
@@ -111,3 +122,11 @@ INSERT INTO Usuarios_Tutores (ID_USUARIO, ID_TUTOR) VALUES
 INSERT INTO Sesiones (FECHA, ID_USUARIO, ID_EMPLEADO, ID_SERVICIO, FACTURAR) VALUES
 ('2024-12-17 09:00:00', 1, 3, 1, 'S'),
 ('2024-12-17 09:00:00', 1, 2, 2, 'S');
+
+-- Relación Servicios_Centros
+INSERT INTO Servicios_Centros (ID_SERVICIO, IdCentro) VALUES
+(1, 1),
+(2, 1),
+(3, 1),
+(4, 2),
+(5, 2);

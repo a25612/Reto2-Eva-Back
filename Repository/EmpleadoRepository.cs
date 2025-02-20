@@ -22,7 +22,7 @@ namespace Pisicna_Back.Repositories
             {
                 await connection.OpenAsync();
 
-                string query = "SELECT Id, Nombre, DNI, JornadaTotalHoras, Username, Password, Rol FROM Empleados";  // Añadido el campo 'Rol' aquí
+                string query = "SELECT Id, Nombre, DNI, JornadaTotalHoras, Username, Password, Rol, IdCentro FROM Empleados";
                 using (var command = new MySqlCommand(query, connection))
                 {
                     using (var reader = await command.ExecuteReaderAsync())
@@ -35,9 +35,9 @@ namespace Pisicna_Back.Repositories
                                 reader["DNI"].ToString(),
                                 Convert.ToInt32(reader["JornadaTotalHoras"]),
                                 reader["Username"].ToString(),
-                                reader["Password"].ToString()
+                                reader["Password"].ToString(),
+                                Convert.ToInt32(reader["IdCentro"])
                             );
-
                             empleados.Add(empleado);
                         }
                     }
@@ -54,7 +54,7 @@ namespace Pisicna_Back.Repositories
             {
                 await connection.OpenAsync();
 
-                string query = "SELECT Id, Nombre, DNI, JornadaTotalHoras, Username, Password, Rol FROM Empleados WHERE Id = @Id"; 
+                string query = "SELECT Id, Nombre, DNI, JornadaTotalHoras, Username, Password, Rol, IdCentro FROM Empleados WHERE Id = @Id";
                 using (var command = new MySqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Id", id);
@@ -69,7 +69,8 @@ namespace Pisicna_Back.Repositories
                                 reader["DNI"].ToString(),
                                 Convert.ToInt32(reader["JornadaTotalHoras"]),
                                 reader["Username"].ToString(),
-                                reader["Password"].ToString()
+                                reader["Password"].ToString(),
+                                Convert.ToInt32(reader["IdCentro"])
                             );
                         }
                     }
@@ -84,13 +85,16 @@ namespace Pisicna_Back.Repositories
             {
                 await connection.OpenAsync();
 
-                string query = "INSERT INTO Empleados (Nombre, DNI, JornadaTotalHoras, Username, Password, Rol) VALUES (@Nombre, @DNI, @JornadaTotalHoras, @Username, @Password, 'EMPLEADO')";
+                string query = "INSERT INTO Empleados (Nombre, DNI, JornadaTotalHoras, Username, Password, Rol, IdCentro) VALUES (@Nombre, @DNI, @JornadaTotalHoras, @Username, @Password, 'EMPLEADO', @IdCentro)";
                 using (var command = new MySqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Nombre", empleado.Nombre);
                     command.Parameters.AddWithValue("@DNI", empleado.DNI);
                     command.Parameters.AddWithValue("@JornadaTotalHoras", empleado.JornadaTotalHoras);
-
+                    command.Parameters.AddWithValue("@Username", empleado.Username);
+                    command.Parameters.AddWithValue("@Password", empleado.Password);
+                    command.Parameters.AddWithValue("@IdCentro", empleado.IdCentro);
+                    
                     await command.ExecuteNonQueryAsync();
                 }
             }
@@ -102,15 +106,17 @@ namespace Pisicna_Back.Repositories
             {
                 await connection.OpenAsync();
 
-                string query = "UPDATE Empleados SET Nombre = @Nombre, DNI = @DNI, JornadaTotalHoras = @JornadaTotalHoras , Username = @Username , Password = @Password WHERE Id = @Id";
+                string query = "UPDATE Empleados SET Nombre = @Nombre, DNI = @DNI, JornadaTotalHoras = @JornadaTotalHoras, Username = @Username, Password = @Password, IdCentro = @IdCentro WHERE Id = @Id";
                 using (var command = new MySqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Id", empleado.Id);
                     command.Parameters.AddWithValue("@Nombre", empleado.Nombre);
                     command.Parameters.AddWithValue("@DNI", empleado.DNI);
                     command.Parameters.AddWithValue("@JornadaTotalHoras", empleado.JornadaTotalHoras);
-
-                    // No actualizamos 'Rol', porque siempre debe ser 'EMPLEADO'
+                    command.Parameters.AddWithValue("@Username", empleado.Username);
+                    command.Parameters.AddWithValue("@Password", empleado.Password);
+                    command.Parameters.AddWithValue("@IdCentro", empleado.IdCentro);
+                    
                     await command.ExecuteNonQueryAsync();
                 }
             }
@@ -131,20 +137,6 @@ namespace Pisicna_Back.Repositories
             }
         }
 
-        public async Task InicializarDatosAsync()
-        {
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-
-                string query = @""; // Aquí puedes definir datos iniciales si es necesario
-
-                using (var command = new MySqlCommand(query, connection))
-                {
-                    await command.ExecuteNonQueryAsync();
-                }
-            }
-        }
         public async Task<Empleado?> GetByUsernameAndPasswordAsync(string username, string password)
         {
             Empleado? empleado = null;
@@ -153,7 +145,7 @@ namespace Pisicna_Back.Repositories
             {
                 await connection.OpenAsync();
 
-                string query = "SELECT Id, Nombre, DNI, JornadaTotalHoras, Username, Password FROM Empleados WHERE Username = @Username AND Password = @Password";
+                string query = "SELECT Id, Nombre, DNI, JornadaTotalHoras, Username, Password, IdCentro FROM Empleados WHERE Username = @Username AND Password = @Password";
                 using (var command = new MySqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Username", username);
@@ -169,7 +161,8 @@ namespace Pisicna_Back.Repositories
                                 reader["DNI"].ToString(),
                                 Convert.ToInt32(reader["JornadaTotalHoras"]),
                                 reader["Username"].ToString(),
-                                reader["Password"].ToString()
+                                reader["Password"].ToString(),
+                                Convert.ToInt32(reader["IdCentro"])
                             );
                         }
                     }
