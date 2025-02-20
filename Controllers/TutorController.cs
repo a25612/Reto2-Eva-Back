@@ -1,9 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Pisicna_Back.Repositories;
 using Pisicna_Back.Service;
 using Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Pisicna_Back.Controllers
 {
@@ -18,45 +15,43 @@ namespace Pisicna_Back.Controllers
             _serviceTutor = service;
         }
 
-        // Obtener todos los empleados
+        // Obtener todos los tutores
         [HttpGet]
-        public async Task<ActionResult<List<Tutor>>> GetTutor()
+        public async Task<ActionResult<List<Tutor>>> GetAll()
         {
-            var tutor = await _serviceTutor.GetAllAsync();
-            return Ok(tutor);
+            var tutores = await _serviceTutor.GetAllAsync();
+            return Ok(tutores);
         }
 
-        // Obtener un empleado por ID
+        // Obtener un tutor por ID
         [HttpGet("{id}")]
-        public async Task<ActionResult<Tutor>> GetTutor(int id)
+        public async Task<ActionResult<Tutor>> GetById(int id)
         {
             var tutor = await _serviceTutor.GetByIdAsync(id);
+
             if (tutor == null)
-            {
                 return NotFound();
-            }
+
             return Ok(tutor);
         }
 
-        // Crear un nuevo empleado
+        // Crear un nuevo tutor
         [HttpPost]
-        public async Task<ActionResult<Tutor>> CreateTutor(Tutor tutor)
+        public async Task<IActionResult> Create(Tutor tutor)
         {
             await _serviceTutor.AddAsync(tutor);
-            return CreatedAtAction(nameof(GetTutor), new { id = tutor.Id }, tutor);
+            return CreatedAtAction(nameof(GetById), new { id = tutor.Id }, tutor);
         }
 
-        // Actualizar un empleado existente
+        // Actualizar un tutor existente
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSesion(int id, Tutor updatedTutor)
+        public async Task<IActionResult> Update(int id, Tutor updatedTutor)
         {
             var existingTutor = await _serviceTutor.GetByIdAsync(id);
-            if (existingTutor == null)
-            {
-                return NotFound();
-            }
 
-            // Actualizar los campos del tutor existente
+            if (existingTutor == null)
+                return NotFound();
+
             existingTutor.Nombre = updatedTutor.Nombre;
             existingTutor.DNI = updatedTutor.DNI;
             existingTutor.Email = updatedTutor.Email;
@@ -65,22 +60,22 @@ namespace Pisicna_Back.Controllers
             existingTutor.Activo = updatedTutor.Activo;
 
             await _serviceTutor.UpdateAsync(existingTutor);
+
             return NoContent();
         }
 
-        // Eliminar un empleado por ID
+        // Eliminar un tutor por ID
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTutor(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var tutor = await _serviceTutor.GetByIdAsync(id);
-            if (tutor == null)
-            {
+            var existingTutor = await _serviceTutor.GetByIdAsync(id);
+
+            if (existingTutor == null)
                 return NotFound();
-            }
 
             await _serviceTutor.DeleteAsync(id);
+
             return NoContent();
         }
-
     }
 }

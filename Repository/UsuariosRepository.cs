@@ -1,127 +1,61 @@
-using MySql.Data.MySqlClient;
 using Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Pisicna_Back.Repositories
 {
     public class UsuariosRepository : IUsuariosRepository
     {
-        private readonly string _connectionString;
+        private readonly MyDbContext _context;
 
-        public UsuariosRepository(string connectionString)
+        // Constructor que recibe el DbContext
+        public UsuariosRepository(MyDbContext context)
         {
-            _connectionString = connectionString;
+            _context = context;
         }
 
+        // Obtener todos los usuarios
         public async Task<List<Usuario>> GetAllAsync()
         {
-            var usuarios = new List<Usuario>();
-
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-
-                string query = "SELECT Id, Nombre, DNI, CodigoFacturacion FROM Usuarios";
-                using (var command = new MySqlCommand(query, connection))
-                {
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
-                        {
-                            var usuario = new Usuario(
-                                Convert.ToInt32(reader["Id"]),
-                                reader["Nombre"].ToString(),
-                                reader["DNI"].ToString(),
-                                reader["CodigoFacturacion"].ToString()
-                            );
-
-                            usuarios.Add(usuario);
-                        }
-                    }
-                }
-            }
-            return usuarios;
+            return await _context.Usuarios.ToListAsync();
         }
 
+        // Obtener un usuario por ID
         public async Task<Usuario?> GetByIdAsync(int id)
         {
-            Usuario? usuario = null;
-
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-
-                string query = "SELECT Id, Nombre, DNI, CodigoFacturacion FROM Usuarios WHERE Id = @Id";
-                using (var command = new MySqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@Id", id);
-
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        if (await reader.ReadAsync())
-                        {
-                            usuario = new Usuario(
-                                Convert.ToInt32(reader["Id"]),
-                                reader["Nombre"].ToString(),
-                                reader["DNI"].ToString(),
-                                reader["CodigoFacturacion"].ToString()
-                            );
-                        }
-                    }
-                }
-            }
-            return usuario;
+            return await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
         }
 
+        // Agregar un nuevo usuario
         public async Task AddAsync(Usuario usuario)
         {
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-
-                string query = "INSERT INTO Usuarios (Nombre, DNI, CodigoFacturacion) VALUES (@Nombre, @DNI, @CodigoFacturacion)";
-                using (var command = new MySqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@Nombre", usuario.Nombre);
-                    command.Parameters.AddWithValue("@DNI", usuario.DNI);
-                    command.Parameters.AddWithValue("@CodigoFacturacion", usuario.CodigoFacturacion);
-
-                    await command.ExecuteNonQueryAsync();
-                }
-            }
+            await _context.Usuarios.AddAsync(usuario);
+            await _context.SaveChangesAsync();
         }
 
+        // Actualizar un usuario existente
         public async Task UpdateAsync(Usuario usuario)
         {
-            using (var connection = new MySqlConnection(_connectionString))
+            var existingUsuario = await _context.Usuarios.FindAsync(usuario.Id);
+
+            if (existingUsuario != null)
             {
-                await connection.OpenAsync();
+                existingUsuario.Nombre = usuario.Nombre;
+                existingUsuario.DNI = usuario.DNI;
+                existingUsuario.CodigoFacturacion = usuario.CodigoFacturacion;
 
-                string query = "UPDATE Usuarios SET Nombre = @Nombre, DNI = @DNI, CodigoFacturacion = @CodigoFacturacion WHERE Id = @Id";
-                using (var command = new MySqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@Id", usuario.Id);
-                    command.Parameters.AddWithValue("@Nombre", usuario.Nombre);
-                    command.Parameters.AddWithValue("@DNI", usuario.DNI);
-                    command.Parameters.AddWithValue("@CodigoFacturacion", usuario.CodigoFacturacion);
-
-                    await command.ExecuteNonQueryAsync();
-                }
+                await _context.SaveChangesAsync();
             }
         }
 
+        // Eliminar un usuario por ID
         public async Task DeleteAsync(int id)
         {
-            using (var connection = new MySqlConnection(_connectionString))
+            var usuario = await _context.Usuarios.FindAsync(id);
+
+            if (usuario != null)
             {
-                await connection.OpenAsync();
-
-                string query = "DELETE FROM Usuarios WHERE Id = @Id";
-                using (var command = new MySqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@Id", id);
-
-                    await command.ExecuteNonQueryAsync();
-                }
+                _context.Usuarios.Remove(usuario);
+                await _context.SaveChangesAsync();
             }
         }
     }

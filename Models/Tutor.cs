@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models
 {
@@ -29,14 +30,11 @@ namespace Models
 
         public string Rol { get; } = "TUTOR";
 
-        // Relación con Usuarios_Tutores (N:N)
         public ICollection<UsuarioTutor> UsuariosTutores { get; set; }
 
-        // Constructor vacío (necesario para EF Core)
         public Tutor() {}
 
-        // Constructor completo
-        public Tutor(int id, string nombre, string dni, string email, string username, string password, bool activo = true)
+        public Tutor(int id, string nombre, string dni, string email, string username, string password, bool activo)
         {
             Id = id;
             Nombre = nombre;

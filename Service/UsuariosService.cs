@@ -1,53 +1,42 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Models;
 using Pisicna_Back.Repositories;
-using Pisicna_Back.Service;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Pisicna_Back.Service
 {
     public class UsuariosService : IUsuariosService
     {
-        private readonly IUsuariosRepository _usuariosRepository;
+        private readonly IUsuariosRepository _repository;
 
-        public UsuariosService(IUsuariosRepository usuariosRepository)
+        public UsuariosService(IUsuariosRepository repository)
         {
-            _usuariosRepository = usuariosRepository;
+            _repository = repository;
         }
 
         public async Task<List<Usuario>> GetAllAsync()
         {
-            return await _usuariosRepository.GetAllAsync();
+            return await _repository.GetAllAsync();
         }
 
         public async Task<Usuario?> GetByIdAsync(int id)
         {
-            return await _usuariosRepository.GetByIdAsync(id);
+            return await _repository.GetByIdAsync(id);
         }
-
 
         public async Task AddAsync(Usuario usuario)
         {
-            await _usuariosRepository.AddAsync(usuario);
+            await _repository.AddAsync(usuario);
         }
 
         public async Task UpdateAsync(Usuario usuario)
         {
-            await _usuariosRepository.UpdateAsync(usuario);
+            await _repository.UpdateAsync(usuario);
         }
 
         public async Task DeleteAsync(int id)
         {
-           var usuario = await _usuariosRepository.GetByIdAsync(id);
-           if (usuario == null)
-           {
-               //return NotFound();
-           }
-           await _usuariosRepository.DeleteAsync(id);
-           //return NoContent();
+            await _repository.DeleteAsync(id);
         }
     }
 }
-
-

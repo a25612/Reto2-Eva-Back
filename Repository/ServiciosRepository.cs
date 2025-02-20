@@ -1,161 +1,95 @@
-using MySql.Data.MySqlClient;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Pisicna_Back.Repositories
 {
     public class ServiciosRepository : IServiciosRepository
     {
-        private readonly string _connectionString;
+        private readonly MyDbContext _context;
 
-        public ServiciosRepository(string connectionString)
+        // Constructor que recibe el DbContext
+        public ServiciosRepository(MyDbContext context)
         {
-            _connectionString = connectionString;
+            _context = context;
         }
 
+        // Obtener todos los servicios
         public async Task<List<Servicio>> GetAllAsync()
         {
-            var servicios = new List<Servicio>();
-
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-
-                string query = "SELECT s.Id, s.Nombre, s.Precio, GROUP_CONCAT(sc.IdCentro) AS Centros FROM Servicios s LEFT JOIN Servicios_Centros sc ON s.Id = sc.IdServicio GROUP BY s.Id";
-                using (var command = new MySqlCommand(query, connection))
-                {
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
-                        {
-                            var servicio = new Servicio(
-                                Convert.ToInt32(reader["Id"]),
-                                reader["Nombre"].ToString(),
-                                Convert.ToDecimal(reader["Precio"]),
-                                reader["Centros"].ToString().Split(',').Select(int.Parse).ToList()
-                            );
-
-                            servicios.Add(servicio);
-                        }
-                    }
-                }
-            }
-            return servicios;
+            // Cargar servicios junto con sus relaciones con Centros
+            return await _context.Servicios
+                .Include(s => s.ServiciosCentros) 
+                .ThenInclude(sc => sc.Centro)   
+                .ToListAsync();
         }
 
+        // Obtener un servicio por ID
         public async Task<Servicio?> GetByIdAsync(int id)
         {
-            Servicio? servicio = null;
-
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-
-                string query = "SELECT s.Id, s.Nombre, s.Precio, GROUP_CONCAT(sc.IdCentro) AS Centros FROM Servicios s LEFT JOIN Servicios_Centros sc ON s.Id = sc.IdServicio WHERE s.Id = @Id GROUP BY s.Id";
-                using (var command = new MySqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@Id", id);
-
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        if (await reader.ReadAsync())
-                        {
-                            servicio = new Servicio(
-                                Convert.ToInt32(reader["Id"]),
-                                reader["Nombre"].ToString(),
-                                Convert.ToDecimal(reader["Precio"]),
-                                reader["Centros"].ToString().Split(',').Select(int.Parse).ToList()
-                            );
-                        }
-                    }
-                }
-            }
-            return servicio;
+            return await _context.Servicios
+                .Include(s => s.ServiciosCentros) 
+                .ThenInclude(sc => sc.Centro)    
+                .FirstOrDefaultAsync(s => s.Id == id);
         }
 
+        // Agregar un nuevo servicio
         public async Task AddAsync(Servicio servicio)
         {
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-
-                string query = "INSERT INTO Servicios (Nombre, Precio) VALUES (@Nombre, @Precio); SELECT LAST_INSERT_ID();";
-                using (var command = new MySqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@Nombre", servicio.Nombre);
-                    command.Parameters.AddWithValue("@Precio", servicio.Precio);
-                    
-                    int servicioId = Convert.ToInt32(await command.ExecuteScalarAsync());
-                    
-                    foreach (var idCentro in servicio.IdsCentros)
-                    {
-                        string centroQuery = "INSERT INTO Servicios_Centros (IdServicio, IdCentro) VALUES (@IdServicio, @IdCentro)";
-                        using (var centroCommand = new MySqlCommand(centroQuery, connection))
-                        {
-                            centroCommand.Parameters.AddWithValue("@IdServicio", servicioId);
-                            centroCommand.Parameters.AddWithValue("@IdCentro", idCentro);
-                            await centroCommand.ExecuteNonQueryAsync();
-                        }
-                    }
-                }
-            }
+            // Agregar el servicio principal
+            await _context.Servicios.AddAsync(servicio);
+            await _context.SaveChangesAsync();
         }
 
+        // Actualizar un servicio existente
         public async Task UpdateAsync(Servicio servicio)
         {
-            using (var connection = new MySqlConnection(_connectionString))
+            var existingServicio = await _context.Servicios
+                .Include(s => s.ServiciosCentros) 
+                .FirstOrDefaultAsync(s => s.Id == servicio.Id);
+
+            if (existingServicio != null)
             {
-                await connection.OpenAsync();
+                // Actualizar las propiedades del servicio principal
+                existingServicio.Nombre = servicio.Nombre;
+                existingServicio.Precio = servicio.Precio;
 
-                string query = "UPDATE Servicios SET Nombre = @Nombre, Precio = @Precio WHERE Id = @Id";
-                using (var command = new MySqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@Id", servicio.Id);
-                    command.Parameters.AddWithValue("@Nombre", servicio.Nombre);
-                    command.Parameters.AddWithValue("@Precio", servicio.Precio);
-                    await command.ExecuteNonQueryAsync();
-                }
+                // Eliminar las relaciones existentes en ServiciosCentros
+                _context.ServiciosCentros.RemoveRange(existingServicio.ServiciosCentros);
 
-                string deleteCentrosQuery = "DELETE FROM Servicios_Centros WHERE IdServicio = @IdServicio";
-                using (var deleteCommand = new MySqlCommand(deleteCentrosQuery, connection))
+                // Agregar las nuevas relaciones en ServiciosCentros (si hay cambios)
+                foreach (var servicioCentro in servicio.ServiciosCentros)
                 {
-                    deleteCommand.Parameters.AddWithValue("@IdServicio", servicio.Id);
-                    await deleteCommand.ExecuteNonQueryAsync();
-                }
-
-                foreach (var idCentro in servicio.IdsCentros)
-                {
-                    string insertCentroQuery = "INSERT INTO Servicios_Centros (IdServicio, IdCentro) VALUES (@IdServicio, @IdCentro)";
-                    using (var insertCommand = new MySqlCommand(insertCentroQuery, connection))
+                    var nuevoServicioCentro = new ServicioCentro
                     {
-                        insertCommand.Parameters.AddWithValue("@IdServicio", servicio.Id);
-                        insertCommand.Parameters.AddWithValue("@IdCentro", idCentro);
-                        await insertCommand.ExecuteNonQueryAsync();
-                    }
+                        ID_SERVICIO = existingServicio.Id,
+                        IdCentro = servicioCentro.IdCentro
+                    };
+                    await _context.ServiciosCentros.AddAsync(nuevoServicioCentro);
                 }
+
+                await _context.SaveChangesAsync();
             }
         }
 
+        // Eliminar un servicio por ID
         public async Task DeleteAsync(int id)
         {
-            using (var connection = new MySqlConnection(_connectionString))
+            var servicio = await _context.Servicios
+                .Include(s => s.ServiciosCentros) 
+                .FirstOrDefaultAsync(s => s.Id == id);
+
+            if (servicio != null)
             {
-                await connection.OpenAsync();
+                // Eliminar las relaciones en ServiciosCentros primero
+                _context.ServiciosCentros.RemoveRange(servicio.ServiciosCentros);
 
-                string deleteCentrosQuery = "DELETE FROM Servicios_Centros WHERE IdServicio = @IdServicio";
-                using (var command = new MySqlCommand(deleteCentrosQuery, connection))
-                {
-                    command.Parameters.AddWithValue("@IdServicio", id);
-                    await command.ExecuteNonQueryAsync();
-                }
+                // Eliminar el servicio principal
+                _context.Servicios.Remove(servicio);
 
-                string query = "DELETE FROM Servicios WHERE Id = @Id";
-                using (var command = new MySqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@Id", id);
-                    await command.ExecuteNonQueryAsync();
-                }
+                await _context.SaveChangesAsync();
             }
         }
     }

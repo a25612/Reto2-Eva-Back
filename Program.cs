@@ -8,6 +8,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Cadena de conexión
 var connectionString = builder.Configuration.GetConnectionString("servicios_atemita");
 
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+    options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+});
+
+
+
 // Registrar el DbContext
 builder.Services.AddDbContext<MyDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));

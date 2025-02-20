@@ -1,174 +1,66 @@
-using MySql.Data.MySqlClient;
+using Microsoft.EntityFrameworkCore;
 using Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Pisicna_Back.Repositories
 {
     public class TutorRepository : ITutorRepository
     {
-        private readonly string _connectionString;
+        private readonly MyDbContext _context;
 
-        public TutorRepository(string connectionString)
+        public TutorRepository(MyDbContext context)
         {
-            _connectionString = connectionString;
+            _context = context;
         }
 
         public async Task<List<Tutor>> GetAllAsync()
         {
-            var tutores = new List<Tutor>();
-
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-
-                string query = "SELECT Id, Nombre, DNI, Email, Username, Password, Activo FROM Tutores";
-                using (var command = new MySqlCommand(query, connection))
-                {
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
-                        {
-                            var tutor = new Tutor(
-                                Convert.ToInt32(reader["Id"]),
-                                reader["Nombre"].ToString(),
-                                reader["DNI"].ToString(),
-                                reader["Email"].ToString(),
-                                reader["Username"].ToString(),
-                                reader["Password"].ToString(),
-                                reader["Activo"].ToString() == "S"
-                            );
-
-                            tutores.Add(tutor);
-                        }
-                    }
-                }
-            }
-            return tutores;
+            return await _context.Tutores.ToListAsync();
         }
 
         public async Task<Tutor?> GetByIdAsync(int id)
         {
-            Tutor? tutor = null;
-
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-
-                string query = "SELECT Id, Nombre, DNI, Email, Username, Password, Activo FROM Tutores WHERE Id = @Id";
-                using (var command = new MySqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@Id", id);
-
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        if (await reader.ReadAsync())
-                        {
-                            tutor = new Tutor(
-                                Convert.ToInt32(reader["Id"]),
-                                reader["Nombre"].ToString(),
-                                reader["DNI"].ToString(),
-                                reader["Email"].ToString(),
-                                reader["Username"].ToString(),
-                                reader["Password"].ToString(),
-                                reader["Activo"].ToString() == "S"
-                            );
-                        }
-                    }
-                }
-            }
-            return tutor;
+            return await _context.Tutores.FirstOrDefaultAsync(t => t.Id == id);
         }
 
         public async Task AddAsync(Tutor tutor)
         {
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-
-                string query = "INSERT INTO Tutores (Nombre, DNI, Email, Username, Password, Activo) VALUES (@Nombre, @DNI, @Email, @Username, @Password, @Activo)";
-                using (var command = new MySqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@Nombre", tutor.Nombre);
-                    command.Parameters.AddWithValue("@DNI", tutor.DNI);
-                    command.Parameters.AddWithValue("@Email", tutor.Email);
-                    command.Parameters.AddWithValue("@Username", tutor.Username);
-                    command.Parameters.AddWithValue("@Password", tutor.Password);
-                    command.Parameters.AddWithValue("@Activo", tutor.Activo);
-
-                    await command.ExecuteNonQueryAsync();
-                }
-            }
+            await _context.Tutores.AddAsync(tutor);
+            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(Tutor tutor)
         {
-            using (var connection = new MySqlConnection(_connectionString))
+            var existingTutor = await _context.Tutores.FindAsync(tutor.Id);
+
+            if (existingTutor != null)
             {
-                await connection.OpenAsync();
+                existingTutor.Nombre = tutor.Nombre;
+                existingTutor.DNI = tutor.DNI;
+                existingTutor.Email = tutor.Email;
+                existingTutor.Username = tutor.Username;
+                existingTutor.Password = tutor.Password;
+                existingTutor.Activo = tutor.Activo;
 
-                string query = "UPDATE Tutores SET Nombre = @Nombre, DNI = @DNI, Email = @Email, Username = @Username, Password = @Password, Activo = @Activo WHERE Id = @Id";
-                using (var command = new MySqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@Id", tutor.Id);
-                    command.Parameters.AddWithValue("@Nombre", tutor.Nombre);
-                    command.Parameters.AddWithValue("@DNI", tutor.DNI);
-                    command.Parameters.AddWithValue("@Email", tutor.Email);
-                    command.Parameters.AddWithValue("@Username", tutor.Username);
-                    command.Parameters.AddWithValue("@Password", tutor.Password);
-                    command.Parameters.AddWithValue("@Activo", tutor.Activo);
-
-                    await command.ExecuteNonQueryAsync();
-                }
+                await _context.SaveChangesAsync();
             }
         }
 
         public async Task DeleteAsync(int id)
         {
-            using (var connection = new MySqlConnection(_connectionString))
+            var tutor = await _context.Tutores.FindAsync(id);
+
+            if (tutor != null)
             {
-                await connection.OpenAsync();
-
-                string query = "DELETE FROM Tutores WHERE Id = @Id";
-                using (var command = new MySqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@Id", id);
-
-                    await command.ExecuteNonQueryAsync();
-                }
+                _context.Tutores.Remove(tutor);
+                await _context.SaveChangesAsync();
             }
         }
 
         public async Task<Tutor?> GetByUsernameAndPasswordAsync(string username, string password)
         {
-            Tutor? tutor = null;
-
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-
-                string query = "SELECT Id, Nombre, DNI, Email, Username, Password, Activo FROM Tutores WHERE Username = @Username AND Password = @Password";
-                using (var command = new MySqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@Username", username);
-                    command.Parameters.AddWithValue("@Password", password);
-
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        if (await reader.ReadAsync())
-                        {
-                            tutor = new Tutor(
-                                Convert.ToInt32(reader["Id"]),
-                                reader["Nombre"].ToString(),
-                                reader["DNI"].ToString(),
-                                reader["Email"].ToString(),
-                                reader["Username"].ToString(),
-                                reader["Password"].ToString(),
-                                reader["Activo"].ToString() == "S"
-                            );
-                        }
-                    }
-                }
-            }
-            return tutor;
+            return await _context.Tutores.FirstOrDefaultAsync(t => t.Username == username && t.Password == password);
         }
     }
 }
