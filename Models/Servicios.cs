@@ -1,18 +1,37 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Models
 {
     public class Servicio
     {
+        [Key]
         public int Id { get; set; }
-        public string Nombre { get; set; }
-        public decimal Precio { get; set; }
-        public List<int> IdsCentros { get; set; }
 
-        public Servicio(int id, string nombre, decimal precio, List<int> idsCentros)
+        [Required]
+        [MaxLength(255)]
+        public string Nombre { get; set; }
+
+        [Required]
+        public decimal Precio { get; set; }
+
+        // Relación con Centros (N:N)
+        public ICollection<ServicioCentro> ServiciosCentros { get; set; }
+
+        // Relación con Sesiones
+        public ICollection<Sesiones> Sesiones { get; set; }
+
+        // Constructor vacío (necesario para EF Core)
+        public Servicio() {}
+
+        // Constructor completo
+        public Servicio(int id, string nombre, decimal precio)
         {
             Id = id;
             Nombre = nombre;
             Precio = precio;
-            IdsCentros = idsCentros;
+            ServiciosCentros = new List<ServicioCentro>();
+            Sesiones = new List<Sesiones>();
         }
     }
 }
