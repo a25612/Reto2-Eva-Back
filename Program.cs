@@ -1,55 +1,49 @@
+using Microsoft.EntityFrameworkCore;
 using Models;
-using Pisicna_Back.Controllers;
 using Pisicna_Back.Repositories;
 using Pisicna_Back.Service;
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 var builder = WebApplication.CreateBuilder(args);
+
+// Cadena de conexión
 var connectionString = builder.Configuration.GetConnectionString("servicios_atemita");
 
+// Registrar el DbContext
+builder.Services.AddDbContext<MyDbContext>(options =>
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
+// Configurar CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173") 
+        policy.WithOrigins("http://localhost:5173")
               .AllowAnyMethod()
               .AllowAnyHeader()
-              .AllowCredentials(); 
+              .AllowCredentials();
     });
 });
 
+// Registrar los repositorios
+builder.Services.AddScoped<IEmpleadoRepository, EmpleadoRepository>();
+builder.Services.AddScoped<IUsuariosRepository, UsuariosRepository>();
+builder.Services.AddScoped<IServiciosRepository, ServiciosRepository>();
+builder.Services.AddScoped<ITutorRepository, TutorRepository>();
 
-// Add repositorys to the container.
-builder.Services.AddScoped<IUsuariosRepository, UsuariosRepository>(provider =>
-new UsuariosRepository(connectionString));
-
-builder.Services.AddScoped<IServiciosRepository, ServiciosRepository>(provider =>
-new ServiciosRepository(connectionString));
-
-builder.Services.AddScoped<IEmpleadoRepository, EmpleadoRepository>(provider =>
-new EmpleadoRepository(connectionString));
-
-builder.Services.AddScoped<ITutorRepository, TutorRepository>(provider =>
-new TutorRepository(connectionString));
-
-
-// Add services to the container.
+// Registrar los servicios
 builder.Services.AddScoped<IUsuariosService, UsuariosService>();
-
 builder.Services.AddScoped<IServiciosService, ServiciosService>();
-
 builder.Services.AddScoped<IEmpleadoService, EmpleadoService>();
-
 builder.Services.AddScoped<ITutorService, TutorService>();
 
+// Configurar controladores y Swagger
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configurar middleware
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -57,12 +51,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowFrontend");
-
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
-//PlatoPrincipalController.InicializarDatos();
 app.Run();
