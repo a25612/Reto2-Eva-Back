@@ -28,7 +28,7 @@ namespace Models
         public string Password { get; set; }
 
         public string Rol { get; } = "EMPLEADO";
-
+    
         [ForeignKey("Centro")]
         public int IdCentro { get; set; }
         public Centro Centro { get; set; } 
