@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -27,19 +28,15 @@ namespace Models
         public string Password { get; set; }
 
         public string Rol { get; } = "EMPLEADO";
-        public int IdCentro { get; set; } 
 
         [ForeignKey("Centro")]
-        public int IdCentros { get; set; }
-        public Centro Centros { get; set; }
+        public int IdCentro { get; set; }
+        public Centro Centro { get; set; } 
 
-        // Relación con Sesiones
         public ICollection<Sesion> Sesiones { get; set; }
 
-        // Constructor vacío (necesario para EF Core)
         public Empleado() {}
 
-        // Constructor completo
         public Empleado(int id, string nombre, string dni, int jornadaTotalHoras, string username, string password, int idCentro)
         {
             Id = id;
@@ -49,6 +46,7 @@ namespace Models
             Username = username;
             Password = password;
             IdCentro = idCentro;
+            Sesiones = new List<Sesion>();
         }
     }
 }
