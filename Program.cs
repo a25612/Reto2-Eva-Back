@@ -11,10 +11,10 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173") // Permitir solo el frontend
+        policy.WithOrigins("http://localhost:5173") 
               .AllowAnyMethod()
               .AllowAnyHeader()
-              .AllowCredentials(); // Necesario si usas autenticación con cookies o tokens
+              .AllowCredentials(); 
     });
 });
 
