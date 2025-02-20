@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models
 {
-    public class Sesiones
+    public class Sesion
     {
         [Key]
         public int ID { get; set; }
@@ -28,13 +28,13 @@ namespace Models
         public string FACTURAR { get; set; } // 'S' o 'N'
 
         // Constructor
-        public Sesiones()
+        public Sesion()
         {
             FECHA = DateTime.Now;
             FACTURAR = "N"; // Valor predeterminado
         }
 
-        public Sesiones(DateTime fecha, int idUsuario, int idEmpleado, int idServicio, string facturar)
+        public Sesion(DateTime fecha, int idUsuario, int idEmpleado, int idServicio, string facturar)
         {
             FECHA = fecha;
             ID_USUARIO = idUsuario;

@@ -19,7 +19,7 @@ namespace Models
         public ICollection<ServicioCentro> ServiciosCentros { get; set; }
 
         // Relación con Sesiones
-        public ICollection<Sesiones> Sesiones { get; set; }
+        public ICollection<Sesion> Sesiones { get; set; }
 
         // Constructor vacío (necesario para EF Core)
         public Servicio() {}
@@ -31,7 +31,7 @@ namespace Models
             Nombre = nombre;
             Precio = precio;
             ServiciosCentros = new List<ServicioCentro>();
-            Sesiones = new List<Sesiones>();
+            Sesiones = new List<Sesion>();
         }
     }
 }

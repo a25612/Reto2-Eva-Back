@@ -13,7 +13,7 @@ namespace Models
         [Key, Column(Order = 1)]
         [ForeignKey("Centro")]
         public int IdCentro { get; set; }
-        public Centros Centro { get; set; }
+        public Centro Centro { get; set; }
 
         // Constructor
         public ServicioCentro() {}

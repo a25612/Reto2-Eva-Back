@@ -30,11 +30,11 @@ namespace Models
         public int IdCentro { get; set; } 
 
         [ForeignKey("Centro")]
-        public int IdCentro { get; set; }
-        public Centros Centro { get; set; }
+        public int IdCentros { get; set; }
+        public Centro Centros { get; set; }
 
         // Relación con Sesiones
-        public ICollection<Sesiones> Sesiones { get; set; }
+        public ICollection<Sesion> Sesiones { get; set; }
 
         // Constructor vacío (necesario para EF Core)
         public Empleado() {}
