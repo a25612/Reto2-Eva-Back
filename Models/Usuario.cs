@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Models
 {
@@ -25,28 +25,14 @@ namespace Models
         public int IdCentro { get; set; }
         public Centro Centro { get; set; }
 
-        // Relación con Usuarios_Tutores (N:N)
+        [JsonIgnore]
         public ICollection<UsuarioTutor> UsuariosTutores { get; set; }
 
-        // Relación con Sesiones
+        [JsonIgnore]
         public ICollection<Sesion> Sesiones { get; set; }
 
-        // Constructor vacío (necesario para EF Core)
         public Usuario()
         {
-            UsuariosTutores = new List<UsuarioTutor>();
-            Sesiones = new List<Sesion>();
-        }
-
-        // Constructor completo
-        public Usuario(int id, string nombre, string dni, string codigoFacturacion, int idCentro)
-        {
-            Id = id;
-            Nombre = nombre;
-            DNI = dni;
-            CodigoFacturacion = codigoFacturacion;
-            IdCentro = idCentro;
-
             UsuariosTutores = new List<UsuarioTutor>();
             Sesiones = new List<Sesion>();
         }

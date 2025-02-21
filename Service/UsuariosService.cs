@@ -1,7 +1,5 @@
 using Models;
 using Pisicna_Back.Repositories;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Pisicna_Back.Service
 {
@@ -18,7 +16,7 @@ namespace Pisicna_Back.Service
         {
             return await _repository.GetAllAsync();
         }
-
+        
         public async Task<Usuario?> GetByIdAsync(int id)
         {
             return await _repository.GetByIdAsync(id);

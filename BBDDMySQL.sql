@@ -1,4 +1,4 @@
--- Active: 1740066435771@@127.0.0.1@3307@servicios_atemtia
+-- Active: 1740040889643@@127.0.0.1@3307
 -- Crear la base de datos y usarla
 CREATE DATABASE servicios_atemtia;
 USE servicios_atemtia;
@@ -85,6 +85,16 @@ CREATE TABLE ServiciosCentros (
     CONSTRAINT FK_ServiciosCentros_Centro FOREIGN KEY (IdCentro) REFERENCES Centros(ID) ON DELETE CASCADE
 );
 
+-- Tabla intermedia: Usuarios_Centros (Relación N a N)
+CREATE TABLE UsuariosCentros (
+    ID_USUARIO INT NOT NULL,
+    ID_CENTRO INT NOT NULL,
+    PRIMARY KEY (ID_USUARIO, ID_CENTRO),
+    CONSTRAINT FK_UsuariosCentros_Usuarios FOREIGN KEY (ID_USUARIO) REFERENCES Usuarios(ID) ON DELETE CASCADE,
+    CONSTRAINT FK_UsuariosCentros_Centros FOREIGN KEY (ID_CENTRO) REFERENCES Centros(ID) ON DELETE CASCADE
+);
+
+
 -- Insertar Centros
 INSERT INTO Centros (NOMBRE, DIRECCION) VALUES
 ('Espacio Atemtia', 'C/ Castilla, 2, 50009 Zaragoza'),
@@ -107,6 +117,10 @@ INSERT INTO Empleados (NOMBRE, DNI, JornadaTotalHoras, USERNAME, PASSWORD, ROL, 
 -- Insertar Usuarios (IdCentro debe ser válido)
 INSERT INTO Usuarios (NOMBRE, DNI, CodigoFacturacion, IdCentro) VALUES
 ('Ruth Pellicer Horna (Eneko Gonzalo)', '12345678Z', '101453', 1);
+
+-- Insertar Usuarios_Centros
+INSERT INTO UsuariosCentros (ID_USUARIO, ID_CENTRO) VALUES
+(1, 1 AND 2);
 
 -- Insertar Tutores
 INSERT INTO Tutores (NOMBRE, DNI, EMAIL, USERNAME, PASSWORD, ACTIVO, ROL) VALUES
