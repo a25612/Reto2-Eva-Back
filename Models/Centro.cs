@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Models
 {
@@ -16,20 +16,21 @@ namespace Models
         [MaxLength(255)]
         public string Direccion { get; set; }
 
-        // Relación con Empleados (1:N)
+        [JsonIgnore]
         public ICollection<Empleado> Empleados { get; set; }
 
-        // Relación con Servicios (N:N a través de ServicioCentro)
+        [JsonIgnore]
         public ICollection<ServicioCentro> ServiciosCentros { get; set; }
+        
+        [JsonIgnore] 
+        public ICollection<UsuarioCentro> UsuariosCentros { get; set; }
 
-        // Constructor vacío (necesario para EF Core)
         public Centro()
         {
             Empleados = new List<Empleado>();
             ServiciosCentros = new List<ServicioCentro>();
         }
 
-        // Constructor completo
         public Centro(int id, string nombre, string direccion)
         {
             Id = id;

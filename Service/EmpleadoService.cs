@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Models;
-using Pisicna_Back.Repositories;
-using Pisicna_Back.Service;
+using Repositories;
 
-namespace Pisicna_Back.Service
+namespace Service
 {
     public class EmpleadoService : IEmpleadoService
     {

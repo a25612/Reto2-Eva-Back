@@ -1,7 +1,7 @@
 using Models;
-using Pisicna_Back.Repositories;
+using Repositories;
 
-namespace Pisicna_Back.Service
+namespace Service
 {
     public class TutorService : ITutorService
     {

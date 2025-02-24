@@ -14,14 +14,5 @@ namespace Models
         [ForeignKey("Tutor")]
         public int ID_TUTOR { get; set; }
         public Tutor Tutor { get; set; }
-
-        // Constructor
-        public UsuarioTutor() {}
-
-        public UsuarioTutor(int idUsuario, int idTutor)
-        {
-            ID_USUARIO = idUsuario;
-            ID_TUTOR = idTutor;
-        }
     }
 }

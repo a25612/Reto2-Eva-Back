@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Models;
-using Pisicna_Back.Repositories;
-using Pisicna_Back.Service;
+using Repositories;
+using Service;
 
-namespace Pisicna_Back.Service
+namespace Service
 {
     public class ServiciosService : IServiciosService
     {

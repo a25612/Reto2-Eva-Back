@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace Models
@@ -21,9 +20,8 @@ namespace Models
         [MaxLength(10)]
         public string CodigoFacturacion { get; set; }
 
-        [ForeignKey("Centro")]
-        public int IdCentro { get; set; }
-        public Centro Centro { get; set; }
+        [JsonIgnore] 
+        public ICollection<UsuarioCentro> UsuariosCentros { get; set; }
 
         [JsonIgnore]
         public ICollection<UsuarioTutor> UsuariosTutores { get; set; }
@@ -33,6 +31,7 @@ namespace Models
 
         public Usuario()
         {
+            UsuariosCentros = new List<UsuarioCentro>();
             UsuariosTutores = new List<UsuarioTutor>();
             Sesiones = new List<Sesion>();
         }

@@ -1,7 +1,7 @@
 using Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Pisicna_Back.Repositories
+namespace Repositories
 {
     public class UsuariosRepository : IUsuariosRepository
     {
@@ -16,14 +16,21 @@ namespace Pisicna_Back.Repositories
         // Obtener todos los usuarios
         public async Task<List<Usuario>> GetAllAsync()
         {
-            return await _context.Usuarios.ToListAsync();
+            return await _context.Usuarios
+                .Include(u => u.UsuariosCentros)
+                .ThenInclude(uc => uc.Centro)
+                .ToListAsync();
         }
 
         // Obtener un usuario por ID
         public async Task<Usuario?> GetByIdAsync(int id)
         {
-            return await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
+            return await _context.Usuarios
+                .Include(u => u.UsuariosCentros) 
+                .ThenInclude(uc => uc.Centro)  
+                .FirstOrDefaultAsync(u => u.Id == id);
         }
+
 
         // Agregar un nuevo usuario
         public async Task AddAsync(Usuario usuario)

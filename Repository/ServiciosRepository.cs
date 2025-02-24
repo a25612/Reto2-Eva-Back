@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Pisicna_Back.Repositories
+namespace Repositories
 {
     public class ServiciosRepository : IServiciosRepository
     {

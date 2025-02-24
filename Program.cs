@@ -1,20 +1,18 @@
 using Microsoft.EntityFrameworkCore;
 using Models;
-using Pisicna_Back.Repositories;
-using Pisicna_Back.Service;
+using Repositories;
+using Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Cadena de conexión
-var connectionString = builder.Configuration.GetConnectionString("servicios_atemita");
+var connectionString = builder.Configuration.GetConnectionString("servicios_atemtia");
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
     options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
 });
-
-
 
 // Registrar el DbContext
 builder.Services.AddDbContext<MyDbContext>(options =>
@@ -43,6 +41,9 @@ builder.Services.AddScoped<IUsuariosService, UsuariosService>();
 builder.Services.AddScoped<IServiciosService, ServiciosService>();
 builder.Services.AddScoped<IEmpleadoService, EmpleadoService>();
 builder.Services.AddScoped<ITutorService, TutorService>();
+
+// Registrar AutoMapper y el perfil de mapeo
+builder.Services.AddAutoMapper(typeof(MappingProfile)); 
 
 // Configurar controladores y Swagger
 builder.Services.AddControllers();

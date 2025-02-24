@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models
 {
@@ -15,16 +14,11 @@ namespace Models
         [Required]
         public decimal Precio { get; set; }
 
-        // Relación con Centros (N:N)
         public ICollection<ServicioCentro> ServiciosCentros { get; set; }
 
-        // Relación con Sesiones
         public ICollection<Sesion> Sesiones { get; set; }
 
-        // Constructor vacío (necesario para EF Core)
         public Servicio() {}
-
-        // Constructor completo
         public Servicio(int id, string nombre, decimal precio)
         {
             Id = id;

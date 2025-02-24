@@ -1,6 +1,6 @@
 using Models;
 
-namespace Pisicna_Back.Repositories
+namespace Repositories
 {
     public interface IUsuariosRepository
     {

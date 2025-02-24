@@ -1,10 +1,11 @@
+using DTOs;
 using Models;
 
-namespace Pisicna_Back.Service
+namespace Service
 {
     public interface IUsuariosService
     {
-        Task<List<Usuario>> GetAllAsync();
+        Task<List<UsuarioDTO>> GetAllAsync();
         Task<Usuario?> GetByIdAsync(int id);
         Task AddAsync(Usuario usuario);
         Task UpdateAsync(Usuario usuario);

@@ -7,7 +7,7 @@ namespace Models
         // Constructor que recibe opciones
         public MyDbContext(DbContextOptions<MyDbContext> options) : base(options) {}
 
-        // Tablas 
+        // Tablas principales
         public DbSet<Centro> Centros { get; set; }
         public DbSet<Empleado> Empleados { get; set; }
         public DbSet<Servicio> Servicios { get; set; }
@@ -15,18 +15,51 @@ namespace Models
         public DbSet<Tutor> Tutores { get; set; }
         public DbSet<Sesion> Sesiones { get; set; }
 
-        // Tablas intermedias y relaciones
+        // Tablas intermedias
         public DbSet<UsuarioTutor> UsuariosTutores { get; set; }
         public DbSet<ServicioCentro> ServiciosCentros { get; set; }
+        public DbSet<UsuarioCentro> UsuariosCentros { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Configuración de claves compuestas para tablas intermedias
             modelBuilder.Entity<UsuarioTutor>()
                 .HasKey(ut => new { ut.ID_USUARIO, ut.ID_TUTOR });
 
+            modelBuilder.Entity<UsuarioTutor>()
+                .HasOne(ut => ut.Usuario)
+                .WithMany(u => u.UsuariosTutores)
+                .HasForeignKey(ut => ut.ID_USUARIO);
+
+            modelBuilder.Entity<UsuarioTutor>()
+                .HasOne(ut => ut.Tutor)
+                .WithMany(t => t.UsuariosTutores)
+                .HasForeignKey(ut => ut.ID_TUTOR);
+
             modelBuilder.Entity<ServicioCentro>()
                 .HasKey(sc => new { sc.ID_SERVICIO, sc.IdCentro });
+
+            modelBuilder.Entity<ServicioCentro>()
+                .HasOne(sc => sc.Servicio)
+                .WithMany(s => s.ServiciosCentros)
+                .HasForeignKey(sc => sc.ID_SERVICIO);
+
+            modelBuilder.Entity<ServicioCentro>()
+                .HasOne(sc => sc.Centro)
+                .WithMany(c => c.ServiciosCentros)
+                .HasForeignKey(sc => sc.IdCentro);
+
+            modelBuilder.Entity<UsuarioCentro>()
+                .HasKey(uc => new { uc.ID_USUARIO, uc.ID_CENTRO });
+
+            modelBuilder.Entity<UsuarioCentro>()
+                .HasOne(uc => uc.Usuario)
+                .WithMany(u => u.UsuariosCentros)   
+                .HasForeignKey(uc => uc.ID_USUARIO);
+
+            modelBuilder.Entity<UsuarioCentro>()
+                .HasOne(uc => uc.Centro)
+                .WithMany(c => c.UsuariosCentros)
+                .HasForeignKey(uc => uc.ID_CENTRO);
 
             base.OnModelCreating(modelBuilder);
         }

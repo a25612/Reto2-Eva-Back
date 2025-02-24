@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Pisicna_Back.Service;
+using Service;
 
 namespace Pisicna_Back.Controllers
 {

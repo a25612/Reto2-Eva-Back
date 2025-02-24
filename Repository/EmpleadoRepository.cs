@@ -1,7 +1,7 @@
 using Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Pisicna_Back.Repositories
+namespace Repositories
 {
     public class EmpleadoRepository : IEmpleadoRepository
     {

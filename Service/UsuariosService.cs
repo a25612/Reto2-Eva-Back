@@ -1,22 +1,28 @@
+using Service;
+using DTOs;
 using Models;
-using Pisicna_Back.Repositories;
+using Repositories;
+using AutoMapper;
 
-namespace Pisicna_Back.Service
+namespace Service
 {
     public class UsuariosService : IUsuariosService
     {
         private readonly IUsuariosRepository _repository;
+        private readonly IMapper _mapper;
 
-        public UsuariosService(IUsuariosRepository repository)
+        public UsuariosService(IUsuariosRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
-        public async Task<List<Usuario>> GetAllAsync()
+        public async Task<List<UsuarioDTO>> GetAllAsync()
         {
-            return await _repository.GetAllAsync();
+            var usuarios = await _repository.GetAllAsync();
+            return _mapper.Map<List<UsuarioDTO>>(usuarios);
         }
-        
+
         public async Task<Usuario?> GetByIdAsync(int id)
         {
             return await _repository.GetByIdAsync(id);

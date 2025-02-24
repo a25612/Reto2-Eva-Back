@@ -1,6 +1,6 @@
 using Models;
 
-namespace Pisicna_Back.Service
+namespace Service
 {
     public interface ITutorService
     {

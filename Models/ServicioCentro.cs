@@ -14,14 +14,5 @@ namespace Models
         [ForeignKey("Centro")]
         public int IdCentro { get; set; }
         public Centro Centro { get; set; }
-
-        // Constructor
-        public ServicioCentro() {}
-
-        public ServicioCentro(int idServicio, int idCentro)
-        {
-            ID_SERVICIO = idServicio;
-            IdCentro = idCentro;
-        }
     }
 }

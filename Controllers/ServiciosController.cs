@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Pisicna_Back.Repositories;
-using Pisicna_Back.Service;
+using Repositories;
+using Service;
 using Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;

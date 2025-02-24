@@ -3,7 +3,7 @@ using Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Pisicna_Back.Repositories
+namespace Repositories
 {
     public class TutorRepository : ITutorRepository
     {

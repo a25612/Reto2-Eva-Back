@@ -1,6 +1,6 @@
-namespace Models
+namespace DTOs
 {
-    public class CreateUsuarioDto
+    public class CreateUsuarioDTO
     {
         public string Nombre { get; set; }
         public string DNI { get; set; }
