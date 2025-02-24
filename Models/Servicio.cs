@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Models
 {
@@ -14,6 +15,7 @@ namespace Models
         [Required]
         public decimal Precio { get; set; }
 
+        [JsonIgnore] 
         public ICollection<ServicioCentro> ServiciosCentros { get; set; }
 
         public ICollection<Sesion> Sesiones { get; set; }
