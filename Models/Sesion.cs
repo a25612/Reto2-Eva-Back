@@ -7,10 +7,10 @@ namespace Models
     public class Sesion
     {
         [Key]
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         [Required]
-        public DateTime FECHA { get; set; }
+        public DateTime Fecha { get; set; }
 
         [ForeignKey("Usuario")]
         public int ID_USUARIO { get; set; }
@@ -25,22 +25,17 @@ namespace Models
         public Servicio Servicio { get; set; }
 
         [Required]
-        public string FACTURAR { get; set; } // 'S' o 'N'
+        public bool Facturar { get; set; }
 
-        // Constructor
-        public Sesion()
-        {
-            FECHA = DateTime.Now;
-            FACTURAR = "N"; // Valor predeterminado
-        }
+        public Sesion() {}
 
         public Sesion(DateTime fecha, int idUsuario, int idEmpleado, int idServicio, string facturar)
         {
-            FECHA = fecha;
+            Fecha = fecha;
             ID_USUARIO = idUsuario;
             ID_EMPLEADO = idEmpleado;
             ID_SERVICIO = idServicio;
-            FACTURAR = facturar;
+            Facturar = facturar;
         }
     }
 }

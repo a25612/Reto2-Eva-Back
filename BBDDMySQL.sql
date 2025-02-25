@@ -1,4 +1,4 @@
--- Active: 1740040889643@@127.0.0.1@3307@servicios_atemtia
+-- Active: 1740475546323@@127.0.0.1@3307
 CREATE DATABASE servicios_atemtia;
 USE servicios_atemtia;
 
@@ -83,7 +83,7 @@ CREATE TABLE Sesiones (
     ID_USUARIO INT NOT NULL,
     ID_EMPLEADO INT NOT NULL,
     ID_SERVICIO INT NOT NULL,
-    FACTURAR ENUM('S', 'N') NOT NULL,
+    FACTURAR TINYINT(1) NOT NULL,
     CONSTRAINT FK_Sesiones_Usuarios FOREIGN KEY (ID_USUARIO) REFERENCES Usuarios(ID),
     CONSTRAINT FK_Sesiones_Empleados FOREIGN KEY (ID_EMPLEADO) REFERENCES Empleados(ID),
     CONSTRAINT FK_Sesiones_Servicios FOREIGN KEY (ID_SERVICIO) REFERENCES Servicios(ID)
@@ -105,7 +105,7 @@ INSERT INTO Servicios (NOMBRE, PRECIO) VALUES
 -- Relación Servicios-Centros
 INSERT INTO ServiciosCentros (ID_SERVICIO, ID_CENTRO) VALUES
 (1, 1),
-(1, 2), -- Servicio compartido entre dos centros
+(1, 2), 
 (2, 1),
 (3, 1),
 (4, 2),
@@ -130,10 +130,10 @@ INSERT INTO Tutores (NOMBRE, DNI, EMAIL, USERNAME, PASSWORD, ACTIVO, ROL) VALUES
 ('Ruth Pellicer Horna', '48572634Q', 'ruth@tutors.com', 'username', 'password', 1, 'TUTOR');
 
 -- Relación Usuarios-Tutores
-INSERT INTO Usuarios_Tutores (ID_USUARIO, ID_TUTOR) VALUES
+INSERT INTO UsuariosTutores (ID_USUARIO, ID_TUTOR) VALUES
 (1, 1);
 
 -- Insertar Sesiones
 INSERT INTO Sesiones (FECHA, ID_USUARIO, ID_EMPLEADO, ID_SERVICIO, FACTURAR) VALUES
-('2024-12-17 09:00:00', 1, 3, 1, 'S'),
-('2024-12-17 09:00:00', 1, 2, 2, 'S');
+('2024-12-17 09:00:00', 1, 3, 1, 1),
+('2024-12-17 09:00:00', 1, 2, 2, 1);
