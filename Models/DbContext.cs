@@ -19,9 +19,11 @@ namespace Models
         public DbSet<UsuarioTutor> UsuariosTutores { get; set; }
         public DbSet<ServicioCentro> ServiciosCentros { get; set; }
         public DbSet<UsuarioCentro> UsuariosCentros { get; set; }
+        public DbSet<EmpleadosCentros> EmpleadosCentros { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Configuración de UsuarioTutor (N:N)
             modelBuilder.Entity<UsuarioTutor>()
                 .HasKey(ut => new { ut.ID_USUARIO, ut.ID_TUTOR });
 
@@ -48,6 +50,7 @@ namespace Models
                 .WithMany(c => c.ServiciosCentros)
                 .HasForeignKey(sc => sc.IdCentro);
 
+            // Configuración de UsuarioCentro (N:N)
             modelBuilder.Entity<UsuarioCentro>()
                 .HasKey(uc => new { uc.ID_USUARIO, uc.ID_CENTRO });
 
@@ -60,6 +63,20 @@ namespace Models
                 .HasOne(uc => uc.Centro)
                 .WithMany(c => c.UsuariosCentros)
                 .HasForeignKey(uc => uc.ID_CENTRO);
+
+            // Configuración de EmpleadosCentros (N:N)
+            modelBuilder.Entity<EmpleadosCentros>()
+                .HasKey(ec => new { ec.ID_EMPLEADO, ec.ID_CENTRO });
+
+            modelBuilder.Entity<EmpleadosCentros>()
+                .HasOne(ec => ec.Empleado)
+                .WithMany(e => e.EmpleadosCentros)
+                .HasForeignKey(ec => ec.ID_EMPLEADO);
+
+            modelBuilder.Entity<EmpleadosCentros>()
+                .HasOne(ec => ec.Centro)
+                .WithMany(c => c.EmpleadosCentros)
+                .HasForeignKey(ec => ec.ID_CENTRO);
 
             base.OnModelCreating(modelBuilder);
         }

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Service;
 using Models;
+using DTOs;
 
 namespace Pisicna_Back.Controllers
 {
@@ -45,7 +46,7 @@ namespace Pisicna_Back.Controllers
 
         // Actualizar un empleado existente
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateEmpleado(int id, Empleado updatedEmpleado)
+        public async Task<IActionResult> UpdateEmpleado(int id, [FromBody] ActualizarEmpleadoDTO updatedEmpleado)
         {
             var existingEmpleado = await _serviceEmpleado.GetByIdAsync(id);
             if (existingEmpleado == null)
@@ -59,7 +60,9 @@ namespace Pisicna_Back.Controllers
             existingEmpleado.JornadaTotalHoras = updatedEmpleado.JornadaTotalHoras;
             existingEmpleado.Centro = updatedEmpleado.Centro;
 
-            await _serviceEmpleado.UpdateAsync(existingEmpleado);
+            // Actualizar los centros asociados al empleado
+            await _serviceEmpleado.UpdateWithCentrosAsync(existingEmpleado, updatedEmpleado.Centro);
+
             return NoContent();
         }
 

@@ -1,4 +1,4 @@
--- Active: 1740475546323@@127.0.0.1@3307
+-- Crear base de datos
 CREATE DATABASE servicios_atemtia;
 USE servicios_atemtia;
 
@@ -16,13 +16,13 @@ CREATE TABLE Servicios (
     PRECIO DECIMAL(10, 2) NOT NULL
 );
 
--- Tabla intermedia: Servicios_Centros (Relación N a N)
+-- Tabla intermedia: ServiciosCentros (Relación N a N)
 CREATE TABLE ServiciosCentros (
     ID_SERVICIO INT NOT NULL,
-    ID_CENTRO INT NOT NULL,
-    PRIMARY KEY (ID_SERVICIO, ID_CENTRO),
+    IdCentro INT NOT NULL,
+    PRIMARY KEY (ID_SERVICIO, IdCentro),
     CONSTRAINT FK_ServiciosCentros_Servicio FOREIGN KEY (ID_SERVICIO) REFERENCES Servicios(ID) ON DELETE CASCADE,
-    CONSTRAINT FK_ServiciosCentros_Centro FOREIGN KEY (ID_CENTRO) REFERENCES Centros(ID) ON DELETE CASCADE
+    CONSTRAINT FK_ServiciosCentros_Centro FOREIGN KEY (IdCentro) REFERENCES Centros(ID) ON DELETE CASCADE
 );
 
 -- Tabla: Empleados
@@ -33,9 +33,7 @@ CREATE TABLE Empleados (
     JornadaTotalHoras INT,
     USERNAME VARCHAR(255) NOT NULL UNIQUE,
     PASSWORD VARCHAR(255) NOT NULL,
-    ROL ENUM('EMPLEADO') NOT NULL DEFAULT 'EMPLEADO',
-    IdCentro INT NOT NULL,
-    CONSTRAINT FK_Empleados_Centros FOREIGN KEY (IdCentro) REFERENCES Centros(ID) ON DELETE CASCADE
+    ROL ENUM('EMPLEADO') NOT NULL DEFAULT 'EMPLEADO'
 );
 
 -- Tabla: Usuarios
@@ -90,7 +88,7 @@ CREATE TABLE Sesiones (
 );
 
 -- Tabla intermedia: EmpleadosCentros (Relación N a N)
-CREATE TABLE EmpleadoCentros (
+CREATE TABLE EmpleadosCentros (
     ID_EMPLEADO INT NOT NULL,
     ID_CENTRO INT NOT NULL,
     PRIMARY KEY (ID_EMPLEADO, ID_CENTRO),
@@ -98,59 +96,61 @@ CREATE TABLE EmpleadoCentros (
     CONSTRAINT FK_EmpleadosCentros_Centro FOREIGN KEY (ID_CENTRO) REFERENCES Centros(ID) ON DELETE CASCADE
 );
 
-
 -- Insertar Centros
-INSERT INTO Centros (NOMBRE, DIRECCION) VALUES
-('Espacio Atemtia', 'C/ Castilla, 2, 50009 Zaragoza'),
-('San Martin de Porres', 'C/ Octavio de Toledo, 2, 50007 Zaragoza');
+INSERT INTO Centros (NOMBRE, DIRECCION)
+VALUES ('Espacio Atemtia', 'C/ Castilla, 2, 50009 Zaragoza'),
+       ('San Martin de Porres', 'C/ Octavio de Toledo, 2, 50007 Zaragoza');
 
 -- Insertar Servicios
-INSERT INTO Servicios (NOMBRE, PRECIO) VALUES
-('Servicios Atemtia. Evaluacion (Pruebas E Informe)', 140.00),
-('Servicios Atemtia. Evaluacion', 75.00),
-('Servicios Atemtia. Informes', 65.00),
-('Atemtia. Comunicación Y Lenguaje', 25.00),
-('Atemtia. Fisioterapia', 45.00);
+INSERT INTO Servicios (NOMBRE, PRECIO)
+VALUES ('Servicios Atemtia. Evaluacion (Pruebas E Informe)', 140.00),
+       ('Servicios Atemtia. Evaluacion', 75.00),
+       ('Servicios Atemtia. Informes', 65.00),
+       ('Atemtia. Comunicación Y Lenguaje', 25.00),
+       ('Atemtia. Fisioterapia', 45.00);
 
 -- Relación Servicios-Centros
-INSERT INTO ServiciosCentros (ID_SERVICIO, ID_CENTRO) VALUES
-(1, 1),
-(1, 2), 
-(2, 1),
-(3, 1),
-(4, 2),
-(5, 2);
+INSERT INTO ServiciosCentros (ID_SERVICIO, IdCentro)
+VALUES (1, 1), 
+       (1, 2), 
+       (2, 1), 
+       (3, 1), 
+       (4, 2), 
+       (5, 2);
 
 -- Insertar Empleados
-INSERT INTO Empleados (NOMBRE, DNI, JornadaTotalHoras, USERNAME, PASSWORD, ROL, IdCentro) VALUES
-('Ballesteros Rodriguez Ana', '47562374T', 40, 'aballesteros', 'password', 'EMPLEADO', 1),
-('Villuendas Sierra Rosana', '87736475R', 30, 'rvilluendas', 'password', 'EMPLEADO', 1),
-('Aliaga Andres Esther', '58375846F', 35, 'ealiaga', 'password', 'EMPLEADO', 2);
+INSERT INTO Empleados (NOMBRE, DNI, JornadaTotalHoras, USERNAME, PASSWORD, ROL)
+VALUES ('Ballesteros Rodriguez Ana', '47562374T', 40, 'aballesteros', 'password', 'EMPLEADO'),
+       ('Villuendas Sierra Rosana', '87736475R', 30, 'rvilluendas', 'password', 'EMPLEADO'),
+       ('Aliaga Andres Esther', '58375846F', 35, 'ealiaga', 'password', 'EMPLEADO');
 
 -- Insertar Usuarios
-INSERT INTO Usuarios (NOMBRE, DNI, CodigoFacturacion) VALUES
-('Ruth Pellicer Horna (Eneko Gonzalo)', '12345678Z', '101453');
+INSERT INTO Usuarios (NOMBRE, DNI, CodigoFacturacion)
+VALUES ('Ruth Pellicer Horna (Eneko Gonzalo)', '12345678Z', '101453');
 
-INSERT INTO UsuariosCentros (ID_USUARIO, ID_CENTRO) VALUES
-(1, 1), 
-(1, 2); 
+-- Relación Usuarios-Centros
+INSERT INTO UsuariosCentros (ID_USUARIO, ID_CENTRO)
+VALUES (1, 1), 
+       (1, 2);
 
 -- Insertar Tutores
-INSERT INTO Tutores (NOMBRE, DNI, EMAIL, USERNAME, PASSWORD, ACTIVO, ROL) VALUES
-('Ruth Pellicer Horna', '48572634Q', 'ruth@tutors.com', 'username', 'password', 1, 'TUTOR');
+INSERT INTO Tutores (NOMBRE, DNI, EMAIL, USERNAME, PASSWORD, ACTIVO, ROL)
+VALUES ('Ruth Pellicer Horna', '48572634Q', 'ruth@tutors.com', 'username', 'password', 1, 'TUTOR');
 
 -- Relación Usuarios-Tutores
-INSERT INTO UsuariosTutores (ID_USUARIO, ID_TUTOR) VALUES
-(1, 1);
+INSERT INTO UsuariosTutores (ID_USUARIO, ID_TUTOR)
+VALUES (1, 1);
 
 -- Insertar Sesiones
-INSERT INTO Sesiones (FECHA, ID_USUARIO, ID_EMPLEADO, ID_SERVICIO, FACTURAR) VALUES
-('2024-12-17 09:00:00', 1, 3, 1, 1),
-('2024-12-17 09:00:00', 1, 2, 2, 1);
+INSERT INTO Sesiones (FECHA, ID_USUARIO, ID_EMPLEADO, ID_SERVICIO, FACTURAR)
+VALUES ('2024-12-17 09:00:00', 1, 3, 1, 1),
+       ('2024-12-17 09:00:00', 1, 2, 2, 1);
 
 -- Relación Empleados-Centros
-INSERT INTO EmpleadoCentros (ID_EMPLEADO, ID_CENTRO) VALUES
-(1, 1),
-(1, 2),
-(2, 1),
-(3, 2);
+INSERT INTO EmpleadosCentros (ID_EMPLEADO, ID_CENTRO)
+VALUES (1, 1), 
+       (1, 2), 
+       (2, 1), 
+       (3, 2);
+
+

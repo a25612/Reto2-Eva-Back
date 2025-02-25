@@ -1,16 +1,13 @@
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models
 {
-    public class EmpleadoCentro
+    public class EmpleadosCentros
     {
-        [Key, Column(Order = 0)]
         public int ID_EMPLEADO { get; set; }
-
-        [Key, Column(Order = 1)]
         public int ID_CENTRO { get; set; }
 
+        // Relaciones de navegación
         [ForeignKey("ID_EMPLEADO")]
         public Empleado Empleado { get; set; }
 

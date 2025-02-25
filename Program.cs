@@ -16,7 +16,7 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 
 // Registrar el DbContext
 builder.Services.AddDbContext<MyDbContext>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+    options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 29))));
 
 // Configurar CORS
 builder.Services.AddCors(options =>

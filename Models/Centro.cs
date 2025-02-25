@@ -16,22 +16,23 @@ namespace Models
         [MaxLength(255)]
         public string Direccion { get; set; }
 
-        public ICollection<Empleado> Empleados { get; set; }
+        // Relación muchos a muchos con Empleados
+        [JsonIgnore]
+        public ICollection<EmpleadosCentros> EmpleadosCentros { get; set; }
 
+        // Relación muchos a muchos con Servicios
         [JsonIgnore]
         public ICollection<ServicioCentro> ServiciosCentros { get; set; }
-        
-        [JsonIgnore] 
-        public ICollection<UsuarioCentro> UsuariosCentros { get; set; }
 
+        // Relación muchos a muchos con Usuarios
         [JsonIgnore]
-        public ICollection<EmpleadoCentro> EmpleadosCentros { get; set; }
+        public ICollection<UsuarioCentro> UsuariosCentros { get; set; }
 
         public Centro()
         {
-            Empleados = new List<Empleado>();
+            EmpleadosCentros = new List<EmpleadosCentros>();
             ServiciosCentros = new List<ServicioCentro>();
-            EmpleadosCentros = new List<EmpleadoCentro>();
+            UsuariosCentros = new List<UsuarioCentro>();
         }
 
         public Centro(int id, string nombre, string direccion)
@@ -39,9 +40,9 @@ namespace Models
             Id = id;
             Nombre = nombre;
             Direccion = direccion;
-            Empleados = new List<Empleado>();
+            EmpleadosCentros = new List<EmpleadosCentros>();
             ServiciosCentros = new List<ServicioCentro>();
-            EmpleadosCentros = new List<EmpleadoCentro>();
+            UsuariosCentros = new List<UsuarioCentro>();
         }
     }
 }

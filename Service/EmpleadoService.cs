@@ -22,7 +22,6 @@ namespace Service
             return await _empleadoRepository.GetByIdAsync(id);
         }
 
-
         public async Task AddAsync(Empleado empleado)
         {
             await _empleadoRepository.AddAsync(empleado);
@@ -33,29 +32,14 @@ namespace Service
             await _empleadoRepository.UpdateAsync(empleado);
         }
 
+        public async Task UpdateWithCentrosAsync(Empleado empleado, List<int> centroIds)
+        {
+            await _empleadoRepository.UpdateWithCentrosAsync(empleado, centroIds); 
+        }
+
         public async Task DeleteAsync(int id)
         {
-           var empleado = await _empleadoRepository.GetByIdAsync(id);
-           if (empleado == null)
-           {
-               //return NotFound();
-           }
-           await _empleadoRepository.DeleteAsync(id);
-           //return NoContent();
-        }
-        
-        public async Task<Empleado?> LoginAsync(string username, string password)
-        {
-            var empleado = await _empleadoRepository.GetByUsernameAndPasswordAsync(username, password);
-
-            if (empleado == null)
-            {
-                return null; 
-            }
-
-            return empleado;
+            await _empleadoRepository.DeleteAsync(id);
         }
     }
 }
-
-

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -29,14 +30,11 @@ namespace Models
         [Required]
         public string Rol { get; set; } = "EMPLEADO";
 
-        public Centro Centro { get; set; }
-
-        [JsonIgnore]
-        public ICollection<EmpleadoCentro> EmpleadosCentros { get; set; }
+        public ICollection<EmpleadosCentros> EmpleadosCentros { get; set; }
 
         public Empleado()
         {
-            EmpleadosCentros = new List<EmpleadoCentro>();
+            EmpleadosCentros = new List<EmpleadosCentros>();
         }
     }
 }

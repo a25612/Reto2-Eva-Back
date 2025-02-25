@@ -15,17 +15,13 @@ namespace Models
         [Required]
         public decimal Precio { get; set; }
 
-        [JsonIgnore] 
+        [JsonIgnore]
         public ICollection<ServicioCentro> ServiciosCentros { get; set; }
 
         public ICollection<Sesion> Sesiones { get; set; }
 
-        public Servicio() {}
-        public Servicio(int id, string nombre, decimal precio)
+        public Servicio()
         {
-            Id = id;
-            Nombre = nombre;
-            Precio = precio;
             ServiciosCentros = new List<ServicioCentro>();
             Sesiones = new List<Sesion>();
         }

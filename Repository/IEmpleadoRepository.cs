@@ -8,7 +8,7 @@ namespace Repositories
         Task<Empleado?> GetByIdAsync(int id);
         Task AddAsync(Empleado empleado);
         Task UpdateAsync(Empleado empleado);
+        Task UpdateWithCentrosAsync(Empleado empleado, List<int> centroIds);
         Task DeleteAsync(int id);
-        Task<Empleado> GetByUsernameAndPasswordAsync(string username, string password);
     }
 }
