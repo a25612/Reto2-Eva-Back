@@ -57,7 +57,7 @@ namespace Pisicna_Back.Controllers
             existingEmpleado.Nombre = updatedEmpleado.Nombre;
             existingEmpleado.DNI = updatedEmpleado.DNI;
             existingEmpleado.JornadaTotalHoras = updatedEmpleado.JornadaTotalHoras;
-            existingEmpleado.IdCentro = updatedEmpleado.IdCentro;
+            existingEmpleado.Centro = updatedEmpleado.Centro;
 
             await _serviceEmpleado.UpdateAsync(existingEmpleado);
             return NoContent();
