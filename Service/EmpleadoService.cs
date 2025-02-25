@@ -41,5 +41,10 @@ namespace Service
         {
             await _empleadoRepository.DeleteAsync(id);
         }
+
+        public async Task<Empleado?> LoginAsync(string username, string password)
+        {
+            return await _empleadoRepository.LoginAsync(username, password);
+        }
     }
 }

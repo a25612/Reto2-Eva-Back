@@ -88,7 +88,6 @@ namespace Repositories
                     _context.EmpleadosCentros.Add(nuevoCentro);
                 }
 
-                // Guardar los cambios en la base de datos
                 await _context.SaveChangesAsync();
             }
         }
@@ -100,7 +99,6 @@ namespace Repositories
 
             if (empleado != null)
             {
-                // Eliminar las relaciones en la tabla intermedia primero
                 var EmpleadosCentros = _context.EmpleadosCentros.Where(ec => ec.ID_EMPLEADO == id);
                 _context.EmpleadosCentros.RemoveRange(EmpleadosCentros);
 
@@ -111,8 +109,7 @@ namespace Repositories
             }
         }
 
-        // Obtener un empleado por su username y password
-        public async Task<Empleado?> GetByUsernameAndPasswordAsync(string username, string password)
+        public async Task<Empleado?> LoginAsync(string username, string password)
         {
             return await _context.Empleados.FirstOrDefaultAsync(e => e.Username == username && e.Password == password);
         }
