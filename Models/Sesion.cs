@@ -29,7 +29,7 @@ namespace Models
 
         public Sesion() {}
 
-        public Sesion(DateTime fecha, int idUsuario, int idEmpleado, int idServicio, string facturar)
+        public Sesion(DateTime fecha, int idUsuario, int idEmpleado, int idServicio, bool facturar)
         {
             Fecha = fecha;
             ID_USUARIO = idUsuario;
