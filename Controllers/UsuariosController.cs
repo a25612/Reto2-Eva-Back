@@ -55,7 +55,6 @@ namespace Pisicna_Back.Controllers
             // Agregar el usuario mediante el servicio
             await _serviceUsuario.AddAsync(usuario);
 
-            // Retornar respuesta con CreatedAtAction
             return CreatedAtAction(nameof(GetUsuario), new { id = usuario.Id }, usuario);
         }
 

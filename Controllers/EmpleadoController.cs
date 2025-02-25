@@ -50,16 +50,12 @@ namespace Pisicna_Back.Controllers
         {
             var existingEmpleado = await _serviceEmpleado.GetByIdAsync(id);
             if (existingEmpleado == null)
-            {
-                return NotFound();
-            }
 
             // Actualizar los campos del empleado existente
             existingEmpleado.Nombre = updatedEmpleado.Nombre;
             existingEmpleado.DNI = updatedEmpleado.DNI;
             existingEmpleado.JornadaTotalHoras = updatedEmpleado.JornadaTotalHoras;
-            existingEmpleado.Centro = updatedEmpleado.Centro;
-
+            
             // Actualizar los centros asociados al empleado
             await _serviceEmpleado.UpdateWithCentrosAsync(existingEmpleado, updatedEmpleado.Centro);
 

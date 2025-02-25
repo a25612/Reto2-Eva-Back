@@ -1,6 +1,7 @@
 <!-- Librerias de EFCore -->
-dotnet add package Microsoft.EntityFrameworkCore
-dotnet add package Pomelo.EntityFrameworkCore.MySql
+dotnet add package Microsoft.EntityFrameworkCore --version 8.0.2
+dotnet add package Microsoft.EntityFrameworkCore.Design --version 8.0.2
+dotnet add package Pomelo.EntityFrameworkCore.MySql --version 8.0.2
 
 <!-- Descargar imagen de mysql -->
 docker pull mysql:8.0

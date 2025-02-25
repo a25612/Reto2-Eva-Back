@@ -1,3 +1,4 @@
+-- Active: 1740500785648@@127.0.0.1@3307@servicios_atemtia
 -- Crear base de datos
 CREATE DATABASE servicios_atemtia;
 USE servicios_atemtia;
@@ -129,7 +130,7 @@ INSERT INTO Usuarios (NOMBRE, DNI, CodigoFacturacion)
 VALUES ('Ruth Pellicer Horna (Eneko Gonzalo)', '12345678Z', '101453');
 
 -- Relación Usuarios-Centros
-INSERT INTO UsuariosCentros (ID_USUARIO, ID_CENTRO)
+INSERT INTO UsuariosCentros (ID_USUARIO, IdCentro)
 VALUES (1, 1), 
        (1, 2);
 
