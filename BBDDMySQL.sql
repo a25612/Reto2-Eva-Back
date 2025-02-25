@@ -89,6 +89,16 @@ CREATE TABLE Sesiones (
     CONSTRAINT FK_Sesiones_Servicios FOREIGN KEY (ID_SERVICIO) REFERENCES Servicios(ID)
 );
 
+-- Tabla intermedia: EmpleadosCentros (Relación N a N)
+CREATE TABLE EmpleadoCentros (
+    ID_EMPLEADO INT NOT NULL,
+    ID_CENTRO INT NOT NULL,
+    PRIMARY KEY (ID_EMPLEADO, ID_CENTRO),
+    CONSTRAINT FK_EmpleadosCentros_Empleado FOREIGN KEY (ID_EMPLEADO) REFERENCES Empleados(ID) ON DELETE CASCADE,
+    CONSTRAINT FK_EmpleadosCentros_Centro FOREIGN KEY (ID_CENTRO) REFERENCES Centros(ID) ON DELETE CASCADE
+);
+
+
 -- Insertar Centros
 INSERT INTO Centros (NOMBRE, DIRECCION) VALUES
 ('Espacio Atemtia', 'C/ Castilla, 2, 50009 Zaragoza'),
@@ -137,3 +147,10 @@ INSERT INTO UsuariosTutores (ID_USUARIO, ID_TUTOR) VALUES
 INSERT INTO Sesiones (FECHA, ID_USUARIO, ID_EMPLEADO, ID_SERVICIO, FACTURAR) VALUES
 ('2024-12-17 09:00:00', 1, 3, 1, 1),
 ('2024-12-17 09:00:00', 1, 2, 2, 1);
+
+-- Relación Empleados-Centros
+INSERT INTO EmpleadoCentros (ID_EMPLEADO, ID_CENTRO) VALUES
+(1, 1),
+(1, 2),
+(2, 1),
+(3, 2);
