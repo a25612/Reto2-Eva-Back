@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Models
 {
@@ -26,26 +26,17 @@ namespace Models
         [MaxLength(255)]
         public string Password { get; set; }
 
-        public string Rol { get; } = "EMPLEADO";
-    
-        [ForeignKey("Centro")]
-        public int IdCentro { get; set; }
-        public Centro Centro { get; set; } 
+        [Required]
+        public string Rol { get; set; } = "EMPLEADO";
 
-        public ICollection<Sesion> Sesiones { get; set; }
+        public Centro Centro { get; set; }
 
-        public Empleado() {}
+        [JsonIgnore]
+        public ICollection<EmpleadoCentro> EmpleadosCentros { get; set; }
 
-        public Empleado(int id, string nombre, string dni, int jornadaTotalHoras, string username, string password, int idCentro)
+        public Empleado()
         {
-            Id = id;
-            Nombre = nombre;
-            DNI = dni;
-            JornadaTotalHoras = jornadaTotalHoras;
-            Username = username;
-            Password = password;
-            IdCentro = idCentro;
-            Sesiones = new List<Sesion>();
+            EmpleadosCentros = new List<EmpleadoCentro>();
         }
     }
 }

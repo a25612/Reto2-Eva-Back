@@ -11,7 +11,6 @@ namespace Models
         [Key, Column(Order = 1)]
         public int ID_CENTRO { get; set; }
 
-        // Relaciones de navegación
         [ForeignKey("ID_EMPLEADO")]
         public Empleado Empleado { get; set; }
 

@@ -16,7 +16,6 @@ namespace Models
         [MaxLength(255)]
         public string Direccion { get; set; }
 
-        [JsonIgnore]
         public ICollection<Empleado> Empleados { get; set; }
 
         [JsonIgnore]
@@ -25,10 +24,14 @@ namespace Models
         [JsonIgnore] 
         public ICollection<UsuarioCentro> UsuariosCentros { get; set; }
 
+        [JsonIgnore]
+        public ICollection<EmpleadoCentro> EmpleadosCentros { get; set; }
+
         public Centro()
         {
             Empleados = new List<Empleado>();
             ServiciosCentros = new List<ServicioCentro>();
+            EmpleadosCentros = new List<EmpleadoCentro>();
         }
 
         public Centro(int id, string nombre, string direccion)
@@ -38,6 +41,7 @@ namespace Models
             Direccion = direccion;
             Empleados = new List<Empleado>();
             ServiciosCentros = new List<ServicioCentro>();
+            EmpleadosCentros = new List<EmpleadoCentro>();
         }
     }
 }

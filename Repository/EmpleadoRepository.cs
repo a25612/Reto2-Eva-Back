@@ -46,7 +46,7 @@ namespace Repositories
                 existingEmpleado.JornadaTotalHoras = empleado.JornadaTotalHoras;
                 existingEmpleado.Username = empleado.Username;
                 existingEmpleado.Password = empleado.Password;
-                existingEmpleado.IdCentro = empleado.IdCentro;
+                existingEmpleado.Centro = empleado.Centro;
 
                 await _context.SaveChangesAsync();
             }
