@@ -1,13 +1,17 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Models;
 using Repositories;
 using Service;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Cadena de conexión
+// Obtener la cadena de conexión
 var connectionString = builder.Configuration.GetConnectionString("servicios_atemtia");
 
+// Configurar opciones de JSON en los controladores
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
@@ -45,7 +49,35 @@ builder.Services.AddScoped<ITutorService, TutorService>();
 builder.Services.AddScoped<ISesionService, SesionService>();
 
 // Registrar AutoMapper y el perfil de mapeo
-builder.Services.AddAutoMapper(typeof(MappingProfile)); 
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+// ====== CONFIGURACIÓN JWT ======
+// Obtener la clave secreta desde appsettings.json
+var key = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]);
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero
+    };
+});
+
+// Agregar autorización
+builder.Services.AddAuthorization();
 
 // Configurar controladores y Swagger
 builder.Services.AddControllers();
@@ -63,7 +95,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("AllowFrontend");
 app.UseHttpsRedirection();
+
+// IMPORTANTE: Primero autenticación, luego autorización
+app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();
