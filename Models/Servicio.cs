@@ -18,6 +18,7 @@ namespace Models
         [JsonIgnore]
         public ICollection<ServicioCentro> ServiciosCentros { get; set; }
 
+        [JsonIgnore] 
         public ICollection<Sesion> Sesiones { get; set; }
 
         public Servicio()
