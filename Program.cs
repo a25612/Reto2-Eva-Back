@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Models;
 using Repositories;
+using Repository;
 using Service;
 using System.Text;
 
@@ -40,6 +41,7 @@ builder.Services.AddScoped<IUsuariosRepository, UsuariosRepository>();
 builder.Services.AddScoped<IServiciosRepository, ServiciosRepository>();
 builder.Services.AddScoped<ITutorRepository, TutorRepository>();
 builder.Services.AddScoped<ISesionRepository, SesionRepository>();
+builder.Services.AddScoped<ICentroRepository, CentroRepository>();
 
 // Registrar los servicios
 builder.Services.AddScoped<IUsuariosService, UsuariosService>();
@@ -47,6 +49,7 @@ builder.Services.AddScoped<IServiciosService, ServiciosService>();
 builder.Services.AddScoped<IEmpleadoService, EmpleadoService>();
 builder.Services.AddScoped<ITutorService, TutorService>();
 builder.Services.AddScoped<ISesionService, SesionService>();
+builder.Services.AddScoped<ICentroService, CentroService>();
 
 // Registrar AutoMapper y el perfil de mapeo
 builder.Services.AddAutoMapper(typeof(MappingProfile));
