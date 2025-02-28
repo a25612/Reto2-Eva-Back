@@ -60,6 +60,7 @@ namespace Repositories
                 // Actualizar las propiedades del servicio principal
                 existingServicio.Nombre = servicio.Nombre;
                 existingServicio.Precio = servicio.Precio;
+                existingServicio.Descripcion = servicio.Descripcion;
 
                 // Eliminar las relaciones en ServiciosCentros primero
                 _context.ServiciosCentros.RemoveRange(existingServicio.ServiciosCentros);

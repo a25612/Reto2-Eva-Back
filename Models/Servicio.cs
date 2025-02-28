@@ -15,6 +15,9 @@ namespace Models
         [Required]
         public decimal Precio { get; set; }
 
+        [Required]
+        public string Descripcion {get; set;}
+
         [JsonIgnore]
         public ICollection<ServicioCentro> ServiciosCentros { get; set; }
 

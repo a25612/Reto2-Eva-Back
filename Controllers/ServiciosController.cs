@@ -65,6 +65,7 @@ namespace Pisicna_Back.Controllers
             // Actualizar los campos del empleado existente
             existingServicio.Nombre = updatedServicio.Nombre;
             existingServicio.Precio = updatedServicio.Precio;
+            existingServicio.Descripcion = updatedServicio.Descripcion;
 
             await _serviceServicios.UpdateAsync(existingServicio);
             return NoContent();
