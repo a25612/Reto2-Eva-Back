@@ -1,6 +1,6 @@
 namespace DTOs
 {
-    public class CreateUsuarioDTO
+    public class CreateUsuario
     {
         public string Nombre { get; set; }
         public string DNI { get; set; }

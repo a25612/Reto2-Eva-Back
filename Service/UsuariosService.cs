@@ -16,10 +16,10 @@ namespace Service
             _mapper = mapper;
         }
 
-        public async Task<List<UsuarioDTO>> GetAllAsync()
+        public async Task<List<Usuario>> GetAllAsync()
         {
             var usuarios = await _repository.GetAllAsync();
-            return _mapper.Map<List<UsuarioDTO>>(usuarios);
+            return _mapper.Map<List<Usuario>>(usuarios);
         }
 
         public async Task<Usuario?> GetByIdAsync(int id)

@@ -21,16 +21,15 @@ namespace Pisicna_Back.Controllers
 
         // Obtener todos los usuarios
         [HttpGet]
-        public async Task<ActionResult<List<UsuarioDTO>>> GetUsuario()
+        public async Task<ActionResult<List<Usuario>>> GetUsuario()
         {
             var usuarios = await _serviceUsuario.GetAllAsync();
-            var usuariosDto = _mapper.Map<List<UsuarioDTO>>(usuarios);
-            return Ok(usuariosDto);
+            return Ok(usuarios);
         }
 
         // Obtener un usuario por ID
         [HttpGet("{id}")]
-        public async Task<ActionResult<UsuarioDTO>> GetUsuario(int id)
+        public async Task<ActionResult<Usuario>> GetUsuario(int id)
         {
             var usuario = await _serviceUsuario.GetByIdAsync(id);
 
@@ -38,19 +37,16 @@ namespace Pisicna_Back.Controllers
             {
                 return NotFound();
             }
-
-            // Mapear Usuario a UsuarioDTO
-            var usuarioDto = _mapper.Map<UsuarioDTO>(usuario);
-            return Ok(usuarioDto);
+            return Ok(usuario);
         }
 
         // Crear un nuevo usuario
         // Crear un nuevo usuario
         [HttpPost]
-        public async Task<ActionResult<Usuario>> CreateUsuario(CreateUsuarioDTO createUsuarioDto)
+        public async Task<ActionResult<Usuario>> CreateUsuario(CreateUsuario createUsuario)
         {
-            // Mapear CreateUsuarioDTO a Usuario
-            var usuario = _mapper.Map<Usuario>(createUsuarioDto);
+            // Mapear CreateUsuario a Usuario
+            var usuario = _mapper.Map<Usuario>(createUsuario);
 
             // Agregar el usuario mediante el servicio
             await _serviceUsuario.AddAsync(usuario);
@@ -61,7 +57,7 @@ namespace Pisicna_Back.Controllers
 
         // Actualizar un usuario existente
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUsuario(int id, UsuarioDTO updatedUsuarioDto)
+        public async Task<IActionResult> UpdateUsuario(int id, Usuario updatedUsuario)
         {
             var existingUsuario = await _serviceUsuario.GetByIdAsync(id);
             if (existingUsuario == null)
@@ -70,7 +66,7 @@ namespace Pisicna_Back.Controllers
             }
 
             // Mapear los datos del DTO al modelo existente
-            _mapper.Map(updatedUsuarioDto, existingUsuario);
+            _mapper.Map(updatedUsuario, existingUsuario);
 
             await _serviceUsuario.UpdateAsync(existingUsuario);
             return NoContent();
