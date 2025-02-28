@@ -39,10 +39,6 @@ namespace Piscina_Back.Controllers
                     var token = GenerateJwtToken(tutor.Id.ToString(), "Tutor");
                     return Ok(new
                     {
-                        Id = tutor.Id,
-                        Nombre = tutor.Nombre,
-                        Email = tutor.Email,
-                        Username = tutor.Username,
                         Rol = "Tutor",
                         Token = token
                     });
@@ -55,10 +51,6 @@ namespace Piscina_Back.Controllers
                     var token = GenerateJwtToken(empleado.Id.ToString(), "Empleado");
                     return Ok(new
                     {
-                        Id = empleado.Id,
-                        Nombre = empleado.Nombre,
-                        JornadaTotalHoras = empleado.JornadaTotalHoras,
-                        Username = empleado.Username,
                         Rol = "Empleado",
                         Token = token
                     });

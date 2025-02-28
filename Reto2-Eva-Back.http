@@ -1,4 +1,4 @@
-@Reto2_Eva_Back_HostAddress = http://localhost:5248
+@Reto2_Eva_Back_HostAddress = https://localhost:7163
 
 GET {{Reto2_Eva_Back_HostAddress}}/weatherforecast/
 Accept: application/json

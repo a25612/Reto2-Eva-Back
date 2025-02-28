@@ -14,7 +14,7 @@ CREATE TABLE Centros (
 CREATE TABLE Servicios (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     NOMBRE VARCHAR(255) NOT NULL,
-    DESCRIPCION TEXT,
+    DESCRIPCION VARCHAR(1500) NOT NULL,
     PRECIO DECIMAL(10, 2) NOT NULL
 );
 
@@ -104,7 +104,6 @@ VALUES ('Espacio Atemtia', 'C/ Castilla, 2, 50009 Zaragoza'),
        ('San Martin de Porres', 'C/ Octavio de Toledo, 2, 50007 Zaragoza');
 
 -- Insertar Servicios
-DESCRIPCION, PRECIO
 INSERT INTO Servicios (NOMBRE, DESCRIPCION, PRECIO)
 VALUES 
     ('Evaluacion (Pruebas E Informe)', 'Evaluación completa que incluye pruebas diagnósticas y elaboración de informe detallado.', 140.00),

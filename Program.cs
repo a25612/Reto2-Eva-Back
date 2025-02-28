@@ -28,12 +28,13 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins("http://localhost:5173", "https://localhost:7163")
               .AllowAnyMethod()
               .AllowAnyHeader()
               .AllowCredentials();
     });
 });
+
 
 // Registrar los repositorios
 builder.Services.AddScoped<IEmpleadoRepository, EmpleadoRepository>();
