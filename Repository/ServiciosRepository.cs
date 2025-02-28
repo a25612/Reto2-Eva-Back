@@ -32,6 +32,14 @@ namespace Repositories
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
 
+        // Obtener servicios por ID de centro
+        public async Task<List<Servicio>> GetServiciosByCentroIdAsync(int centroId)
+        {
+            return await _context.Servicios
+                .Where(s => s.ServiciosCentros.Any(sc => sc.IdCentro == centroId))
+                .ToListAsync();
+        }
+
         // Agregar un nuevo servicio
         public async Task AddAsync(Servicio servicio)
         {
@@ -53,10 +61,8 @@ namespace Repositories
                 existingServicio.Nombre = servicio.Nombre;
                 existingServicio.Precio = servicio.Precio;
 
-                // Eliminar las relaciones existentes en ServiciosCentros
+                // Eliminar las relaciones en ServiciosCentros primero
                 _context.ServiciosCentros.RemoveRange(existingServicio.ServiciosCentros);
-
-                // Agregar las nuevas relaciones en ServiciosCentros (si hay cambios)
                 foreach (var servicioCentro in servicio.ServiciosCentros)
                 {
                     var nuevoServicioCentro = new ServicioCentro

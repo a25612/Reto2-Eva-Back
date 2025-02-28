@@ -22,6 +22,10 @@ namespace Service
             return await _serviciosRepository.GetByIdAsync(id);
         }
 
+        public async Task<List<Servicio>> GetServiciosByCentroIdAsync(int centroId)
+        {
+            return await _serviciosRepository.GetServiciosByCentroIdAsync(centroId);
+        }
 
         public async Task AddAsync(Servicio servicio)
         {
@@ -35,28 +39,13 @@ namespace Service
 
         public async Task DeleteAsync(int id)
         {
-           var servicio = await _serviciosRepository.GetByIdAsync(id);
-           if (servicio == null)
-           {
-               //return NotFound();
-           }
-           await _serviciosRepository.DeleteAsync(id);
-           //return NoContent();
+            var servicio = await _serviciosRepository.GetByIdAsync(id);
+            if (servicio == null)
+            {
+                //return NotFound();
+            }
+            await _serviciosRepository.DeleteAsync(id);
+            //return NoContent();
         }
-        
-        // public async Task InicializarDatosAsync()
-        // {
-        //     await _usuariosRepository.InicializarDatosAsync();
-        // }
-        /*
-        public async Task AddPlatoPrincipalAsync(PlatoPrincipal platoPrincipal)
-        {
-            if (platoPrincipal == null)
-                throw new ArgumentNullException(nameof(platoPrincipal));
-
-            await _platoPrincipalRepository.AddAsync(platoPrincipal);
-        }*/
     }
 }
-
-

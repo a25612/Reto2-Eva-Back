@@ -35,6 +35,15 @@ namespace Pisicna_Back.Controllers
             return Ok(servicio);
         }
 
+        // Obtener servicios por id centro
+        [HttpGet("porCentro/{centroId}")]
+        public async Task<ActionResult<List<Servicio>>> GetServiciosPorCentro(int centroId)
+        {
+            var servicios = await _serviceServicios.GetServiciosByCentroIdAsync(centroId);
+            return Ok(servicios);
+        }
+
+
         // Crear un nuevo empleado
         [HttpPost]
         public async Task<ActionResult<Empleado>> CreateServicio(Servicio servicio)
