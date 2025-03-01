@@ -14,6 +14,7 @@ namespace Models
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Tutor> Tutores { get; set; }
         public DbSet<Sesion> Sesiones { get; set; }
+        DbSet<Anuncio> Anuncios { get; set; }
 
         // Tablas intermedias
         public DbSet<UsuarioTutor> UsuariosTutores { get; set; }
