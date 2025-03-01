@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Models
@@ -17,7 +16,7 @@ namespace Models
 
         public string ImagenUrl { get; set; }
 
-        public DateTime FechaPublicacion { get; set; } = DateTime.Now;
+        public DateTime Fecha_Publicacion { get; set; } = DateTime.Now;
 
         public bool Activo { get; set; } = true;
     }

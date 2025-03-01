@@ -98,6 +98,17 @@ CREATE TABLE EmpleadosCentros (
     CONSTRAINT FK_EmpleadosCentros_Centro FOREIGN KEY (ID_CENTRO) REFERENCES Centros(ID) ON DELETE CASCADE
 );
 
+
+-- Tabla: Anuncios
+CREATE TABLE Anuncios (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    TITULO VARCHAR(255) NOT NULL,
+    DESCRIPCION TEXT NOT NULL,
+    IMAGENURL TEXT,
+    FECHA_PUBLICACION DATETIME NOT NULL,
+    ACTIVO TINYINT(1) NOT NULL
+);
+
 -- Insertar Centros
 INSERT INTO Centros (NOMBRE, DIRECCION)
 VALUES ('Espacio Atemtia', 'C/ Castilla, 2, 50009 Zaragoza'),
@@ -162,19 +173,14 @@ VALUES (1, 1),
        (3, 2);
 
 
--- Tabla: Anuncios
-CREATE TABLE Anuncios (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    TITULO VARCHAR(255) NOT NULL,
-    DESCRIPCION TEXT NOT NULL,
-    FECHA_PUBLICACION DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    ID_CENTRO INT,
-    CONSTRAINT FK_Anuncios_Centro FOREIGN KEY (ID_CENTRO) REFERENCES Centros(ID) ON DELETE SET NULL
-);
+
 
 -- Insertar algunos anuncios de ejemplo
-INSERT INTO Anuncios (TITULO, DESCRIPCION, ID_CENTRO)
+
+INSERT INTO Anuncios (TITULO, DESCRIPCION, IMAGENURL, FECHA_PUBLICACION, ACTIVO)
 VALUES 
-    ('Nuevo Servicio de Terapia Acuática', '¡Hemos añadido terapia acuática a nuestro centro! Consulta disponibilidad.', 1),
-    ('Cambio de Horarios en Evaluaciones', 'Desde el próximo mes, las evaluaciones se realizarán los miércoles y viernes.', 2),
-    ('Promoción en Psicología', 'Este mes, sesiones de psicología con un 10% de descuento.', NULL);
+    ('Nuevo Servicio de Terapia Acuática', '¡Hemos añadido terapia acuática a nuestro centro! Consulta disponibilidad.', 'https://espacioatemtia.es/wp-content/uploads/2023/07/Piscina-Atemtia-Terapias-Acu%C3%A1ticas2-scaled-1280x852.jpg', '2024-12-17 09:00:00', 1),
+    
+    ('Cambio de Horarios en Evaluaciones', 'Desde el próximo mes, las evaluaciones se realizarán los miércoles y viernes.', 'https://espacioatemtia.es/wp-content/uploads/2023/07/Piscina-Atemtia-Terapias-Acu%C3%A1ticas2-scaled-1280x852.jpg', '2024-12-17 09:00:00', 1),
+    
+    ('Promoción en Psicología', 'Este mes, sesiones de psicología con un 10% de descuento.', 'https://espacioatemtia.es/wp-content/uploads/2023/07/Piscina-Atemtia-Terapias-Acu%C3%A1ticas2-scaled-1280x852.jpg', '2024-12-17 09:00:00', 1);

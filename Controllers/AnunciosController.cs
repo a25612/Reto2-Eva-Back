@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Service;
 using Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+
 
 namespace Piscina_Back.Controllers
 {
