@@ -11,16 +11,12 @@ namespace Models
         [Required]
         public int IdServicio { get; set; }
 
-        [Required]
-        [MaxLength(255)]
-        public string Nombre { get; set; }
-
         public int SesionesPorSemana { get; set; }
 
         public int DuracionMinutos { get; set; }
 
         [Required]
-        public decimal PrecioMensual { get; set; }
+        public decimal Precio { get; set; }
 
         [JsonIgnore]
         public Servicio Servicio { get; set; }

@@ -44,7 +44,7 @@ namespace Pisicna_Back.Controllers
         }
 
         // Obtener opciones de un servicio específico
-        [HttpGet("{id}/opciones")]
+        [HttpGet("opciones/{id}")]
         public async Task<ActionResult<List<OpcionServicio>>> GetOpcionesServicio(int id)
         {
             var opciones = await _serviceServicios.GetOpcionesServicioAsync(id);
