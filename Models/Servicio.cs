@@ -9,18 +9,14 @@ namespace Models
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(255)]
         public string Nombre { get; set; }
 
         [Required]
-        public decimal Precio { get; set; }
+        public string Descripcion { get; set; }
 
-        [Required]
-        public string Descripcion {get; set; }
+        public bool Activo { get; set; }
 
-        [Required]
-        public string Duracion { get; set; }
-
+        public ICollection<OpcionServicio> Opciones { get; set; }
 
         [JsonIgnore]
         public ICollection<ServicioCentro> ServiciosCentros { get; set; }
@@ -32,6 +28,7 @@ namespace Models
         {
             ServiciosCentros = new List<ServicioCentro>();
             Sesiones = new List<Sesion>();
+            Opciones = new List<OpcionServicio>();
         }
     }
 }

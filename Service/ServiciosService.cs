@@ -27,6 +27,11 @@ namespace Service
             return await _serviciosRepository.GetServiciosByCentroIdAsync(centroId);
         }
 
+        public async Task<List<OpcionServicio>> GetOpcionesServicioAsync(int servicioId)
+        {
+            return await _serviciosRepository.GetOpcionesServicioAsync(servicioId);
+        }
+
         public async Task AddAsync(Servicio servicio)
         {
             await _serviciosRepository.AddAsync(servicio);
@@ -42,10 +47,9 @@ namespace Service
             var servicio = await _serviciosRepository.GetByIdAsync(id);
             if (servicio == null)
             {
-                //return NotFound();
+                throw new KeyNotFoundException($"Servicio con ID {id} no encontrado.");
             }
             await _serviciosRepository.DeleteAsync(id);
-            //return NoContent();
         }
     }
 }

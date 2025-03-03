@@ -15,17 +15,17 @@ namespace Pisicna_Back.Controllers
             _serviceServicios = service;
         }
 
-        // Obtener todos los empleados
+        // Obtener todos los servicios
         [HttpGet]
         public async Task<ActionResult<List<Servicio>>> GetServicio()
         {
-            var empleados = await _serviceServicios.GetAllAsync();
-            return Ok(empleados);
+            var servicios = await _serviceServicios.GetAllAsync();
+            return Ok(servicios);
         }
 
-        // Obtener un empleado por ID
+        // Obtener un servicio por ID
         [HttpGet("{id}")]
-        public async Task<ActionResult<Empleado>> GetServicio(int id)
+        public async Task<ActionResult<Servicio>> GetServicio(int id)
         {
             var servicio = await _serviceServicios.GetByIdAsync(id);
             if (servicio == null)
@@ -35,24 +35,35 @@ namespace Pisicna_Back.Controllers
             return Ok(servicio);
         }
 
-        // Obtener servicios por id centro
-        [HttpGet("porCentro/{centroId}")]
+        // Obtener servicios por id centro (incluyendo opciones)
+        [HttpGet("centros/{centroId}")]
         public async Task<ActionResult<List<Servicio>>> GetServiciosPorCentro(int centroId)
         {
             var servicios = await _serviceServicios.GetServiciosByCentroIdAsync(centroId);
             return Ok(servicios);
         }
 
+        // Obtener opciones de un servicio específico
+        [HttpGet("{id}/opciones")]
+        public async Task<ActionResult<List<OpcionServicio>>> GetOpcionesServicio(int id)
+        {
+            var opciones = await _serviceServicios.GetOpcionesServicioAsync(id);
+            if (opciones == null || !opciones.Any())
+            {
+                return NotFound();
+            }
+            return Ok(opciones);
+        }
 
-        // Crear un nuevo empleado
+        // Crear un nuevo servicio
         [HttpPost]
-        public async Task<ActionResult<Empleado>> CreateServicio(Servicio servicio)
+        public async Task<ActionResult<Servicio>> CreateServicio(Servicio servicio)
         {
             await _serviceServicios.AddAsync(servicio);
             return CreatedAtAction(nameof(GetServicio), new { id = servicio.Id }, servicio);
         }
 
-        // Actualizar un empleado existente
+        // Actualizar un servicio existente
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateServicio(int id, Servicio updatedServicio)
         {
@@ -62,18 +73,17 @@ namespace Pisicna_Back.Controllers
                 return NotFound();
             }
 
-            // Actualizar los campos del empleado existente
+            // Actualizar los campos del servicio existente
             existingServicio.Nombre = updatedServicio.Nombre;
-            existingServicio.Precio = updatedServicio.Precio;
             existingServicio.Descripcion = updatedServicio.Descripcion;
-            existingServicio.Duracion = updatedServicio.Duracion;
-            
+            existingServicio.Activo = updatedServicio.Activo;
+            existingServicio.Opciones = updatedServicio.Opciones;
 
             await _serviceServicios.UpdateAsync(existingServicio);
             return NoContent();
         }
 
-        // Eliminar un empleado por ID
+        // Eliminar un servicio por ID
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteServicio(int id)
         {

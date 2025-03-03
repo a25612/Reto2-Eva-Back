@@ -7,93 +7,96 @@ namespace Repositories
     {
         private readonly MyDbContext _context;
 
-        // Constructor que recibe el DbContext
         public ServiciosRepository(MyDbContext context)
         {
             _context = context;
         }
 
-        // Obtener todos los servicios
         public async Task<List<Servicio>> GetAllAsync()
         {
-            // Cargar servicios junto con sus relaciones con Centros
             return await _context.Servicios
-                .Include(s => s.ServiciosCentros) 
-                .ThenInclude(sc => sc.Centro)   
+                .Include(s => s.ServiciosCentros)
+                    .ThenInclude(sc => sc.Centro)
+                .Include(s => s.Opciones)
                 .ToListAsync();
         }
 
-        // Obtener un servicio por ID
         public async Task<Servicio?> GetByIdAsync(int id)
         {
             return await _context.Servicios
-                .Include(s => s.ServiciosCentros) 
-                .ThenInclude(sc => sc.Centro)    
+                .Include(s => s.ServiciosCentros)
+                    .ThenInclude(sc => sc.Centro)
+                .Include(s => s.Opciones)
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
 
-        // Obtener servicios por ID de centro
         public async Task<List<Servicio>> GetServiciosByCentroIdAsync(int centroId)
         {
             return await _context.Servicios
                 .Where(s => s.ServiciosCentros.Any(sc => sc.IdCentro == centroId))
+                .Include(s => s.Opciones)
                 .ToListAsync();
         }
 
-        // Agregar un nuevo servicio
+        public async Task<List<OpcionServicio>> GetOpcionesServicioAsync(int servicioId)
+        {
+            return await _context.OpcionesServicio
+                .Where(os => os.IdServicio == servicioId)
+                .ToListAsync();
+        }
+
         public async Task AddAsync(Servicio servicio)
         {
-            // Agregar el servicio principal
             await _context.Servicios.AddAsync(servicio);
             await _context.SaveChangesAsync();
         }
 
-        // Actualizar un servicio existente
         public async Task UpdateAsync(Servicio servicio)
         {
             var existingServicio = await _context.Servicios
-                .Include(s => s.ServiciosCentros) 
+                .Include(s => s.ServiciosCentros)
+                .Include(s => s.Opciones)
                 .FirstOrDefaultAsync(s => s.Id == servicio.Id);
 
             if (existingServicio != null)
             {
-                // Actualizar las propiedades del servicio principal
                 existingServicio.Nombre = servicio.Nombre;
-                existingServicio.Precio = servicio.Precio;
                 existingServicio.Descripcion = servicio.Descripcion;
-                existingServicio.Duracion = servicio.Duracion;
+                existingServicio.Activo = servicio.Activo;
 
-                // Eliminar las relaciones en ServiciosCentros primero
                 _context.ServiciosCentros.RemoveRange(existingServicio.ServiciosCentros);
                 foreach (var servicioCentro in servicio.ServiciosCentros)
                 {
-                    var nuevoServicioCentro = new ServicioCentro
+                    await _context.ServiciosCentros.AddAsync(new ServicioCentro
                     {
                         ID_SERVICIO = existingServicio.Id,
                         IdCentro = servicioCentro.IdCentro
-                    };
-                    await _context.ServiciosCentros.AddAsync(nuevoServicioCentro);
+                    });
+                }
+
+                _context.OpcionesServicio.RemoveRange(existingServicio.Opciones);
+                foreach (var opcion in servicio.Opciones)
+                {
+                    opcion.IdServicio = existingServicio.Id;
+                    await _context.OpcionesServicio.AddAsync(opcion);
                 }
 
                 await _context.SaveChangesAsync();
             }
         }
 
-        // Eliminar un servicio por ID
         public async Task DeleteAsync(int id)
         {
             var servicio = await _context.Servicios
-                .Include(s => s.ServiciosCentros) 
+                .Include(s => s.ServiciosCentros)
+                .Include(s => s.Opciones)
                 .FirstOrDefaultAsync(s => s.Id == id);
 
             if (servicio != null)
             {
-                // Eliminar las relaciones en ServiciosCentros primero
                 _context.ServiciosCentros.RemoveRange(servicio.ServiciosCentros);
-
-                // Eliminar el servicio principal
+                _context.OpcionesServicio.RemoveRange(servicio.Opciones);
                 _context.Servicios.Remove(servicio);
-
                 await _context.SaveChangesAsync();
             }
         }

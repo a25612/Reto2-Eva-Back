@@ -10,5 +10,6 @@ namespace Repositories
         Task AddAsync(Servicio servicio);
         Task UpdateAsync(Servicio servicio);
         Task DeleteAsync(int id);
+        Task<List<OpcionServicio>> GetOpcionesServicioAsync(int servicioId);
     }
 }

@@ -21,6 +21,7 @@ namespace Models
         public DbSet<ServicioCentro> ServiciosCentros { get; set; }
         public DbSet<UsuarioCentro> UsuariosCentros { get; set; }
         public DbSet<EmpleadosCentros> EmpleadosCentros { get; set; }
+        public DbSet<OpcionServicio> OpcionesServicio { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -79,6 +80,11 @@ namespace Models
                 .WithMany(c => c.EmpleadosCentros)
                 .HasForeignKey(ec => ec.ID_CENTRO);
 
+            modelBuilder.Entity<OpcionServicio>()
+            .HasOne(os => os.Servicio)
+            .WithMany(s => s.Opciones)
+            .HasForeignKey(os => os.IdServicio);
+            
             base.OnModelCreating(modelBuilder);
         }
     }

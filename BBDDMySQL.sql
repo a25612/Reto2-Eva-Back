@@ -1,4 +1,4 @@
--- Active: 1740842915843@@127.0.0.1@3307
+-- Active: 1740571037239@@127.0.0.1@3307
 -- Crear base de datos
 CREATE DATABASE servicios_atemtia;
 USE servicios_atemtia;
@@ -15,8 +15,7 @@ CREATE TABLE Servicios (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     NOMBRE VARCHAR(255) NOT NULL,
     DESCRIPCION VARCHAR(1500) NOT NULL,
-    PRECIO DECIMAL(10, 2) NOT NULL,
-    DURACION VARCHAR(50) NOT NULL
+    ACTIVO TINYINT(1) DEFAULT TRUE
 );
 
 -- Tabla intermedia: ServiciosCentros (Relación N a N)
@@ -110,33 +109,42 @@ CREATE TABLE Anuncios (
     ACTIVO TINYINT(1) NOT NULL
 );
 
+-- Crear la tabla OpcionesServicio
+CREATE TABLE OpcionesServicio (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    IDSERVICIO INT NOT NULL,
+    SESIONESPORSEMANA INT,
+    DURACIONMINUTOS INT,
+    PRECIO DECIMAL(10, 2) NOT NULL,
+    DESCRIPCION VARCHAR(255),
+    CONSTRAINT FK_OpcionesServicio_Servicio FOREIGN KEY (IDSERVICIO) REFERENCES Servicios(ID) ON DELETE CASCADE
+);
+
 -- Insertar Centros
 INSERT INTO Centros (NOMBRE, DIRECCION)
 VALUES ('Espacio Atemtia', 'C/ Castilla, 2, 50009 Zaragoza'),
        ('San Martin de Porres', 'C/ Octavio de Toledo, 2, 50007 Zaragoza');
 
 -- Insertar Servicios
-INSERT INTO Servicios (NOMBRE, DESCRIPCION, PRECIO, DURACION)
-VALUES 
-    ('Evaluacion (Pruebas E Informe)', 'Evaluación completa que incluye pruebas diagnósticas y elaboración de informe detallado.', 140.00, '1h 30min'),
-    ('Evaluacion', 'Evaluación inicial para determinar necesidades específicas del usuario.', 75.00, '1h'),
-    ('Informes', 'Elaboración de informes detallados sobre el progreso y estado del usuario.', 65.00, '2h'),
-    ('Comunicación Y Lenguaje', 'Terapia especializada en mejorar habilidades de comunicación y desarrollo del lenguaje.', 25.00, '30min'),
-    ('Fisioterapia', 'Sesiones de fisioterapia para mejorar la movilidad y funcionalidad física.', 45.00,'1h'),
-    ('Psicomotricidad', 'Sesiones para desarrollar la coordinación motora y habilidades psicomotrices.', 35.00, '1h'),
-    ('Psicología', 'Apoyo psicológico y terapia para mejorar el bienestar emocional.', 40.00, '1h'),
-    ('Estimulación Temprana', 'Programa de actividades para potenciar el desarrollo cognitivo y sensorial en edades tempranas.', 30.00, '1h'),
-    ('Terapia Acuática', 'Terapia en medio acuático para mejorar la movilidad y reducir el impacto en articulaciones.', 50.00, '1h'),
-    ('Natación Adaptada', 'Clases de natación adaptadas a personas con necesidades especiales.', 35.00, '1h');
+INSERT INTO Servicios (NOMBRE, DESCRIPCION, ACTIVO) 
+VALUES ('MATRONATACIÓN', 'Clases de natación para bebés y sus madres', TRUE),
+('INICIACIÓN', 'Clases de iniciación a la natación', TRUE),
+('NATACIÓN Y NATACIÓN ADAPTADA', 'Clases grupales de natación y natación adaptada', TRUE),
+('NATACIÓN ADULTOS', 'Clases de natación para adultos', TRUE),
+('AQUAGYM', 'Ejercicios acuáticos', TRUE),
+('NATACIÓN INDIVIDUAL NIÑOS Y ADULTOS', 'Clases individuales de natación para niños y adultos', TRUE),
+('RESERVA DE CALLE LIBRE', 'Reserva de calle para natación libre', TRUE);
+
 
 -- Relación Servicios-Centros
-INSERT INTO ServiciosCentros (ID_SERVICIO, IdCentro)
-VALUES (1, 1), 
-       (1, 2), 
-       (2, 1), 
-       (3, 1), 
-       (4, 2), 
-       (5, 2);
+INSERT INTO ServiciosCentros (ID_SERVICIO, IdCentro) VALUES 
+(1, 2),
+(2, 2),
+(3, 2),
+(4, 2),
+(5, 2),
+(6, 2),
+(7, 2);  
 
 -- Insertar Empleados
 INSERT INTO Empleados (NOMBRE, DNI, JornadaTotalHoras, USERNAME, PASSWORD, ROL)
@@ -175,9 +183,6 @@ VALUES (1, 1),
        (2, 1), 
        (3, 2);
 
-
-
-
 -- Insertar algunos anuncios de ejemplo
 
 INSERT INTO Anuncios (TITULO, DESCRIPCION, IMAGENURL, FECHA_PUBLICACION, ACTIVO)
@@ -187,3 +192,16 @@ VALUES
     ('Cambio de Horarios en Evaluaciones', 'Desde el próximo mes, las evaluaciones se realizarán los miércoles y viernes.', 'https://espacioatemtia.es/wp-content/uploads/2023/07/Piscina-Atemtia-Terapias-Acu%C3%A1ticas2-scaled-1280x852.jpg', '2024-12-17 09:00:00', 1),
     
     ('Promoción en Psicología', 'Este mes, sesiones de psicología con un 10% de descuento.', 'https://espacioatemtia.es/wp-content/uploads/2023/07/Piscina-Atemtia-Terapias-Acu%C3%A1ticas2-scaled-1280x852.jpg', '2024-12-17 09:00:00', 1);
+
+-- Insertar las opciones de servicio
+INSERT INTO OpcionesServicio (IDSERVICIO, SESIONESPORSEMANA, DURACIONMINUTOS, PRECIO, DESCRIPCION) VALUES 
+(1, 1, 30, 50.00, '1 sesión semanal'),
+(1, 2, 30, 85.00, '2 sesiones semanales'),
+(2, 1, 30, 50.00, '1 sesión semanal'),
+(3, 1, 45, 65.00, '1 sesión semanal'),
+(4, 1, 45, 50.00, '1 sesión semanal'),
+(4, 2, 45, 85.00, '2 sesiones semanales'),
+(5, 1, 45, 50.00, '1 sesión semanal'),
+(6, NULL, 30, 30.00, 'Sesión individual'),
+(7, NULL, 30, 10.00, 'Reserva 30 minutos'),
+(7, NULL, 45, 15.00, 'Reserva 45 minutos');
