@@ -61,6 +61,7 @@ namespace Repositories
                 existingServicio.Nombre = servicio.Nombre;
                 existingServicio.Precio = servicio.Precio;
                 existingServicio.Descripcion = servicio.Descripcion;
+                existingServicio.Duracion = servicio.Duracion;
 
                 // Eliminar las relaciones en ServiciosCentros primero
                 _context.ServiciosCentros.RemoveRange(existingServicio.ServiciosCentros);

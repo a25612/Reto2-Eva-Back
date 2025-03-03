@@ -1,4 +1,4 @@
--- Active: 1740571037239@@127.0.0.1@3307
+-- Active: 1740842915843@@127.0.0.1@3307
 -- Crear base de datos
 CREATE DATABASE servicios_atemtia;
 USE servicios_atemtia;
@@ -15,7 +15,8 @@ CREATE TABLE Servicios (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     NOMBRE VARCHAR(255) NOT NULL,
     DESCRIPCION VARCHAR(1500) NOT NULL,
-    PRECIO DECIMAL(10, 2) NOT NULL
+    PRECIO DECIMAL(10, 2) NOT NULL,
+    DURACION VARCHAR(50) NOT NULL
 );
 
 -- Tabla intermedia: ServiciosCentros (Relación N a N)
@@ -115,18 +116,18 @@ VALUES ('Espacio Atemtia', 'C/ Castilla, 2, 50009 Zaragoza'),
        ('San Martin de Porres', 'C/ Octavio de Toledo, 2, 50007 Zaragoza');
 
 -- Insertar Servicios
-INSERT INTO Servicios (NOMBRE, DESCRIPCION, PRECIO)
+INSERT INTO Servicios (NOMBRE, DESCRIPCION, PRECIO, DURACION)
 VALUES 
-    ('Evaluacion (Pruebas E Informe)', 'Evaluación completa que incluye pruebas diagnósticas y elaboración de informe detallado.', 140.00),
-    ('Evaluacion', 'Evaluación inicial para determinar necesidades específicas del usuario.', 75.00),
-    ('Informes', 'Elaboración de informes detallados sobre el progreso y estado del usuario.', 65.00),
-    ('Comunicación Y Lenguaje', 'Terapia especializada en mejorar habilidades de comunicación y desarrollo del lenguaje.', 25.00),
-    ('Fisioterapia', 'Sesiones de fisioterapia para mejorar la movilidad y funcionalidad física.', 45.00),
-    ('Psicomotricidad', 'Sesiones para desarrollar la coordinación motora y habilidades psicomotrices.', 35.00),
-    ('Psicología', 'Apoyo psicológico y terapia para mejorar el bienestar emocional.', 40.00),
-    ('Estimulación Temprana', 'Programa de actividades para potenciar el desarrollo cognitivo y sensorial en edades tempranas.', 30.00),
-    ('Terapia Acuática', 'Terapia en medio acuático para mejorar la movilidad y reducir el impacto en articulaciones.', 50.00),
-    ('Natación Adaptada', 'Clases de natación adaptadas a personas con necesidades especiales.', 35.00);
+    ('Evaluacion (Pruebas E Informe)', 'Evaluación completa que incluye pruebas diagnósticas y elaboración de informe detallado.', 140.00, '1h 30min'),
+    ('Evaluacion', 'Evaluación inicial para determinar necesidades específicas del usuario.', 75.00, '1h'),
+    ('Informes', 'Elaboración de informes detallados sobre el progreso y estado del usuario.', 65.00, '2h'),
+    ('Comunicación Y Lenguaje', 'Terapia especializada en mejorar habilidades de comunicación y desarrollo del lenguaje.', 25.00, '30min'),
+    ('Fisioterapia', 'Sesiones de fisioterapia para mejorar la movilidad y funcionalidad física.', 45.00,'1h'),
+    ('Psicomotricidad', 'Sesiones para desarrollar la coordinación motora y habilidades psicomotrices.', 35.00, '1h'),
+    ('Psicología', 'Apoyo psicológico y terapia para mejorar el bienestar emocional.', 40.00, '1h'),
+    ('Estimulación Temprana', 'Programa de actividades para potenciar el desarrollo cognitivo y sensorial en edades tempranas.', 30.00, '1h'),
+    ('Terapia Acuática', 'Terapia en medio acuático para mejorar la movilidad y reducir el impacto en articulaciones.', 50.00, '1h'),
+    ('Natación Adaptada', 'Clases de natación adaptadas a personas con necesidades especiales.', 35.00, '1h');
 
 -- Relación Servicios-Centros
 INSERT INTO ServiciosCentros (ID_SERVICIO, IdCentro)

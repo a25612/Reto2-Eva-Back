@@ -66,6 +66,8 @@ namespace Pisicna_Back.Controllers
             existingServicio.Nombre = updatedServicio.Nombre;
             existingServicio.Precio = updatedServicio.Precio;
             existingServicio.Descripcion = updatedServicio.Descripcion;
+            existingServicio.Duracion = updatedServicio.Duracion;
+            
 
             await _serviceServicios.UpdateAsync(existingServicio);
             return NoContent();
