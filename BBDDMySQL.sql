@@ -145,7 +145,7 @@ VALUES ('Ballesteros Rodriguez Ana', '47562374T', 40, 'aballesteros', 'password'
 
 -- Insertar Usuarios
 INSERT INTO Usuarios (NOMBRE, DNI, CodigoFacturacion)
-VALUES ('Ruth Pellicer Horna (Eneko Gonzalo)', '12345678Z', '101453');
+VALUES ('Eneko Gonzalo', '12345678Z', '101453');
 
 -- Relación Usuarios-Centros
 INSERT INTO UsuariosCentros (ID_USUARIO, ID_CENTRO)

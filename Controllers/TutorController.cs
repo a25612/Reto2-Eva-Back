@@ -35,6 +35,21 @@ namespace Pisicna_Back.Controllers
             return Ok(tutor);
         }
 
+        // Obtener usuarios asignados a un tutor
+        [HttpGet("{id}/usuarios")]
+        public async Task<ActionResult<List<Usuario>>> GetUsuariosByTutorId(int id)
+        {
+            var tutor = await _serviceTutor.GetByIdAsync(id);
+
+            if (tutor == null)
+                return NotFound($"No se encontró el tutor con ID {id}");
+
+            var usuarios = await _serviceTutor.GetUsuariosByTutorIdAsync(id);
+
+            return Ok(usuarios);
+        }
+
+
         // Crear un nuevo tutor
         [HttpPost]
         public async Task<IActionResult> Create(Tutor tutor)

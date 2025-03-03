@@ -28,6 +28,12 @@ namespace Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task<List<Usuario>> GetUsuariosByTutorIdAsync(int tutorId)
+        {
+            return await _context.Usuarios
+                .Where(u => u.UsuariosTutores.Any(ut => ut.ID_TUTOR == tutorId))
+                .ToListAsync();
+        }
         public async Task UpdateAsync(Tutor tutor)
         {
             var existingTutor = await _context.Tutores.FindAsync(tutor.Id);
@@ -44,7 +50,7 @@ namespace Repositories
                 await _context.SaveChangesAsync();
             }
         }
-
+    
         public async Task DeleteAsync(int id)
         {
             var tutor = await _context.Tutores.FindAsync(id);

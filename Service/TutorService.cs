@@ -27,6 +27,12 @@ namespace Service
             return await _repository.GetByIdAsync(id);
         }
 
+        public async Task<List<Usuario>> GetUsuariosByTutorIdAsync(int tutorId)
+        {
+            return await _repository.GetUsuariosByTutorIdAsync(tutorId);
+        }
+
+
         public async Task AddAsync(Tutor tutor)
         {
             await _repository.AddAsync(tutor);
