@@ -23,22 +23,22 @@ namespace Models
         public int ID_SERVICIO { get; set; }
         public Servicio Servicio { get; set; }
 
-        [ForeignKey("Servicio")]
+        [ForeignKey("Centro")]
         public int ID_CENTRO { get; set; }
         public Centro Centro { get; set; }
-
 
         [Required]
         public bool Facturar { get; set; }
 
-        public Sesion() {}
+        public Sesion() { }
 
-        public Sesion(DateTime fecha, int idUsuario, int idEmpleado, int idServicio, bool facturar)
+        public Sesion(DateTime fecha, int idUsuario, int idEmpleado, int idServicio, int idCentro, bool facturar)
         {
             Fecha = fecha;
             ID_USUARIO = idUsuario;
             ID_EMPLEADO = idEmpleado;
             ID_SERVICIO = idServicio;
+            ID_CENTRO = idCentro;
             Facturar = facturar;
         }
     }

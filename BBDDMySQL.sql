@@ -88,7 +88,7 @@ CREATE TABLE Sesiones (
     CONSTRAINT FK_Sesiones_Usuarios FOREIGN KEY (ID_USUARIO) REFERENCES Usuarios(ID),
     CONSTRAINT FK_Sesiones_Empleados FOREIGN KEY (ID_EMPLEADO) REFERENCES Empleados(ID),
     CONSTRAINT FK_Sesiones_Servicios FOREIGN KEY (ID_SERVICIO) REFERENCES Servicios(ID),
-    CONSTRAINT FK_Sesiones_Centros FOREIGN KEY (ID_CENTRO) REFERENCES Centro(ID)
+    CONSTRAINT FK_Sesiones_Centros FOREIGN KEY (ID_CENTRO) REFERENCES Centros(ID)
 );
 
 -- Tabla intermedia: EmpleadosCentros (Relación N a N)
@@ -176,9 +176,9 @@ VALUES (1, 1),
        (3, 2);
 
 -- Insertar Sesiones
-INSERT INTO Sesiones (FECHA, ID_USUARIO, ID_EMPLEADO, ID_SERVICIO, FACTURAR)
-VALUES ('2025-03-04 09:00:00', 1, 3, 1, 1),
-       ('2025-03-05 09:00:00', 1, 2, 2, 1);
+INSERT INTO Sesiones (FECHA, ID_USUARIO, ID_EMPLEADO, ID_SERVICIO, ID_CENTRO, FACTURAR)
+VALUES ('2025-03-04 09:00:00', 1, 3, 1, 1, 1),
+       ('2025-03-05 09:00:00', 1, 2, 2, 1, 1);
 
 -- Relación Empleados-Centros
 INSERT INTO EmpleadosCentros (ID_EMPLEADO, ID_CENTRO)
