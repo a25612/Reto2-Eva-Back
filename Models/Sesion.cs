@@ -23,6 +23,11 @@ namespace Models
         public int ID_SERVICIO { get; set; }
         public Servicio Servicio { get; set; }
 
+        [ForeignKey("Servicio")]
+        public int ID_CENTRO { get; set; }
+        public Centro Centro { get; set; }
+
+
         [Required]
         public bool Facturar { get; set; }
 

@@ -64,11 +64,12 @@ namespace Controllers
             {
                 return NotFound();
             }
-
+            
             existingSesion.Fecha = updatedSesion.Fecha;
             existingSesion.ID_USUARIO = updatedSesion.ID_USUARIO;
             existingSesion.ID_EMPLEADO = updatedSesion.ID_EMPLEADO;
             existingSesion.ID_SERVICIO = updatedSesion.ID_SERVICIO;
+            existingSesion.ID_CENTRO = updatedSesion.ID_CENTRO;
             existingSesion.Facturar = updatedSesion.Facturar;
 
             await _sesionService.UpdateAsync(existingSesion);
