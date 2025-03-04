@@ -154,7 +154,8 @@ VALUES ('Ballesteros Rodriguez Ana', '47562374T', 40, 'aballesteros', 'password'
 -- Insertar Usuarios
 INSERT INTO Usuarios (NOMBRE, DNI, CodigoFacturacion)
 VALUES ('Eneko Gonzalo', '12345678Z', '101453'),
-       ('Ane Miren', '87654321A', '101454');
+       ('Ane Miren', '87654321A', '101454'),
+       ('Iker Ander', '12348765B', '101455');
 
 -- Relación Usuarios-Centros
 INSERT INTO UsuariosCentros (ID_USUARIO, ID_CENTRO)
@@ -169,7 +170,8 @@ VALUES ('Ruth Pellicer Horna', '48572634Q', 'ruth@tutors.com', 'username', 'pass
 -- Relación Usuarios-Tutores
 INSERT INTO UsuariosTutores (ID_USUARIO, ID_TUTOR)
 VALUES (1, 1),
-       (2, 1);
+       (2, 1),
+       (3, 2);
 
 -- Insertar Sesiones
 INSERT INTO Sesiones (FECHA, ID_USUARIO, ID_EMPLEADO, ID_SERVICIO, FACTURAR)
