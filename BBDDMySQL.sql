@@ -1,4 +1,4 @@
--- Active: 1740571037239@@127.0.0.1@3307
+-- Active: 1741101830375@@127.0.0.1@3307@servicios_atemtia
 -- Crear base de datos
 CREATE DATABASE servicios_atemtia;
 USE servicios_atemtia;
@@ -118,6 +118,12 @@ INSERT INTO Centros (NOMBRE, DIRECCION)
 VALUES ('Espacio Atemtia', 'C/ Castilla, 2, 50009 Zaragoza'),
        ('San Martin de Porres', 'C/ Octavio de Toledo, 2, 50007 Zaragoza');
 
+-- Insertar Empleados
+INSERT INTO Empleados (NOMBRE, DNI, JornadaTotalHoras, USERNAME, PASSWORD, ROL)
+VALUES ('Ballesteros Rodriguez Ana', '47562374T', 40, 'aballesteros', 'password', 'EMPLEADO'),
+       ('Villuendas Sierra Rosana', '87736475R', 30, 'rvilluendas', 'password', 'EMPLEADO'),
+       ('Aliaga Andres Esther', '58375846F', 35, 'ealiaga', 'password', 'EMPLEADO');
+
 -- Insertar Servicios
 INSERT INTO Servicios (NOMBRE, DESCRIPCION, ACTIVO, ID_EMPLEADO) 
 VALUES ('MATRONATACIÓN', 'Clases de natación para bebés y sus madres', TRUE, 1),
@@ -128,7 +134,6 @@ VALUES ('MATRONATACIÓN', 'Clases de natación para bebés y sus madres', TRUE, 
 ('NATACIÓN INDIVIDUAL NIÑOS Y ADULTOS', 'Clases individuales de natación para niños y adultos', TRUE, 3),
 ('RESERVA DE CALLE LIBRE', 'Reserva de calle para natación libre', TRUE, 3);
 
-
 -- Relación Servicios-Centros
 INSERT INTO ServiciosCentros (ID_SERVICIO, IdCentro) VALUES 
 (1, 2),
@@ -138,12 +143,6 @@ INSERT INTO ServiciosCentros (ID_SERVICIO, IdCentro) VALUES
 (5, 2),
 (6, 2),
 (7, 2);  
-
--- Insertar Empleados
-INSERT INTO Empleados (NOMBRE, DNI, JornadaTotalHoras, USERNAME, PASSWORD, ROL)
-VALUES ('Ballesteros Rodriguez Ana', '47562374T', 40, 'aballesteros', 'password', 'EMPLEADO'),
-       ('Villuendas Sierra Rosana', '87736475R', 30, 'rvilluendas', 'password', 'EMPLEADO'),
-       ('Aliaga Andres Esther', '58375846F', 35, 'ealiaga', 'password', 'EMPLEADO');
 
 -- Insertar Usuarios
 INSERT INTO Usuarios (NOMBRE, DNI, CodigoFacturacion)
@@ -167,11 +166,6 @@ VALUES (1, 1),
        (2, 1),
        (3, 2);
 
--- Insertar Sesiones
-INSERT INTO Sesiones (FECHA, ID_USUARIO, ID_EMPLEADO, ID_SERVICIO, ID_CENTRO, FACTURAR)
-VALUES ('2025-03-04 09:00:00', 1, 3, 1, 1, 1),
-       ('2025-03-05 09:00:00', 1, 2, 2, 1, 1);
-
 -- Relación Empleados-Centros
 INSERT INTO EmpleadosCentros (ID_EMPLEADO, ID_CENTRO)
 VALUES (1, 1), 
@@ -179,14 +173,16 @@ VALUES (1, 1),
        (2, 1), 
        (3, 2);
 
--- Insertar algunos anuncios de ejemplo
+-- Insertar Sesiones
+INSERT INTO Sesiones (FECHA, ID_USUARIO, ID_EMPLEADO, ID_SERVICIO, ID_CENTRO, FACTURAR)
+VALUES ('2025-03-04 09:00:00', 1, 3, 1, 1, 1),
+       ('2025-03-05 09:00:00', 1, 2, 2, 1, 1);
 
+-- Insertar algunos anuncios de ejemplo
 INSERT INTO Anuncios (TITULO, DESCRIPCION, IMAGENURL, FECHA_PUBLICACION, ACTIVO)
 VALUES 
     ('Nuevo Servicio de Terapia Acuática', '¡Hemos añadido terapia acuática a nuestro centro! Consulta disponibilidad.', 'https://espacioatemtia.es/wp-content/uploads/2023/07/Piscina-Atemtia-Terapias-Acu%C3%A1ticas2-scaled-1280x852.jpg', '2024-12-17 09:00:00', 1),
-    
     ('Cambio de Horarios en Evaluaciones', 'Desde el próximo mes, las evaluaciones se realizarán los miércoles y viernes.', 'https://espacioatemtia.es/wp-content/uploads/2023/07/Piscina-Atemtia-Terapias-Acu%C3%A1ticas2-scaled-1280x852.jpg', '2024-12-17 09:00:00', 1),
-    
     ('Promoción en Psicología', 'Este mes, sesiones de psicología con un 10% de descuento.', 'https://espacioatemtia.es/wp-content/uploads/2023/07/Piscina-Atemtia-Terapias-Acu%C3%A1ticas2-scaled-1280x852.jpg', '2024-12-17 09:00:00', 1);
 
 -- Insertar las opciones de servicio
@@ -201,4 +197,3 @@ INSERT INTO OpcionesServicio (IDSERVICIO, SESIONESPORSEMANA, DURACIONMINUTOS, PR
 (6, NULL, 30, 30.00, 'Sesión individual'),
 (7, NULL, 30, 10.00, 'Reserva 30 minutos'),
 (7, NULL, 45, 15.00, 'Reserva 45 minutos');
-
