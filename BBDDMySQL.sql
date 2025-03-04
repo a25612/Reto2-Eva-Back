@@ -1,4 +1,4 @@
--- Active: 1740500785648@@127.0.0.1@3307@servicios_atemtia
+-- Active: 1740571037239@@127.0.0.1@3307
 -- Crear base de datos
 CREATE DATABASE servicios_atemtia;
 USE servicios_atemtia;
@@ -61,9 +61,9 @@ CREATE TABLE Tutores (
     NOMBRE VARCHAR(255) NOT NULL,
     DNI VARCHAR(9) NOT NULL UNIQUE,
     EMAIL VARCHAR(255),
-    USERNAME VARCHAR(255),
+    USERNAME VARCHAR(255) UNIQUE, 
     PASSWORD VARCHAR(255),
-    ACTIVO TINYINT(1) NOT NULL,
+    ACTIVO TINYINT(1) NOT NULL DEFAULT 1,
     ROL ENUM('TUTOR') NOT NULL DEFAULT 'TUTOR'
 );
 
@@ -98,7 +98,6 @@ CREATE TABLE EmpleadosCentros (
     CONSTRAINT FK_EmpleadosCentros_Centro FOREIGN KEY (ID_CENTRO) REFERENCES Centros(ID) ON DELETE CASCADE
 );
 
-
 -- Tabla: Anuncios
 CREATE TABLE Anuncios (
     ID INT AUTO_INCREMENT PRIMARY KEY,
@@ -113,9 +112,9 @@ CREATE TABLE Anuncios (
 CREATE TABLE OpcionesServicio (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     IDSERVICIO INT NOT NULL,
-    SESIONESPORSEMANA INT,
-    DURACIONMINUTOS INT,
-    PRECIO DECIMAL(10, 2) NOT NULL,
+    SESIONESPORSEMANA INT DEFAULT 0, 
+    DURACIONMINUTOS INT DEFAULT 0,  
+    PRECIO DECIMAL(10, 2) NOT NULL CHECK(PRECIO >= 0), 
     DESCRIPCION VARCHAR(255),
     CONSTRAINT FK_OpcionesServicio_Servicio FOREIGN KEY (IDSERVICIO) REFERENCES Servicios(ID) ON DELETE CASCADE
 );
@@ -164,7 +163,8 @@ VALUES (1, 1),
 
 -- Insertar Tutores
 INSERT INTO Tutores (NOMBRE, DNI, EMAIL, USERNAME, PASSWORD, ACTIVO, ROL)
-VALUES ('Ruth Pellicer Horna', '48572634Q', 'ruth@tutors.com', 'username', 'password', 1, 'TUTOR');
+VALUES ('Ruth Pellicer Horna', '48572634Q', 'ruth@tutors.com', 'username', 'password', 1, 'TUTOR'),
+       ('Javier Serrano', '12345678A', 'jserrano@gmail.com', 'jserrano', 'password', 1, 'TUTOR');
 
 -- Relación Usuarios-Tutores
 INSERT INTO UsuariosTutores (ID_USUARIO, ID_TUTOR)
@@ -205,3 +205,4 @@ INSERT INTO OpcionesServicio (IDSERVICIO, SESIONESPORSEMANA, DURACIONMINUTOS, PR
 (6, NULL, 30, 30.00, 'Sesión individual'),
 (7, NULL, 30, 10.00, 'Reserva 30 minutos'),
 (7, NULL, 45, 15.00, 'Reserva 45 minutos');
+
