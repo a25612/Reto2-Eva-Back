@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace Models
@@ -15,6 +16,10 @@ namespace Models
         public string Descripcion { get; set; }
 
         public bool Activo { get; set; }
+
+        [ForeignKey("Empleado")]
+        public int ID_EMPLEADO { get; set; }
+        public Empleado Empleado { get; set; }
 
         public ICollection<OpcionServicio> Opciones { get; set; }
 

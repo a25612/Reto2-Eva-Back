@@ -63,6 +63,7 @@ namespace Repositories
                 existingServicio.Nombre = servicio.Nombre;
                 existingServicio.Descripcion = servicio.Descripcion;
                 existingServicio.Activo = servicio.Activo;
+                existingServicio.ID_EMPLEADO = servicio.ID_EMPLEADO;
 
                 _context.ServiciosCentros.RemoveRange(existingServicio.ServiciosCentros);
                 foreach (var servicioCentro in servicio.ServiciosCentros)

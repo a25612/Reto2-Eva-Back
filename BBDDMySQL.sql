@@ -10,24 +10,6 @@ CREATE TABLE Centros (
     DIRECCION VARCHAR(255) NOT NULL
 );
 
--- Tabla: Servicios
-CREATE TABLE Servicios (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    NOMBRE VARCHAR(255) NOT NULL,
-    DESCRIPCION VARCHAR(1500) NOT NULL,
-    ACTIVO TINYINT(1) DEFAULT TRUE
-);
-
--- Tabla intermedia: ServiciosCentros (Relación N a N)
-CREATE TABLE ServiciosCentros (
-    ID_SERVICIO INT NOT NULL,
-    IdCentro INT NOT NULL,
-    PRIMARY KEY (ID_SERVICIO, IdCentro),
-    CONSTRAINT FK_ServiciosCentros_Servicio FOREIGN KEY (ID_SERVICIO) REFERENCES Servicios(ID) ON DELETE CASCADE,
-    CONSTRAINT FK_ServiciosCentros_Centro FOREIGN KEY (IdCentro) REFERENCES Centros(ID) ON DELETE CASCADE
-);
-
--- Tabla: Empleados
 CREATE TABLE Empleados (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     NOMBRE VARCHAR(255) NOT NULL,
@@ -38,7 +20,6 @@ CREATE TABLE Empleados (
     ROL ENUM('EMPLEADO') NOT NULL DEFAULT 'EMPLEADO'
 );
 
--- Tabla: Usuarios
 CREATE TABLE Usuarios (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     NOMBRE VARCHAR(255) NOT NULL,
@@ -46,16 +27,6 @@ CREATE TABLE Usuarios (
     CodigoFacturacion VARCHAR(10) NOT NULL
 );
 
--- Tabla intermedia: UsuariosCentros (Relación N a N)
-CREATE TABLE UsuariosCentros (
-    ID_USUARIO INT NOT NULL,
-    ID_CENTRO INT NOT NULL,
-    PRIMARY KEY (ID_USUARIO, ID_CENTRO),
-    CONSTRAINT FK_UsuariosCentros_Usuarios FOREIGN KEY (ID_USUARIO) REFERENCES Usuarios(ID) ON DELETE CASCADE,
-    CONSTRAINT FK_UsuariosCentros_Centros FOREIGN KEY (ID_CENTRO) REFERENCES Centros(ID) ON DELETE CASCADE
-);
-
--- Tabla: Tutores
 CREATE TABLE Tutores (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     NOMBRE VARCHAR(255) NOT NULL,
@@ -67,7 +38,40 @@ CREATE TABLE Tutores (
     ROL ENUM('TUTOR') NOT NULL DEFAULT 'TUTOR'
 );
 
--- Tabla intermedia: UsuariosTutores (Relación N a N)
+CREATE TABLE Anuncios (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    TITULO VARCHAR(255) NOT NULL,
+    DESCRIPCION TEXT NOT NULL,
+    IMAGENURL TEXT,
+    FECHA_PUBLICACION DATETIME NOT NULL,
+    ACTIVO TINYINT(1) NOT NULL
+);
+
+CREATE TABLE Servicios (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    NOMBRE VARCHAR(255) NOT NULL,
+    DESCRIPCION VARCHAR(1500) NOT NULL,
+    ACTIVO TINYINT(1) DEFAULT TRUE,
+    ID_EMPLEADO INT NOT NULL,
+    CONSTRAINT FK_ServiciosEmpleados_Empleados FOREIGN KEY (ID_EMPLEADO) REFERENCES Empleados(ID) ON DELETE CASCADE
+);
+
+CREATE TABLE ServiciosCentros (
+    ID_SERVICIO INT NOT NULL,
+    IdCentro INT NOT NULL,
+    PRIMARY KEY (ID_SERVICIO, IdCentro),
+    CONSTRAINT FK_ServiciosCentros_Servicio FOREIGN KEY (ID_SERVICIO) REFERENCES Servicios(ID) ON DELETE CASCADE,
+    CONSTRAINT FK_ServiciosCentros_Centro FOREIGN KEY (IdCentro) REFERENCES Centros(ID) ON DELETE CASCADE
+);
+
+CREATE TABLE UsuariosCentros (
+    ID_USUARIO INT NOT NULL,
+    ID_CENTRO INT NOT NULL,
+    PRIMARY KEY (ID_USUARIO, ID_CENTRO),
+    CONSTRAINT FK_UsuariosCentros_Usuarios FOREIGN KEY (ID_USUARIO) REFERENCES Usuarios(ID) ON DELETE CASCADE,
+    CONSTRAINT FK_UsuariosCentros_Centros FOREIGN KEY (ID_CENTRO) REFERENCES Centros(ID) ON DELETE CASCADE
+);
+
 CREATE TABLE UsuariosTutores (
     ID_USUARIO INT NOT NULL,
     ID_TUTOR INT NOT NULL,
@@ -76,7 +80,6 @@ CREATE TABLE UsuariosTutores (
     CONSTRAINT FK_Usuarios_Tutores_Tutores FOREIGN KEY (ID_TUTOR) REFERENCES Tutores(ID) ON DELETE CASCADE
 );
 
--- Tabla: Sesiones
 CREATE TABLE Sesiones (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     FECHA DATETIME NOT NULL,
@@ -91,7 +94,6 @@ CREATE TABLE Sesiones (
     CONSTRAINT FK_Sesiones_Centros FOREIGN KEY (ID_CENTRO) REFERENCES Centros(ID)
 );
 
--- Tabla intermedia: EmpleadosCentros (Relación N a N)
 CREATE TABLE EmpleadosCentros (
     ID_EMPLEADO INT NOT NULL,
     ID_CENTRO INT NOT NULL,
@@ -100,17 +102,6 @@ CREATE TABLE EmpleadosCentros (
     CONSTRAINT FK_EmpleadosCentros_Centro FOREIGN KEY (ID_CENTRO) REFERENCES Centros(ID) ON DELETE CASCADE
 );
 
--- Tabla: Anuncios
-CREATE TABLE Anuncios (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    TITULO VARCHAR(255) NOT NULL,
-    DESCRIPCION TEXT NOT NULL,
-    IMAGENURL TEXT,
-    FECHA_PUBLICACION DATETIME NOT NULL,
-    ACTIVO TINYINT(1) NOT NULL
-);
-
--- Crear la tabla OpcionesServicio
 CREATE TABLE OpcionesServicio (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     IDSERVICIO INT NOT NULL,
@@ -121,20 +112,21 @@ CREATE TABLE OpcionesServicio (
     CONSTRAINT FK_OpcionesServicio_Servicio FOREIGN KEY (IDSERVICIO) REFERENCES Servicios(ID) ON DELETE CASCADE
 );
 
+
 -- Insertar Centros
 INSERT INTO Centros (NOMBRE, DIRECCION)
 VALUES ('Espacio Atemtia', 'C/ Castilla, 2, 50009 Zaragoza'),
        ('San Martin de Porres', 'C/ Octavio de Toledo, 2, 50007 Zaragoza');
 
 -- Insertar Servicios
-INSERT INTO Servicios (NOMBRE, DESCRIPCION, ACTIVO) 
-VALUES ('MATRONATACIÓN', 'Clases de natación para bebés y sus madres', TRUE),
-('INICIACIÓN', 'Clases de iniciación a la natación', TRUE),
-('NATACIÓN Y NATACIÓN ADAPTADA', 'Clases grupales de natación y natación adaptada', TRUE),
-('NATACIÓN ADULTOS', 'Clases de natación para adultos', TRUE),
-('AQUAGYM', 'Ejercicios acuáticos', TRUE),
-('NATACIÓN INDIVIDUAL NIÑOS Y ADULTOS', 'Clases individuales de natación para niños y adultos', TRUE),
-('RESERVA DE CALLE LIBRE', 'Reserva de calle para natación libre', TRUE);
+INSERT INTO Servicios (NOMBRE, DESCRIPCION, ACTIVO, ID_EMPLEADO) 
+VALUES ('MATRONATACIÓN', 'Clases de natación para bebés y sus madres', TRUE, 1),
+('INICIACIÓN', 'Clases de iniciación a la natación', TRUE, 1),
+('NATACIÓN Y NATACIÓN ADAPTADA', 'Clases grupales de natación y natación adaptada', TRUE, 2),
+('NATACIÓN ADULTOS', 'Clases de natación para adultos', TRUE, 2),
+('AQUAGYM', 'Ejercicios acuáticos', TRUE, 3),
+('NATACIÓN INDIVIDUAL NIÑOS Y ADULTOS', 'Clases individuales de natación para niños y adultos', TRUE, 3),
+('RESERVA DE CALLE LIBRE', 'Reserva de calle para natación libre', TRUE, 3);
 
 
 -- Relación Servicios-Centros

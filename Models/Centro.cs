@@ -9,11 +9,9 @@ namespace Models
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(255)]
         public string Nombre { get; set; }
 
         [Required]
-        [MaxLength(255)]
         public string Direccion { get; set; }
 
         // Relación muchos a muchos con Empleados
