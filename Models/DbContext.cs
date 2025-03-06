@@ -4,10 +4,8 @@ namespace Models
 {
     public class MyDbContext : DbContext
     {
-        // Constructor que recibe opciones
-        public MyDbContext(DbContextOptions<MyDbContext> options) : base(options) {}
+        public MyDbContext(DbContextOptions<MyDbContext> options) : base(options) { }
 
-        // Tablas principales
         public DbSet<Centro> Centros { get; set; }
         public DbSet<Empleado> Empleados { get; set; }
         public DbSet<Servicio> Servicios { get; set; }
@@ -15,8 +13,6 @@ namespace Models
         public DbSet<Tutor> Tutores { get; set; }
         public DbSet<Sesion> Sesiones { get; set; }
         public DbSet<Anuncio> Anuncios { get; set; }
-
-        // Tablas intermedias
         public DbSet<UsuarioTutor> UsuariosTutores { get; set; }
         public DbSet<ServicioCentro> ServiciosCentros { get; set; }
         public DbSet<UsuarioCentro> UsuariosCentros { get; set; }
@@ -25,7 +21,6 @@ namespace Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Configuración de UsuarioTutor (N:N)
             modelBuilder.Entity<UsuarioTutor>()
                 .HasKey(ut => new { ut.ID_USUARIO, ut.ID_TUTOR });
 
@@ -52,13 +47,12 @@ namespace Models
                 .WithMany(c => c.ServiciosCentros)
                 .HasForeignKey(sc => sc.IdCentro);
 
-            // Configuración de UsuarioCentro (N:N)
             modelBuilder.Entity<UsuarioCentro>()
                 .HasKey(uc => new { uc.ID_USUARIO, uc.ID_CENTRO });
 
             modelBuilder.Entity<UsuarioCentro>()
                 .HasOne(uc => uc.Usuario)
-                .WithMany(u => u.UsuariosCentros)   
+                .WithMany(u => u.UsuariosCentros)
                 .HasForeignKey(uc => uc.ID_USUARIO);
 
             modelBuilder.Entity<UsuarioCentro>()
@@ -66,7 +60,6 @@ namespace Models
                 .WithMany(c => c.UsuariosCentros)
                 .HasForeignKey(uc => uc.ID_CENTRO);
 
-            // Configuración de EmpleadosCentros (N:N)
             modelBuilder.Entity<EmpleadosCentros>()
                 .HasKey(ec => new { ec.ID_EMPLEADO, ec.ID_CENTRO });
 
@@ -81,10 +74,51 @@ namespace Models
                 .HasForeignKey(ec => ec.ID_CENTRO);
 
             modelBuilder.Entity<OpcionServicio>()
-            .HasOne(os => os.Servicio)
-            .WithMany(s => s.Opciones)
-            .HasForeignKey(os => os.IdServicio);
-            
+                .HasOne(os => os.Servicio)
+                .WithMany(s => s.Opciones)
+                .HasForeignKey(os => os.IdServicio);
+
+            modelBuilder.Entity<Servicio>()
+                .HasOne(s => s.Empleado)
+                .WithMany()
+                .HasForeignKey(s => s.ID_EMPLEADO);
+
+            modelBuilder.Entity<Sesion>()
+                .HasOne(s => s.Usuario)
+                .WithMany()
+                .HasForeignKey(s => s.ID_USUARIO)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Sesion>()
+                .HasOne(s => s.Tutor)
+                .WithMany()
+                .HasForeignKey(s => s.ID_TUTOR)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Sesion>()
+                .HasOne(s => s.Empleado)
+                .WithMany()
+                .HasForeignKey(s => s.ID_EMPLEADO)
+                .OnDelete(DeleteBehavior.Restrict);
+
+             modelBuilder.Entity<Sesion>()
+                .HasOne(s => s.Servicio)
+                .WithMany()
+                .HasForeignKey(s => s.ID_SERVICIO)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Sesion>()
+                .HasOne(s => s.OpcionServicio)
+                .WithMany()
+                .HasForeignKey(s => s.ID_OPCION_SERVICIO)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Sesion>()
+                .HasOne(s => s.Centro)
+                .WithMany()
+                .HasForeignKey(s => s.ID_CENTRO)
+                .OnDelete(DeleteBehavior.Restrict);
+
             base.OnModelCreating(modelBuilder);
         }
     }

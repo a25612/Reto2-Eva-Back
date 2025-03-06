@@ -51,28 +51,30 @@ namespace Controllers
         [HttpPost]
         public async Task<ActionResult<Sesion>> CreateSesion(Sesion sesion)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             await _sesionService.AddAsync(sesion);
-            return CreatedAtAction(nameof(GetSesiones), new { id = sesion.Id }, sesion);
+            return CreatedAtAction(nameof(GetSesiones), new { id = sesion.ID }, sesion);
         }
 
-        // Actualizar una sesión existente
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateSesion(int id, Sesion updatedSesion)
         {
+            if (id != updatedSesion.ID)
+            {
+                return BadRequest();
+            }
+
             var existingSesion = await _sesionService.GetByIdAsync(id);
             if (existingSesion == null)
             {
                 return NotFound();
             }
-            
-            existingSesion.Fecha = updatedSesion.Fecha;
-            existingSesion.ID_USUARIO = updatedSesion.ID_USUARIO;
-            existingSesion.ID_EMPLEADO = updatedSesion.ID_EMPLEADO;
-            existingSesion.ID_SERVICIO = updatedSesion.ID_SERVICIO;
-            existingSesion.ID_CENTRO = updatedSesion.ID_CENTRO;
-            existingSesion.Facturar = updatedSesion.Facturar;
 
-            await _sesionService.UpdateAsync(existingSesion);
+            await _sesionService.UpdateAsync(updatedSesion);
             return NoContent();
         }
 

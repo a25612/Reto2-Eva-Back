@@ -12,73 +12,81 @@ namespace Repositories
             _context = context;
         }
 
-        // Obtener todas las sesiones
         public async Task<List<Sesion>> GetAllAsync()
         {
             return await _context.Sesiones
                 .Include(s => s.Usuario)
+                .Include(s => s.Tutor)
                 .Include(s => s.Empleado)
                 .Include(s => s.Servicio)
+                .Include(s => s.OpcionServicio)
+                .Include(s => s.Centro)
                 .ToListAsync();
         }
 
-        // Obtener una sesión por ID
         public async Task<Sesion?> GetByIdAsync(int id)
         {
             return await _context.Sesiones
                 .Include(s => s.Usuario)
+                .Include(s => s.Tutor)
                 .Include(s => s.Empleado)
                 .Include(s => s.Servicio)
-                .FirstOrDefaultAsync(s => s.Id == id);
+                .Include(s => s.OpcionServicio)
+                .Include(s => s.Centro)
+                .FirstOrDefaultAsync(s => s.ID == id);
         }
 
-        // Obtener sesiones por ID de usuario
         public async Task<List<Sesion>> GetByUsuarioIdAsync(int usuarioId)
         {
             return await _context.Sesiones
                 .Where(s => s.ID_USUARIO == usuarioId)
                 .Include(s => s.Usuario)
+                .Include(s => s.Tutor)
                 .Include(s => s.Empleado)
                 .Include(s => s.Servicio)
+                .Include(s => s.OpcionServicio)
+                .Include(s => s.Centro)
                 .ToListAsync();
         }
 
-        // Obtener sesiones por ID de empleado
         public async Task<List<Sesion>> GetByEmpleadoIdAsync(int empleadoId)
         {
             return await _context.Sesiones
                 .Where(s => s.ID_EMPLEADO == empleadoId)
                 .Include(s => s.Usuario)
+                .Include(s => s.Tutor)
                 .Include(s => s.Empleado)
                 .Include(s => s.Servicio)
+                .Include(s => s.OpcionServicio)
+                .Include(s => s.Centro)
                 .ToListAsync();
         }
 
-        // Agregar una nueva sesión
         public async Task AddAsync(Sesion sesion)
         {
             await _context.Sesiones.AddAsync(sesion);
             await _context.SaveChangesAsync();
         }
 
-        // Actualizar una sesión existente
         public async Task UpdateAsync(Sesion sesion)
         {
-            var existingSesion = await _context.Sesiones.FindAsync(sesion.Id);
+            var existingSesion = await _context.Sesiones.FindAsync(sesion.ID);
 
             if (existingSesion != null)
             {
-                existingSesion.Fecha = sesion.Fecha;
+                existingSesion.FECHA = sesion.FECHA;
                 existingSesion.ID_USUARIO = sesion.ID_USUARIO;
+                existingSesion.ID_TUTOR = sesion.ID_TUTOR;
                 existingSesion.ID_EMPLEADO = sesion.ID_EMPLEADO;
                 existingSesion.ID_SERVICIO = sesion.ID_SERVICIO;
-                existingSesion.Facturar = sesion.Facturar;
+                existingSesion.ID_OPCION_SERVICIO = sesion.ID_OPCION_SERVICIO;
+                existingSesion.ID_CENTRO = sesion.ID_CENTRO;
+                existingSesion.FACTURAR = sesion.FACTURAR;
 
                 await _context.SaveChangesAsync();
             }
         }
 
-        // Eliminar una sesión por ID
         public async Task DeleteAsync(int id)
         {
             var sesion = await _context.Sesiones.FindAsync(id);
