@@ -1,4 +1,4 @@
--- Active: 1740571037239@@127.0.0.1@3307
+-- Active: 1740500785648@@127.0.0.1@3307
 -- Crear base de datos
 CREATE DATABASE servicios_atemtia;
 USE servicios_atemtia;
@@ -79,27 +79,6 @@ CREATE TABLE UsuariosTutores (
     CONSTRAINT FK_Usuarios_Tutores_Tutores FOREIGN KEY (ID_TUTOR) REFERENCES Tutores(ID) ON DELETE CASCADE
 );
 
-CREATE TABLE Sesiones (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    FECHA DATETIME NOT NULL,
-    ID_USUARIO INT NOT NULL,
-    ID_EMPLEADO INT NOT NULL,
-    ID_SERVICIO INT NOT NULL,
-    ID_CENTRO INT NOT NULL,
-    FACTURAR TINYINT(1) NOT NULL,
-    CONSTRAINT FK_Sesiones_Usuarios FOREIGN KEY (ID_USUARIO) REFERENCES Usuarios(ID),
-    CONSTRAINT FK_Sesiones_Empleados FOREIGN KEY (ID_EMPLEADO) REFERENCES Empleados(ID),
-    CONSTRAINT FK_Sesiones_Servicios FOREIGN KEY (ID_SERVICIO) REFERENCES Servicios(ID),
-    CONSTRAINT FK_Sesiones_Centros FOREIGN KEY (ID_CENTRO) REFERENCES Centros(ID)
-);
-
-CREATE TABLE EmpleadosCentros (
-    ID_EMPLEADO INT NOT NULL,
-    ID_CENTRO INT NOT NULL,
-    PRIMARY KEY (ID_EMPLEADO, ID_CENTRO),
-    CONSTRAINT FK_EmpleadosCentros_Empleado FOREIGN KEY (ID_EMPLEADO) REFERENCES Empleados(ID) ON DELETE CASCADE,
-    CONSTRAINT FK_EmpleadosCentros_Centro FOREIGN KEY (ID_CENTRO) REFERENCES Centros(ID) ON DELETE CASCADE
-);
 
 CREATE TABLE OpcionesServicio (
     ID INT AUTO_INCREMENT PRIMARY KEY,
@@ -111,6 +90,32 @@ CREATE TABLE OpcionesServicio (
     CONSTRAINT FK_OpcionesServicio_Servicio FOREIGN KEY (IDSERVICIO) REFERENCES Servicios(ID) ON DELETE CASCADE
 );
 
+CREATE TABLE Sesiones (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    FECHA DATETIME NOT NULL,
+    ID_USUARIO INT NOT NULL,
+    ID_TUTOR INT NOT NULL,
+    ID_EMPLEADO INT NOT NULL,
+    ID_SERVICIO INT NOT NULL,
+    ID_OPCION_SERVICIO INT,
+    ID_CENTRO INT NOT NULL,
+    FACTURAR TINYINT(1) NOT NULL,
+    CONSTRAINT FK_Sesiones_Usuarios FOREIGN KEY (ID_USUARIO) REFERENCES Usuarios(ID),
+    CONSTRAINT FK_Sesiones_Tutores FOREIGN KEY (ID_TUTOR) REFERENCES Tutores(ID),
+    CONSTRAINT FK_Sesiones_Empleados FOREIGN KEY (ID_EMPLEADO) REFERENCES Empleados(ID),
+    CONSTRAINT FK_Sesiones_Servicios FOREIGN KEY (ID_SERVICIO) REFERENCES Servicios(ID),
+    CONSTRAINT FK_Sesiones_OpcionesServicio FOREIGN KEY (ID_OPCION_SERVICIO) REFERENCES OpcionesServicio(ID),
+    CONSTRAINT FK_Sesiones_Centros FOREIGN KEY (ID_CENTRO) REFERENCES Centros(ID)
+);
+
+
+CREATE TABLE EmpleadosCentros (
+    ID_EMPLEADO INT NOT NULL,
+    ID_CENTRO INT NOT NULL,
+    PRIMARY KEY (ID_EMPLEADO, ID_CENTRO),
+    CONSTRAINT FK_EmpleadosCentros_Empleado FOREIGN KEY (ID_EMPLEADO) REFERENCES Empleados(ID) ON DELETE CASCADE,
+    CONSTRAINT FK_EmpleadosCentros_Centro FOREIGN KEY (ID_CENTRO) REFERENCES Centros(ID) ON DELETE CASCADE
+);
 
 -- Insertar Centros
 INSERT INTO Centros (NOMBRE, DIRECCION)
@@ -172,17 +177,6 @@ VALUES (1, 1),
        (2, 1), 
        (3, 2);
 
--- Insertar Sesiones
-INSERT INTO Sesiones (FECHA, ID_USUARIO, ID_EMPLEADO, ID_SERVICIO, ID_CENTRO, FACTURAR)
-VALUES ('2025-03-04 09:00:00', 1, 3, 1, 1, 1),
-       ('2025-03-05 09:00:00', 1, 2, 2, 1, 1);
-
--- Insertar algunos anuncios de ejemplo
-INSERT INTO Anuncios (TITULO, DESCRIPCION,FECHA_PUBLICACION, ACTIVO)
-VALUES 
-    ('Nuevo Servicio de Terapia Acuática', '¡Hemos añadido terapia acuática a nuestro centro! Consulta disponibilidad.', '2024-12-17 09:00:00', 1),
-    ('Cambio de Horarios en Evaluaciones', 'Desde el próximo mes, las evaluaciones se realizarán los miércoles y viernes.', '2024-12-17 09:00:00', 1),
-    ('Promoción en Psicología', 'Este mes, sesiones de psicología con un 10% de descuento.', '2024-12-17 09:00:00', 1);
 
 -- Insertar las opciones de servicio
 INSERT INTO OpcionesServicio (IDSERVICIO, SESIONESPORSEMANA, DURACIONMINUTOS, PRECIO, DESCRIPCION) VALUES 
@@ -196,3 +190,18 @@ INSERT INTO OpcionesServicio (IDSERVICIO, SESIONESPORSEMANA, DURACIONMINUTOS, PR
 (6, NULL, 30, 30.00, 'Sesión individual'),
 (7, NULL, 30, 10.00, 'Reserva 30 minutos'),
 (7, NULL, 45, 15.00, 'Reserva 45 minutos');
+
+-- Insertar Sesiones
+INSERT INTO Sesiones (FECHA, ID_USUARIO, ID_TUTOR, ID_EMPLEADO, ID_SERVICIO, ID_OPCION_SERVICIO, ID_CENTRO, FACTURAR)
+VALUES 
+('2025-03-07 10:00:00', 1, 1, 1, 1, 1, 2, 1),
+('2025-03-08 15:00:00', 2, 1, 2, 3, 4, 2, 0);
+
+
+-- Insertar algunos anuncios de ejemplo
+INSERT INTO Anuncios (TITULO, DESCRIPCION,FECHA_PUBLICACION, ACTIVO)
+VALUES 
+    ('Nuevo Servicio de Terapia Acuática', '¡Hemos añadido terapia acuática a nuestro centro! Consulta disponibilidad.', '2024-12-17 09:00:00', 1),
+    ('Cambio de Horarios en Evaluaciones', 'Desde el próximo mes, las evaluaciones se realizarán los miércoles y viernes.', '2024-12-17 09:00:00', 1),
+    ('Promoción en Psicología', 'Este mes, sesiones de psicología con un 10% de descuento.', '2024-12-17 09:00:00', 1);
+
