@@ -52,23 +52,21 @@ namespace Piscina_Back.Controllers
             return CreatedAtAction(nameof(GetAnuncio), new { id = anuncio.Id }, anuncio);
         }
 
-
         // Actualizar un anuncio existente
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAnuncio(int id, Anuncio anuncio)
+        public async Task<IActionResult> UpdateAnuncio(int id, ActualizarAnuncioDTO anuncioDto)
         {   
-            if (id != anuncio.Id)
-            {
-                return BadRequest();
-            }
-
             var existingAnuncio = await _serviceAnuncio.GetByIdAsync(id);
             if (existingAnuncio == null)
             {
                 return NotFound();
             }
 
-            await _serviceAnuncio.UpdateAsync(anuncio);
+            existingAnuncio.Titulo = anuncioDto.Titulo;
+            existingAnuncio.Descripcion = anuncioDto.Descripcion;
+            existingAnuncio.Activo = anuncioDto.Activo;
+
+            await _serviceAnuncio.UpdateAsync(existingAnuncio);
             return NoContent();
         }
 
