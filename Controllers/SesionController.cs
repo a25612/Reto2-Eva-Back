@@ -64,7 +64,7 @@ namespace Controllers
                 ID_OPCION_SERVICIO = dto.IdOpcionServicio,
                 ID_USUARIO = dto.IdUsuario,
                 ID_TUTOR = dto.IdTutor,
-                FECHA = DateTime.UtcNow, 
+                FECHA = dto.FechaHora,
                 FACTURAR = false 
             };
 

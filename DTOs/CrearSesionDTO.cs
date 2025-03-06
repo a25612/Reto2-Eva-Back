@@ -5,6 +5,9 @@ namespace DTOs
     public class CrearSesionDTO
     {
         [Required]
+        public DateTime FechaHora { get; set; }
+
+        [Required]
         public int IdCentro { get; set; }
 
         [Required]
