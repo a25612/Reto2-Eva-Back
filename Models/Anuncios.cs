@@ -14,7 +14,7 @@ namespace Models
         [Required]
         public string Descripcion { get; set; }
 
-        public string ImagenUrl { get; set; }
+
 
         public DateTime Fecha_Publicacion { get; set; } = DateTime.Now;
 
