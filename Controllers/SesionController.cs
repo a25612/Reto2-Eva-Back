@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Service;
 using Models;
+using DTOs;
 
 namespace Controllers
 {
@@ -47,19 +48,32 @@ namespace Controllers
             return Ok(sesiones);
         }
 
-        // Crear una nueva sesión
+        // Crear una nueva sesión usando DTO
         [HttpPost]
-        public async Task<ActionResult<Sesion>> CreateSesion(Sesion sesion)
+        public async Task<ActionResult<Sesion>> CreateSesion([FromBody] CrearSesionDTO dto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            await _sesionService.AddAsync(sesion);
-            return CreatedAtAction(nameof(GetSesiones), new { id = sesion.ID }, sesion);
+            var nuevaSesion = new Sesion
+            {
+                ID_CENTRO = dto.IdCentro,
+                ID_SERVICIO = dto.IdServicio,
+                ID_OPCION_SERVICIO = dto.IdOpcionServicio,
+                ID_USUARIO = dto.IdUsuario,
+                ID_TUTOR = dto.IdTutor,
+                FECHA = DateTime.UtcNow, 
+                FACTURAR = false 
+            };
+
+            await _sesionService.AddAsync(nuevaSesion);
+
+            return CreatedAtAction(nameof(GetSesiones), new { id = nuevaSesion.ID }, nuevaSesion);
         }
 
+        // Actualizar una sesión existente
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateSesion(int id, Sesion updatedSesion)
         {

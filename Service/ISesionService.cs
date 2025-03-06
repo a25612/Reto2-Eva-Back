@@ -3,13 +3,14 @@ using Models;
 namespace Service
 {
     public interface ISesionService
-    {
-        Task<List<Sesion>> GetAllAsync();
-        Task<Sesion?> GetByIdAsync(int id);
-        Task<List<Sesion>> GetByUsuarioIdAsync(int usuarioId);
-        Task<List<Sesion>> GetByEmpleadoIdAsync(int empleadoId);
-        Task AddAsync(Sesion sesion);
-        Task UpdateAsync(Sesion sesion);
-        Task DeleteAsync(int id);
-    }
+{
+    Task<List<Sesion>> GetAllAsync();
+    Task<List<Sesion>> GetByUsuarioIdAsync(int idUsuario);
+    Task<List<Sesion>> GetByEmpleadoIdAsync(int idEmpleado);
+    Task<Sesion> GetByIdAsync(int id);
+    Task AddAsync(Sesion sesion); 
+    Task UpdateAsync(Sesion sesion);
+    Task DeleteAsync(int id);
+}
+
 }
