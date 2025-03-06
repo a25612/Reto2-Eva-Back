@@ -23,9 +23,9 @@ namespace Service
             return await _repository.GetByIdAsync(id);
         }
 
-        public async Task<Anuncio> AddAsync(Anuncio anuncio)
+        public async Task AddAsync(Anuncio anuncio)
         {
-            return await _repository.AddAsync(anuncio);
+            await _repository.AddAsync(anuncio);
         }
 
         public async Task UpdateAsync(Anuncio anuncio)

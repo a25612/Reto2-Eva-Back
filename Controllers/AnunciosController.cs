@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Service;
 using Models;
-
+using DTOs;
 
 namespace Piscina_Back.Controllers
 {
@@ -40,16 +40,23 @@ namespace Piscina_Back.Controllers
 
         // Crear un nuevo anuncio
         [HttpPost]
-        public async Task<ActionResult<Anuncio>> CreateAnuncio(Anuncio anuncio)
+        public async Task<ActionResult<Anuncio>> CreateAnuncio(CrearAnuncioDTO anuncioDto)
         {
+            var anuncio = new Anuncio
+            {
+                Titulo = anuncioDto.Titulo,
+                Descripcion = anuncioDto.Descripcion,
+            };
+
             await _serviceAnuncio.AddAsync(anuncio);
             return CreatedAtAction(nameof(GetAnuncio), new { id = anuncio.Id }, anuncio);
         }
 
+
         // Actualizar un anuncio existente
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAnuncio(int id, Anuncio anuncio)
-        {
+        {   
             if (id != anuncio.Id)
             {
                 return BadRequest();

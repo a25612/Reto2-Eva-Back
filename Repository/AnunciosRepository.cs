@@ -22,16 +22,15 @@ namespace Repository
             return await _context.Anuncios.FindAsync(id);
         }
 
-        public async Task<Anuncio> AddAsync(Anuncio anuncio)
+        public async Task AddAsync(Anuncio anuncio)
         {
             _context.Anuncios.Add(anuncio);
             await _context.SaveChangesAsync();
-            return anuncio;
         }
 
         public async Task UpdateAsync(Anuncio anuncio)
         {
-            _context.Entry(anuncio).State = EntityState.Modified;
+            _context.Anuncios.Update(anuncio);
             await _context.SaveChangesAsync();
         }
 

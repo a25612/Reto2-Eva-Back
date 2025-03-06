@@ -1,6 +1,4 @@
 using Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Repository
 {
@@ -8,8 +6,9 @@ namespace Repository
     {
         Task<List<Anuncio>> GetAllAsync();
         Task<Anuncio> GetByIdAsync(int id);
-        Task<Anuncio> AddAsync(Anuncio anuncio);
+        Task AddAsync(Anuncio anuncio);
         Task UpdateAsync(Anuncio anuncio);
         Task DeleteAsync(int id);
     }
+
 }

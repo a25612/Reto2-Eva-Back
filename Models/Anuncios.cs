@@ -8,13 +8,10 @@ namespace Models
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(255)]
         public string Titulo { get; set; }
 
         [Required]
         public string Descripcion { get; set; }
-
-
 
         public DateTime Fecha_Publicacion { get; set; } = DateTime.Now;
 
