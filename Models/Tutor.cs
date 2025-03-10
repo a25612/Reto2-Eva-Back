@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Models
 {
@@ -28,7 +29,7 @@ namespace Models
         public bool Activo { get; set; } = true;
 
         public string Rol { get; } = "TUTOR";
-
+        [JsonIgnore]
         public ICollection<UsuarioTutor> UsuariosTutores { get; set; }
 
         public Tutor() {}

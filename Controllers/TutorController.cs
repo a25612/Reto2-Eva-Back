@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Service;
 using Models;
+using DTOs;
 
 namespace Pisicna_Back.Controllers
 {
@@ -60,24 +61,25 @@ namespace Pisicna_Back.Controllers
 
         // Actualizar un tutor existente
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, Tutor updatedTutor)
+        public async Task<IActionResult> Update(int id, ActualizarTutorDTO actualizarTutorDTO)
         {
             var existingTutor = await _serviceTutor.GetByIdAsync(id);
 
             if (existingTutor == null)
                 return NotFound();
 
-            existingTutor.Nombre = updatedTutor.Nombre;
-            existingTutor.DNI = updatedTutor.DNI;
-            existingTutor.Email = updatedTutor.Email;
-            existingTutor.Username = updatedTutor.Username;
-            existingTutor.Password = updatedTutor.Password;
-            existingTutor.Activo = updatedTutor.Activo;
+            existingTutor.Nombre = actualizarTutorDTO.Nombre;
+            existingTutor.DNI = actualizarTutorDTO.DNI;
+            existingTutor.Email = actualizarTutorDTO.Email;
+            existingTutor.Username = actualizarTutorDTO.Username;
+            existingTutor.Password = actualizarTutorDTO.Password;
+            existingTutor.Activo = actualizarTutorDTO.Activo;
 
             await _serviceTutor.UpdateAsync(existingTutor);
 
             return NoContent();
         }
+
 
         // Eliminar un tutor por ID
         [HttpDelete("{id}")]

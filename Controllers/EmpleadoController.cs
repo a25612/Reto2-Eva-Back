@@ -44,20 +44,30 @@ namespace Pisicna_Back.Controllers
             return CreatedAtAction(nameof(GetEmpleado), new { id = empleado.Id }, empleado);
         }
 
-        // Actualizar un empleado existente
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateEmpleado(int id, [FromBody] ActualizarEmpleadoDTO updatedEmpleado)
+        public async Task<IActionResult> UpdateEmpleado(int id, [FromBody] Empleado updatedEmpleado)
         {
+            if (id != updatedEmpleado.Id)
+            {
+                return BadRequest("El ID del empleado en la ruta no coincide con el ID en el cuerpo de la solicitud.");
+            }
+
             var existingEmpleado = await _serviceEmpleado.GetByIdAsync(id);
             if (existingEmpleado == null)
+            {
+                return NotFound();
+            }
 
             // Actualizar los campos del empleado existente
             existingEmpleado.Nombre = updatedEmpleado.Nombre;
             existingEmpleado.DNI = updatedEmpleado.DNI;
             existingEmpleado.JornadaTotalHoras = updatedEmpleado.JornadaTotalHoras;
-            
+            existingEmpleado.Username = updatedEmpleado.Username;
+            existingEmpleado.Password = updatedEmpleado.Password;
+            existingEmpleado.Rol = updatedEmpleado.Rol;
+
             // Actualizar los centros asociados al empleado
-            await _serviceEmpleado.UpdateWithCentrosAsync(existingEmpleado, updatedEmpleado.Centro);
+            await _serviceEmpleado.UpdateAsync(existingEmpleado);
 
             return NoContent();
         }

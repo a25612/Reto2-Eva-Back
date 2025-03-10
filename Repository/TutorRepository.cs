@@ -36,21 +36,11 @@ namespace Repositories
         }
         public async Task UpdateAsync(Tutor tutor)
         {
-            var existingTutor = await _context.Tutores.FindAsync(tutor.Id);
-
-            if (existingTutor != null)
-            {
-                existingTutor.Nombre = tutor.Nombre;
-                existingTutor.DNI = tutor.DNI;
-                existingTutor.Email = tutor.Email;
-                existingTutor.Username = tutor.Username;
-                existingTutor.Password = tutor.Password;
-                existingTutor.Activo = tutor.Activo;
-
-                await _context.SaveChangesAsync();
-            }
+            _context.Entry(tutor).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
-    
+
+
         public async Task DeleteAsync(int id)
         {
             var tutor = await _context.Tutores.FindAsync(id);
