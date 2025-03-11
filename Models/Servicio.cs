@@ -19,8 +19,9 @@ namespace Models
 
         [ForeignKey("Empleado")]
         public int ID_EMPLEADO { get; set; }
+        [JsonIgnore]
         public Empleado Empleado { get; set; }
-
+        
         public ICollection<OpcionServicio> Opciones { get; set; }
 
         [JsonIgnore]

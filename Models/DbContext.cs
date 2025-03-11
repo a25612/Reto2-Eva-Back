@@ -22,7 +22,7 @@ namespace Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UsuarioTutor>()
-                .HasKey(ut => new { ut.ID_USUARIO, ut.ID_TUTOR });
+       .HasKey(ut => ut.Id);
 
             modelBuilder.Entity<UsuarioTutor>()
                 .HasOne(ut => ut.Usuario)
@@ -101,11 +101,11 @@ namespace Models
                 .HasForeignKey(s => s.ID_EMPLEADO)
                 .OnDelete(DeleteBehavior.Restrict);
 
-             modelBuilder.Entity<Sesion>()
-                .HasOne(s => s.Servicio)
-                .WithMany()
-                .HasForeignKey(s => s.ID_SERVICIO)
-                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Sesion>()
+               .HasOne(s => s.Servicio)
+               .WithMany()
+               .HasForeignKey(s => s.ID_SERVICIO)
+               .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Sesion>()
                 .HasOne(s => s.OpcionServicio)

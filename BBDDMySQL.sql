@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS Centros (
     DIRECCION VARCHAR(255) NOT NULL
 );
 
+-- Tabla: Empleados
 CREATE TABLE IF NOT EXISTS Empleados (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     NOMBRE VARCHAR(255) NOT NULL,
@@ -20,6 +21,7 @@ CREATE TABLE IF NOT EXISTS Empleados (
     ROL ENUM('EMPLEADO') NOT NULL DEFAULT 'EMPLEADO'
 );
 
+-- Tabla: Usuarios
 CREATE TABLE IF NOT EXISTS Usuarios (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     NOMBRE VARCHAR(255) NOT NULL,
@@ -27,6 +29,7 @@ CREATE TABLE IF NOT EXISTS Usuarios (
     CodigoFacturacion VARCHAR(10) NOT NULL
 );
 
+-- Tabla: Tutores
 CREATE TABLE IF NOT EXISTS Tutores (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     NOMBRE VARCHAR(255) NOT NULL,
@@ -38,6 +41,7 @@ CREATE TABLE IF NOT EXISTS Tutores (
     ROL ENUM('TUTOR') NOT NULL DEFAULT 'TUTOR'
 );
 
+-- Tabla: Anuncios
 CREATE TABLE IF NOT EXISTS Anuncios (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     TITULO VARCHAR(255) NOT NULL,
@@ -46,6 +50,7 @@ CREATE TABLE IF NOT EXISTS Anuncios (
     ACTIVO TINYINT(1) NOT NULL
 );
 
+-- Tabla: Servicios
 CREATE TABLE IF NOT EXISTS Servicios (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     NOMBRE VARCHAR(255) NOT NULL,
@@ -56,6 +61,7 @@ CREATE TABLE IF NOT EXISTS Servicios (
     CONSTRAINT FK_ServiciosEmpleados_Empleados FOREIGN KEY (ID_EMPLEADO) REFERENCES Empleados(ID) ON DELETE CASCADE
 );
 
+-- Tabla: ServiciosCentros
 CREATE TABLE IF NOT EXISTS ServiciosCentros (
     ID_SERVICIO INT NOT NULL,
     IdCentro INT NOT NULL,
@@ -64,6 +70,7 @@ CREATE TABLE IF NOT EXISTS ServiciosCentros (
     CONSTRAINT FK_ServiciosCentros_Centro FOREIGN KEY (IdCentro) REFERENCES Centros(ID) ON DELETE CASCADE
 );
 
+-- Tabla: UsuariosCentros
 CREATE TABLE IF NOT EXISTS UsuariosCentros (
     ID_USUARIO INT NOT NULL,
     ID_CENTRO INT NOT NULL,
@@ -72,14 +79,16 @@ CREATE TABLE IF NOT EXISTS UsuariosCentros (
     CONSTRAINT FK_UsuariosCentros_Centros FOREIGN KEY (ID_CENTRO) REFERENCES Centros(ID) ON DELETE CASCADE
 );
 
+-- Tabla: UsuariosTutores
 CREATE TABLE IF NOT EXISTS UsuariosTutores (
+    ID INT AUTO_INCREMENT PRIMARY KEY, -- Añadir ID como clave primaria autoincrementable
     ID_USUARIO INT NOT NULL,
     ID_TUTOR INT NOT NULL,
-    PRIMARY KEY (ID_USUARIO, ID_TUTOR),
     CONSTRAINT FK_Usuarios_Tutores_Usuarios FOREIGN KEY (ID_USUARIO) REFERENCES Usuarios(ID) ON DELETE CASCADE,
     CONSTRAINT FK_Usuarios_Tutores_Tutores FOREIGN KEY (ID_TUTOR) REFERENCES Tutores(ID) ON DELETE CASCADE
 );
 
+-- Tabla: OpcionesServicio
 CREATE TABLE IF NOT EXISTS OpcionesServicio (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     IDSERVICIO INT NOT NULL,
@@ -90,6 +99,7 @@ CREATE TABLE IF NOT EXISTS OpcionesServicio (
     CONSTRAINT FK_OpcionesServicio_Servicio FOREIGN KEY (IDSERVICIO) REFERENCES Servicios(ID) ON DELETE CASCADE
 );
 
+-- Tabla: Sesiones
 CREATE TABLE IF NOT EXISTS Sesiones (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     FECHA DATETIME NOT NULL,
@@ -108,6 +118,7 @@ CREATE TABLE IF NOT EXISTS Sesiones (
     CONSTRAINT FK_Sesiones_Centros FOREIGN KEY (ID_CENTRO) REFERENCES Centros(ID)
 );
 
+-- Tabla: EmpleadosCentros
 CREATE TABLE IF NOT EXISTS EmpleadosCentros (
     ID_EMPLEADO INT NOT NULL,
     ID_CENTRO INT NOT NULL,
@@ -176,6 +187,13 @@ INSERT INTO Tutores (NOMBRE, DNI, EMAIL, USERNAME, PASSWORD, ACTIVO, ROL)
 VALUES ('Ruth Pellicer Horna', '48572634Q', 'ruth@tutors.com', 'username', 'password', 1, 'TUTOR'),
        ('Javier Serrano', '12345678A', 'jserrano@gmail.com', 'jserrano', 'password', 1, 'TUTOR');
 
+-- Insertar algunos anuncios de ejemplo
+INSERT INTO Anuncios (TITULO, DESCRIPCION,FECHA_PUBLICACION, ACTIVO)
+VALUES 
+    ('Nuevo Servicio de Terapia Acuática', '¡Hemos añadido terapia acuática a nuestro centro! Consulta disponibilidad.', '2024-12-17 09:00:00', 1),
+    ('Cambio de Horarios en Evaluaciones', 'Desde el próximo mes, las evaluaciones se realizarán los miércoles y viernes.', '2024-12-17 09:00:00', 1),
+    ('Promoción en Psicología', 'Este mes, sesiones de psicología con un 10% de descuento.', '2024-12-17 09:00:00', 1);
+
 -- Relación Usuarios-Tutores
 INSERT INTO UsuariosTutores (ID_USUARIO, ID_TUTOR)
 VALUES (1, 1),
@@ -212,10 +230,3 @@ INSERT INTO Sesiones (FECHA, ID_USUARIO, ID_TUTOR, ID_EMPLEADO, ID_SERVICIO, ID_
 VALUES 
 ('2025-03-07 10:00:00', 1, 1, 1, 1, 1, 2, 1),
 ('2025-03-08 15:00:00', 2, 1, 2, 3, 4, 2, 0);
-
--- Insertar algunos anuncios de ejemplo
-INSERT INTO Anuncios (TITULO, DESCRIPCION,FECHA_PUBLICACION, ACTIVO)
-VALUES 
-    ('Nuevo Servicio de Terapia Acuática', '¡Hemos añadido terapia acuática a nuestro centro! Consulta disponibilidad.', '2024-12-17 09:00:00', 1),
-    ('Cambio de Horarios en Evaluaciones', 'Desde el próximo mes, las evaluaciones se realizarán los miércoles y viernes.', '2024-12-17 09:00:00', 1),
-    ('Promoción en Psicología', 'Este mes, sesiones de psicología con un 10% de descuento.', '2024-12-17 09:00:00', 1);

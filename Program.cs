@@ -35,7 +35,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-
 // Registrar los repositorios
 builder.Services.AddScoped<IEmpleadoRepository, EmpleadoRepository>();
 builder.Services.AddScoped<IUsuariosRepository, UsuariosRepository>();
@@ -44,7 +43,7 @@ builder.Services.AddScoped<ITutorRepository, TutorRepository>();
 builder.Services.AddScoped<ISesionRepository, SesionRepository>();
 builder.Services.AddScoped<ICentroRepository, CentroRepository>();
 builder.Services.AddScoped<IAnuncioRepository, AnuncioRepository>();
-
+builder.Services.AddScoped<IUsuarioTutorRepository, UsuarioTutorRepository>();
 
 // Registrar los servicios
 builder.Services.AddScoped<IUsuariosService, UsuariosService>();
@@ -54,8 +53,7 @@ builder.Services.AddScoped<ITutorService, TutorService>();
 builder.Services.AddScoped<ISesionService, SesionService>();
 builder.Services.AddScoped<ICentroService, CentroService>();
 builder.Services.AddScoped<IAnuncioService, AnuncioService>();
-
-
+builder.Services.AddScoped<IUsuarioTutorService, UsuarioTutorService>();
 
 // Registrar AutoMapper y el perfil de mapeo
 builder.Services.AddAutoMapper(typeof(MappingProfile));
@@ -85,10 +83,8 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Agregar autorización
 builder.Services.AddAuthorization();
 
-// Configurar controladores y Swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -105,7 +101,6 @@ if (app.Environment.IsDevelopment())
 app.UseCors("AllowFrontend");
 app.UseHttpsRedirection();
 
-// IMPORTANTE: Primero autenticación, luego autorización
 app.UseAuthentication();
 app.UseAuthorization();
 
