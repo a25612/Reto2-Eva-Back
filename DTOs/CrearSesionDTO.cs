@@ -21,5 +21,8 @@ namespace DTOs
 
         [Required]
         public int IdTutor { get; set; }
+        [Required]
+        public int IdEmpleado { get; set; }
+        
     }
 }

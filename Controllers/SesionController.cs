@@ -60,11 +60,12 @@ namespace Controllers
             var nuevaSesion = new Sesion
             {
                 ID_CENTRO = dto.IdCentro,
-                ID_SERVICIO = dto.IdServicio,
+                SERVICIOID = dto.IdServicio,
                 ID_OPCION_SERVICIO = dto.IdOpcionServicio,
-                ID_USUARIO = dto.IdUsuario,
+                USUARIOID = dto.IdUsuario,
                 ID_TUTOR = dto.IdTutor,
                 FECHA = dto.FechaHora,
+                ID_EMPLEADO = dto.IdEmpleado,
                 FACTURAR = false 
             };
 

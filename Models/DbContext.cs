@@ -22,7 +22,7 @@ namespace Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UsuarioTutor>()
-       .HasKey(ut => ut.Id);
+                .HasKey(ut => ut.Id);
 
             modelBuilder.Entity<UsuarioTutor>()
                 .HasOne(ut => ut.Usuario)
@@ -84,9 +84,11 @@ namespace Models
                 .HasForeignKey(s => s.ID_EMPLEADO);
 
             modelBuilder.Entity<Sesion>()
+                .HasKey(s => new { s.ID, s.SERVICIOID,s.ID_EMPLEADO,s.ID_TUTOR, s.ID_OPCION_SERVICIO, s.ID_CENTRO });
+           /*modelBuilder.Entity<Sesion>()
                 .HasOne(s => s.Usuario)
                 .WithMany()
-                .HasForeignKey(s => s.ID_USUARIO)
+                .HasForeignKey(s => s.USUARIOID)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Sesion>()
@@ -104,7 +106,7 @@ namespace Models
             modelBuilder.Entity<Sesion>()
                .HasOne(s => s.Servicio)
                .WithMany()
-               .HasForeignKey(s => s.ID_SERVICIO)
+               .HasForeignKey(s => s.SERVICIOID)
                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Sesion>()
@@ -117,8 +119,8 @@ namespace Models
                 .HasOne(s => s.Centro)
                 .WithMany()
                 .HasForeignKey(s => s.ID_CENTRO)
-                .OnDelete(DeleteBehavior.Restrict);
-
+                .OnDelete(DeleteBehavior.Restrict);*/
+         
             base.OnModelCreating(modelBuilder);
         }
     }

@@ -12,7 +12,7 @@ namespace Models
         public DateTime FECHA { get; set; }
 
         [ForeignKey("Usuario")]
-        public int ID_USUARIO { get; set; }
+        public int USUARIOID { get; set; }
         public Usuario Usuario { get; set; }
 
         [ForeignKey("Tutor")]
@@ -24,7 +24,7 @@ namespace Models
         public Empleado Empleado { get; set; }
 
         [ForeignKey("Servicio")]
-        public int ID_SERVICIO { get; set; }
+        public int SERVICIOID { get; set; }
         public Servicio Servicio { get; set; }
 
         [ForeignKey("OpcionServicio")]

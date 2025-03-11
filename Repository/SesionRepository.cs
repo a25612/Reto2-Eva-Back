@@ -21,13 +21,13 @@ namespace Repositories
                     ID = s.ID,
                     FECHA = s.FECHA,
                     FACTURAR = s.FACTURAR,
-                    ID_USUARIO = s.ID_USUARIO,
+                    USUARIOID = s.USUARIOID,
                     Usuario = s.Usuario,
                     ID_TUTOR = s.ID_TUTOR,
                     Tutor = s.Tutor,
                     ID_EMPLEADO = s.ID_EMPLEADO,
                     Empleado = s.Empleado,
-                    ID_SERVICIO = s.ID_SERVICIO,
+                    SERVICIOID = s.SERVICIOID,
                     Servicio = s.Servicio,
                     ID_OPCION_SERVICIO = s.ID_OPCION_SERVICIO,
                     OpcionServicio = s.OpcionServicio,
@@ -47,13 +47,13 @@ namespace Repositories
                     ID = s.ID,
                     FECHA = s.FECHA,
                     FACTURAR = s.FACTURAR,
-                    ID_USUARIO = s.ID_USUARIO,
+                    USUARIOID = s.USUARIOID,
                     Usuario = s.Usuario,
                     ID_TUTOR = s.ID_TUTOR,
                     Tutor = s.Tutor,
                     ID_EMPLEADO = s.ID_EMPLEADO,
                     Empleado = s.Empleado,
-                    ID_SERVICIO = s.ID_SERVICIO,
+                    SERVICIOID = s.SERVICIOID,
                     Servicio = s.Servicio,
                     ID_OPCION_SERVICIO = s.ID_OPCION_SERVICIO,
                     OpcionServicio = s.OpcionServicio,
@@ -67,19 +67,19 @@ namespace Repositories
         public async Task<List<Sesion>> GetByUsuarioIdAsync(int usuarioId)
         {
             return await _context.Sesiones
-                .Where(s => s.ID_USUARIO == usuarioId)
+                .Where(s => s.USUARIOID == usuarioId)
                 .Select(s => new Sesion
                 {
                     ID = s.ID,
                     FECHA = s.FECHA,
                     FACTURAR = s.FACTURAR,
-                    ID_USUARIO = s.ID_USUARIO,
+                    USUARIOID = s.USUARIOID,
                     Usuario = s.Usuario,
                     ID_TUTOR = s.ID_TUTOR,
                     Tutor = s.Tutor,
                     ID_EMPLEADO = s.ID_EMPLEADO,
                     Empleado = s.Empleado,
-                    ID_SERVICIO = s.ID_SERVICIO,
+                    SERVICIOID = s.SERVICIOID,
                     Servicio = s.Servicio,
                     ID_OPCION_SERVICIO = s.ID_OPCION_SERVICIO,
                     OpcionServicio = s.OpcionServicio,
@@ -99,13 +99,13 @@ namespace Repositories
                     ID = s.ID,
                     FECHA = s.FECHA,
                     FACTURAR = s.FACTURAR,
-                    ID_USUARIO = s.ID_USUARIO,
+                    USUARIOID = s.USUARIOID,
                     Usuario = s.Usuario,
                     ID_TUTOR = s.ID_TUTOR,
                     Tutor = s.Tutor,
                     ID_EMPLEADO = s.ID_EMPLEADO,
                     Empleado = s.Empleado,
-                    ID_SERVICIO = s.ID_SERVICIO,
+                    SERVICIOID = s.SERVICIOID,
                     Servicio = s.Servicio, 
                     ID_OPCION_SERVICIO = s.ID_OPCION_SERVICIO, 
                     OpcionServicio=s.OpcionServicio, 
@@ -129,10 +129,10 @@ namespace Repositories
             if(existingSesion!=null)
             {
                 existingSesion.FECHA=sesion.FECHA;
-                existingSesion.ID_USUARIO=sesion.ID_USUARIO;
+                existingSesion.USUARIOID=sesion.USUARIOID;
                 existingSesion.ID_TUTOR=sesion.ID_TUTOR;
                 existingSesion.ID_EMPLEADO=sesion.ID_EMPLEADO;
-                existingSesion.ID_SERVICIO=sesion.ID_SERVICIO;
+                existingSesion.SERVICIOID=sesion.SERVICIOID;
                 existingSesion.ID_OPCION_SERVICIO=sesion.ID_OPCION_SERVICIO;
                 existingSesion.ID_CENTRO=sesion.ID_CENTRO;
                 existingSesion.FACTURAR=sesion.FACTURAR;
