@@ -84,7 +84,7 @@ namespace Models
                 .HasForeignKey(s => s.ID_EMPLEADO);
 
             modelBuilder.Entity<Sesion>()
-                .HasKey(s => new { s.ID, s.SERVICIOID,s.ID_EMPLEADO,s.ID_TUTOR, s.ID_OPCION_SERVICIO, s.ID_CENTRO });
+                .HasKey(s => new { s.ID, s.USUARIOID, s.SERVICIOID,s.ID_EMPLEADO,s.ID_TUTOR, s.ID_OPCION_SERVICIO, s.ID_CENTRO });
            /*modelBuilder.Entity<Sesion>()
                 .HasOne(s => s.Usuario)
                 .WithMany()
