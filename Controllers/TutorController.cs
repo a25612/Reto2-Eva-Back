@@ -53,12 +53,27 @@ namespace Pisicna_Back.Controllers
 
         // Crear un nuevo tutor
         [HttpPost]
-        public async Task<IActionResult> Create(Tutor tutor)
+        public async Task<IActionResult> Create([FromBody] CrearTutorDTO crearTutorDTO)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState); 
+            }
+
+            var tutor = new Tutor
+            {
+                Nombre = crearTutorDTO.Nombre,
+                DNI = crearTutorDTO.DNI,
+                Email = crearTutorDTO.Email,
+                Username = crearTutorDTO.Username,
+                Password = crearTutorDTO.Password,
+                Activo = crearTutorDTO.Activo
+            };
+
             await _serviceTutor.AddAsync(tutor);
+
             return CreatedAtAction(nameof(GetById), new { id = tutor.Id }, tutor);
         }
-
         // Actualizar un tutor existente
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, ActualizarTutorDTO actualizarTutorDTO)
