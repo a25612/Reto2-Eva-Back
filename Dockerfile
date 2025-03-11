@@ -1,21 +1,11 @@
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-WORKDIR /app
-EXPOSE 80
-
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-
-COPY ["WebApiEntityFrameworkDockerSqlServer.csproj", "."]
-RUN dotnet restore "./WebApiEntityFrameworkDockerSqlServer.csproj"
-
+COPY Reto2-Eva-Back.csproj .
+RUN dotnet restore
 COPY . .
-WORKDIR "/src/."
-RUN dotnet build "WebApiEntityFrameworkDockerSqlServer.csproj" -c Release -o /app/build
+RUN dotnet build -c Release -o /app
 
-FROM build AS publish
-RUN dotnet publish "WebApiEntityFrameworkDockerSqlServer.csproj" -c Release -o /app/publish /p:UseAppHost=false
-
-FROM base AS final
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "WebApiEntityFrameworkDockerSqlServer.dll"]
+COPY --from=build /app .
+ENTRYPOINT [ "dotnet", "Reto2-Eva-Back.dll" ]
