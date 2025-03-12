@@ -66,7 +66,7 @@ namespace Controllers
                 ID_TUTOR = dto.IdTutor,
                 FECHA = dto.FechaHora,
                 ID_EMPLEADO = dto.IdEmpleado,
-                FACTURAR = false 
+                FACTURAR = true 
             };
 
             await _sesionService.AddAsync(nuevaSesion);

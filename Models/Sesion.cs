@@ -36,6 +36,6 @@ namespace Models
         public Centro Centro { get; set; }
 
         [Required]
-        public bool FACTURAR { get; set; }
+        public bool FACTURAR { get; set; } 
     }
 }
