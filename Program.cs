@@ -28,7 +28,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "https://localhost:7163", "http://servicios-atemtia.retocsv.es/")
+        policy.WithOrigins("http://localhost:5173", "https://localhost:7163", "http://servicios-atemtia.retocsv.es", "https://servicios-atemtia-api.retocsv.es")
               .AllowAnyMethod()
               .AllowAnyHeader()
               .AllowCredentials();
