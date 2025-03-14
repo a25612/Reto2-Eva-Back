@@ -44,6 +44,9 @@ builder.Services.AddScoped<ISesionRepository, SesionRepository>();
 builder.Services.AddScoped<ICentroRepository, CentroRepository>();
 builder.Services.AddScoped<IAnuncioRepository, AnuncioRepository>();
 builder.Services.AddScoped<IUsuarioTutorRepository, UsuarioTutorRepository>();
+builder.Services.AddScoped<IPagoService, PagoService>();
+
+
 
 // Registrar los servicios
 builder.Services.AddScoped<IUsuariosService, UsuariosService>();
@@ -54,6 +57,7 @@ builder.Services.AddScoped<ISesionService, SesionService>();
 builder.Services.AddScoped<ICentroService, CentroService>();
 builder.Services.AddScoped<IAnuncioService, AnuncioService>();
 builder.Services.AddScoped<IUsuarioTutorService, UsuarioTutorService>();
+builder.Services.AddScoped<IPagoRepository, PagoRepository>();
 
 // Registrar AutoMapper y el perfil de mapeo
 builder.Services.AddAutoMapper(typeof(MappingProfile));
