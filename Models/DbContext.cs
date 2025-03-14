@@ -13,6 +13,7 @@ namespace Models
         public DbSet<Tutor> Tutores { get; set; }
         public DbSet<Sesion> Sesiones { get; set; }
         public DbSet<Anuncio> Anuncios { get; set; }
+        public DbSet<Pago> Pagos { get; set; }
         public DbSet<UsuarioTutor> UsuariosTutores { get; set; }
         public DbSet<ServicioCentro> ServiciosCentros { get; set; }
         public DbSet<UsuarioCentro> UsuariosCentros { get; set; }
@@ -83,7 +84,20 @@ namespace Models
                 .WithMany()
                 .HasForeignKey(s => s.ID_EMPLEADO);
 
-            modelBuilder.Entity<Sesion>()
+            modelBuilder.Entity<Pago>()
+                .HasOne(p => p.Usuario)
+                .WithMany()
+                .HasForeignKey(p => p.ID_USUARIO);
+            
+            modelBuilder.Entity<Pago>()
+                .HasOne(p => p.Sesion)
+                .WithMany()
+                .HasForeignKey(p => p.ID_SESION);
+            
+          
+
+
+           /* modelBuilder.Entity<Sesion>()
                 .HasKey(s => new { s.ID, s.USUARIOID, s.SERVICIOID,s.ID_EMPLEADO,s.ID_TUTOR, s.ID_OPCION_SERVICIO, s.ID_CENTRO });
            /*modelBuilder.Entity<Sesion>()
                 .HasOne(s => s.Usuario)
