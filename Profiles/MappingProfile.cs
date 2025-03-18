@@ -6,8 +6,6 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<Usuario, Usuario>();
-        CreateMap<Usuario, Usuario>();
         CreateMap<CreateUsuario, Usuario>();
     }
 }
