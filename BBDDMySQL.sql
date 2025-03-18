@@ -1,4 +1,4 @@
--- Active: 1741714785527@@127.0.0.1@3307
+-- Active: 1742300022557@@127.0.0.1@3307
 -- Crear base de datos
 CREATE DATABASE IF NOT EXISTS servicios_atemtia;
 USE servicios_atemtia;

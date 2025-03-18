@@ -4555,19 +4555,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Plo\\.nuget\\packages\\": {}
+    "C:\\Users\\ruben.arnadillo\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Reto2-Eva-Back\\Reto2-Eva-Back.csproj",
+      "projectUniqueName": "C:\\Users\\ruben.arnadillo\\Desktop\\Reto2-Eva-Back\\Reto2-Eva-Back.csproj",
       "projectName": "Reto2-Eva-Back",
-      "projectPath": "D:\\Reto2-Eva-Back\\Reto2-Eva-Back.csproj",
-      "packagesPath": "C:\\Users\\Plo\\.nuget\\packages\\",
-      "outputPath": "D:\\Reto2-Eva-Back\\obj\\",
+      "projectPath": "C:\\Users\\ruben.arnadillo\\Desktop\\Reto2-Eva-Back\\Reto2-Eva-Back.csproj",
+      "packagesPath": "C:\\Users\\ruben.arnadillo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ruben.arnadillo\\Desktop\\Reto2-Eva-Back\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Plo\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\ruben.arnadillo\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
