@@ -79,20 +79,20 @@ namespace Models
                 .WithMany(s => s.Opciones)
                 .HasForeignKey(os => os.IdServicio);
 
-            modelBuilder.Entity<Servicio>()
-                .HasOne(s => s.Empleado)
-                .WithMany()
-                .HasForeignKey(s => s.ID_EMPLEADO);
+            // modelBuilder.Entity<Servicio>()
+            //     .HasOne(s => s.Empleado)
+            //     .WithMany()
+            //     .HasForeignKey(s => s.ID_EMPLEADO);
 
-            modelBuilder.Entity<Pago>()
-                .HasOne(p => p.Usuario)
-                .WithMany()
-                .HasForeignKey(p => p.ID_USUARIO);
+            // modelBuilder.Entity<Pago>()
+            //     .HasOne(p => p.Usuario)
+            //     .WithMany()
+            //     .HasForeignKey(p => p.ID_USUARIO);
             
-            modelBuilder.Entity<Pago>()
-                .HasOne(p => p.Sesion)
-                .WithMany()
-                .HasForeignKey(p => p.ID_SESION);
+            // modelBuilder.Entity<Pago>()
+            //     .HasOne(p => p.Sesion)
+            //     .WithMany()
+            //     .HasForeignKey(p => p.ID_SESION);
             
           
 

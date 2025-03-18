@@ -41,7 +41,6 @@ namespace Pisicna_Back.Controllers
         }
 
         // Crear un nuevo usuario
-        // Crear un nuevo usuario
         [HttpPost]
         public async Task<ActionResult<Usuario>> CreateUsuario(CreateUsuario createUsuario)
         {

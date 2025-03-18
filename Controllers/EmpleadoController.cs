@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Service;
 using Models;
-using DTOs;
 
 namespace Pisicna_Back.Controllers
 {
