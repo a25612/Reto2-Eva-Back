@@ -13,7 +13,6 @@ namespace Models
         public DbSet<Tutor> Tutores { get; set; }
         public DbSet<Sesion> Sesiones { get; set; }
         public DbSet<Anuncio> Anuncios { get; set; }
-        public DbSet<Pago> Pagos { get; set; }
         public DbSet<UsuarioTutor> UsuariosTutores { get; set; }
         public DbSet<ServicioCentro> ServiciosCentros { get; set; }
         public DbSet<UsuarioCentro> UsuariosCentros { get; set; }
