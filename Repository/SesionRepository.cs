@@ -106,14 +106,37 @@ namespace Repositories
                     ID_EMPLEADO = s.ID_EMPLEADO,
                     Empleado = s.Empleado,
                     SERVICIOID = s.SERVICIOID,
-                    Servicio = s.Servicio, 
-                    ID_OPCION_SERVICIO = s.ID_OPCION_SERVICIO, 
-                    OpcionServicio=s.OpcionServicio, 
-                    ID_CENTRO=s.ID_CENTRO, 
-                    Centro=s.Centro 
+                    Servicio = s.Servicio,
+                    ID_OPCION_SERVICIO = s.ID_OPCION_SERVICIO,
+                    OpcionServicio = s.OpcionServicio,
+                    ID_CENTRO = s.ID_CENTRO,
+                    Centro = s.Centro
                 })
                 .ToListAsync();
         }
+
+        public async Task<List<Sesion>> GetByUsuarioIdAndFechaAsync(int usuarioId, DateTime startDate, DateTime endDate)
+        {
+            return await _context.Sesiones
+                .Include(s => s.Servicio)
+                .Include(s => s.Centro)
+                .Where(s => s.USUARIOID == usuarioId
+                       && s.FECHA >= startDate
+                       && s.FECHA < endDate)
+                .ToListAsync();
+        }
+
+        public async Task<List<Sesion>> GetByEmpleadoIdAndFechaAsync(int empleadoId, DateTime startDate, DateTime endDate)
+        {
+            return await _context.Sesiones
+                .Include(s => s.Servicio)
+                .Include(s => s.Centro)
+                .Where(s => s.ID_EMPLEADO == empleadoId
+                       && s.FECHA >= startDate
+                       && s.FECHA < endDate)
+                .ToListAsync();
+        }
+
 
         // Añadir nueva sesión
         public async Task AddAsync(Sesion sesion)
@@ -125,17 +148,17 @@ namespace Repositories
         // Actualizar sesión existente
         public async Task UpdateAsync(Sesion sesion)
         {
-            var existingSesion=await _context.Sesiones.FindAsync(sesion.ID);
-            if(existingSesion!=null)
+            var existingSesion = await _context.Sesiones.FindAsync(sesion.ID);
+            if (existingSesion != null)
             {
-                existingSesion.FECHA=sesion.FECHA;
-                existingSesion.USUARIOID=sesion.USUARIOID;
-                existingSesion.ID_TUTOR=sesion.ID_TUTOR;
-                existingSesion.ID_EMPLEADO=sesion.ID_EMPLEADO;
-                existingSesion.SERVICIOID=sesion.SERVICIOID;
-                existingSesion.ID_OPCION_SERVICIO=sesion.ID_OPCION_SERVICIO;
-                existingSesion.ID_CENTRO=sesion.ID_CENTRO;
-                existingSesion.FACTURAR=sesion.FACTURAR;
+                existingSesion.FECHA = sesion.FECHA;
+                existingSesion.USUARIOID = sesion.USUARIOID;
+                existingSesion.ID_TUTOR = sesion.ID_TUTOR;
+                existingSesion.ID_EMPLEADO = sesion.ID_EMPLEADO;
+                existingSesion.SERVICIOID = sesion.SERVICIOID;
+                existingSesion.ID_OPCION_SERVICIO = sesion.ID_OPCION_SERVICIO;
+                existingSesion.ID_CENTRO = sesion.ID_CENTRO;
+                existingSesion.FACTURAR = sesion.FACTURAR;
 
                 await _context.SaveChangesAsync();
             }
@@ -144,8 +167,8 @@ namespace Repositories
         // Eliminar sesión por id
         public async Task DeleteAsync(int id)
         {
-            var sesion=await _context.Sesiones.FindAsync(id);
-            if(sesion!=null)
+            var sesion = await _context.Sesiones.FindAsync(id);
+            if (sesion != null)
             {
                 _context.Sesiones.Remove(sesion);
                 await _context.SaveChangesAsync();

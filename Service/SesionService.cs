@@ -31,6 +31,23 @@ namespace Service
             return await _sesionRepository.GetByEmpleadoIdAsync(empleadoId);
         }
 
+        public async Task<List<Sesion>> GetByUsuarioIdAndFechaAsync(int usuarioId, DateTime fecha)
+        {
+            var startDate = fecha.Date; 
+            var endDate = startDate.AddDays(1);
+
+            return await _sesionRepository.GetByUsuarioIdAndFechaAsync(usuarioId, startDate, endDate);
+        }
+
+        public async Task<List<Sesion>> GetByEmpleadoIdAndFechaAsync(int empleadoId, DateTime fecha)
+        {
+            var startDate = fecha.Date;
+            var endDate = startDate.AddDays(1);
+
+            return await _sesionRepository.GetByEmpleadoIdAndFechaAsync(empleadoId, startDate, endDate);
+        }
+
+
         public async Task AddAsync(Sesion sesion)
         {
             await _sesionRepository.AddAsync(sesion);

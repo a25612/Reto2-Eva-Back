@@ -48,6 +48,37 @@ namespace Controllers
             return Ok(sesiones);
         }
 
+        [HttpGet("Usuario/{idUsuario}/PorFecha")]
+        public async Task<ActionResult<List<Sesion>>> GetSesionesByUsuarioYFecha(
+    int idUsuario,
+    [FromQuery] DateTime fecha)
+        {
+            var sesiones = await _sesionService.GetByUsuarioIdAndFechaAsync(idUsuario, fecha);
+
+            if (sesiones == null || !sesiones.Any())
+            {
+                return NotFound(new { Message = $"No hay sesiones para el usuario {idUsuario} en {fecha:dd/MM/yyyy}" });
+            }
+
+            return Ok(sesiones);
+        }
+
+        [HttpGet("Empleado/{idEmpleado}/PorFecha")]
+        public async Task<ActionResult<List<Sesion>>> GetSesionesByEmpleadoYFecha(
+            int idEmpleado,
+            [FromQuery] DateTime fecha)
+        {
+            var sesiones = await _sesionService.GetByEmpleadoIdAndFechaAsync(idEmpleado, fecha);
+
+            if (sesiones == null || !sesiones.Any())
+            {
+                return NotFound(new { Message = $"No hay sesiones para el empleado {idEmpleado} en {fecha:dd/MM/yyyy}" });
+            }
+
+            return Ok(sesiones);
+        }
+
+
         // Crear una nueva sesión usando DTO
         [HttpPost]
         public async Task<ActionResult<Sesion>> CreateSesion([FromBody] CrearSesionDTO dto)
@@ -66,7 +97,7 @@ namespace Controllers
                 ID_TUTOR = dto.IdTutor,
                 FECHA = dto.FechaHora,
                 ID_EMPLEADO = dto.IdEmpleado,
-                FACTURAR = true 
+                FACTURAR = true
             };
 
             await _sesionService.AddAsync(nuevaSesion);
